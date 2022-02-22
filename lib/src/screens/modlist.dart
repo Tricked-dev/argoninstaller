@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tmodinstaller/config.dart';
+import 'package:tmodinstaller/src/utils.dart';
 import '../models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -18,8 +20,15 @@ class ModListsPage extends StatefulWidget {
 class _ModLists extends State<ModListsPage> {
   String selectedVersion = "unknown";
   bool _icons = true;
+  String _directory = "";
   @override
   Widget build(BuildContext context) {
+    var dir = Config.preferences?.getString("modfolder");
+    if (dir == null) {
+      _directory = defaultMinecraft[defaultTargetPlatform]!;
+    } else {
+      _directory = dir;
+    }
     var noicons = Config.preferences?.getBool("noicons");
     if (noicons != null && noicons == true) {
       _icons = false;

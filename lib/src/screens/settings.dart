@@ -143,18 +143,23 @@ class _SettingsState extends State<Settings> {
           "Having icons may cause rendering issues this feature disables icons",
         ),
         spacer,
-        Checkbox(
-          checked: _checked,
-          onChanged: (value) => setState(() {
-            if (value != null && value == true) {
-              Config.preferences?.setBool("noicons", true);
-              _checked = true;
-            } else {
-              Config.preferences?.setBool("noicons", false);
-              _checked = false;
-            }
-          }),
+        Row(
+          children: [
+            Checkbox(
+              checked: _checked,
+              onChanged: (value) => setState(() {
+                if (value != null && value == true) {
+                  Config.preferences?.setBool("noicons", true);
+                  _checked = true;
+                } else {
+                  Config.preferences?.setBool("noicons", false);
+                  _checked = false;
+                }
+              }),
+            ),
+          ],
         ),
+
         biggerSpacer,
         Text("Mod folder", style: FluentTheme.of(context).typography.subtitle),
         flutter.SelectableText(
@@ -174,12 +179,22 @@ class _SettingsState extends State<Settings> {
           },
           suffix: IconButton(
             icon: const Icon(FluentIcons.add_to),
-            onPressed: () {
-              print(current);
-              setState(() {
-                modfolder = _modfolder;
-                Config.preferences?.setString("modfolder", _modfolder);
-              });
+            onPressed: () async {
+              var fold = _modfolder
+                  .replaceFirst("~", Platform.environment['HOME'] ?? "NO_HOME")
+                  .replaceFirst("%APPDATA%",
+                      Platform.environment['APPDATA'] ?? "NO_APPDATA");
+              var r = await Directory(fold).exists();
+              if (r) {
+                setState(() {
+                  Config.preferences?.setString("modfolder", fold);
+                });
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _invaliddir(),
+                );
+              }
 
               // _clearController.clear();
             },
@@ -199,6 +214,21 @@ class _SettingsState extends State<Settings> {
         //     print(path);
         //   },
         // )
+      ],
+    );
+  }
+
+  Widget _invaliddir() {
+    return ContentDialog(
+      title: Text("Directory does not exist"),
+      content: Text("beep boop"),
+      actions: <Widget>[
+        FilledButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Close'),
+        ),
       ],
     );
   }
