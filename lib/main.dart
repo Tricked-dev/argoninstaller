@@ -50,7 +50,7 @@ class TModInstallerApp extends StatelessWidget {
                 glowFactor: is10footScreen() ? 2.0 : 0.0,
               ),
             ),
-            home: const TModInstallerPage(title: 'Flutter Demo Home Page'),
+            home: const TModInstallerPage(title: 'Tricked mod Installer'),
           );
         });
   }
@@ -114,7 +114,6 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       List<String> versions = Set.of(mods
           .map((x) => x.downloads.map((x) => x.mcversion))
           .expand((i) => i)).toList();
-      Widget Function(int)? comp;
 
       // snapshot.data.
       // // print(mods);

@@ -44,21 +44,28 @@ class _ModLists extends State<ModListsPage> {
             itemCount: widget.mods.length,
             itemBuilder: (context, index) {
               var mod = widget.mods[index];
-              return ListTile(
+              return TappableListTile(
                   leading: Image.network(mod.icon),
                   title: Text(mod.display),
                   subtitle: Text(mod.description),
-                  trailing: IconButton(
-                    // child: Text("Install"),
-                    icon: Icon(FluentIcons.installation),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            _buildPopupDialog(context, mod),
-                      );
-                    },
-                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _buildPopupDialog(context, mod),
+                    );
+                  },
+                  // trailing: IconButton(
+                  //   // child: Text("Install"),
+                  //   icon: Icon(FluentIcons.installation),
+                  //   onPressed: () {
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) =>
+                  //           _buildPopupDialog(context, mod),
+                  //     );
+                  //   },
+                  // ),
                   isThreeLine: true);
             }));
   }
@@ -118,29 +125,30 @@ class _ModLists extends State<ModListsPage> {
     selectedVersion = "${mod.downloads[0].url}";
     return ContentDialog(
       title: Text('Install ${mod.display}'),
-      content: Form(
-          child: Center(
-        child: DropDownButton(
-          items: [
-            ...download.map((value) {
-              return DropDownButtonItem(
-                // value: "${value.url}",
-                leading: const Icon(FluentIcons.align_left),
-                title: Text("${value.mcversion} v${value.version}"),
-                onTap: () => debugPrint('left'),
-              );
-            })
-          ],
-          // icon: const Icon(Icons.keyboard_arrow_down),
-          // value: selectedVersion,
-          // onChanged: (v) {
-          //   setState(() {
-          //     if (v != null) selectedVersion = v;
-          //   });
-          //   print(v);
-          // },
-        ),
-      )),
+      content: SizedBox(
+          width: 200,
+          // child: Center(
+          child: Combobox<String>(
+            items: [
+              ...download.map((value) {
+                return ComboboxItem<String>(
+                    value: "${value.url}",
+                    // leading: const Icon(FluentIcons.align_left),
+                    // title: Text("${value.mcversion} v${value.version}"),
+                    // onTap: () => debugPrint('left'),
+                    child: Text("${value.mcversion} v${value.version}"));
+              })
+            ],
+            icon: const Icon(FluentIcons.azure_key_vault),
+            value: selectedVersion,
+            onChanged: (v) {
+              setState(() {
+                if (v != null) selectedVersion = v;
+              });
+              // print(v);
+            },
+            // ),
+          )),
       actions: <Widget>[
         // TextButton()
         TextButton(
