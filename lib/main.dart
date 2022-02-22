@@ -3,7 +3,6 @@ import 'package:tmodinstaller/models.dart';
 import 'package:tmodinstaller/theme.dart';
 import 'package:tmodinstaller/utils.dart';
 import 'modlist.dart';
-import 'navBar.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:localstore/localstore.dart';
