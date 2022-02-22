@@ -8,7 +8,7 @@ import 'package:tmodinstaller/theme.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+// import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
