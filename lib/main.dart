@@ -19,12 +19,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setPathUrlStrategy();
+  await Config.initializePreference();
   await Future.wait([
-    _TModInstallerPageState.fetchData(),
-    Config.initializePreference(),
     flutter_acrylic.Window.initialize(),
+    _TModInstallerPageState.fetchData(),
     WindowManager.instance.ensureInitialized()
   ]);
+
   // await WindowManager.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {
     // await windowManager.setTitleBarStyle('hidden');
@@ -115,11 +116,25 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
   }
 
   static Future<void> fetchData() async {
-    var repos = Config.preferences?.getStringList("repos");
-    if (repos != null) {
-      for (var repo in repos) {
-        final res = await http.get(Uri.parse(repo));
-        var data = json.decode(res.body);
+    try {
+      var repos = Config.preferences?.getStringList("repos");
+      if (repos != null) {
+        for (var repo in repos) {
+          final res = await http.get(Uri.parse(repo.trim()));
+          var data = json.decode(res.body);
+
+          mods = [
+            ...mods,
+            ...data["mods"].map((x) {
+              x["repo"] = data["id"];
+              return Mod.fromJson(x);
+            })
+          ];
+        }
+      } else {
+        final response =
+            await http.get(Uri.parse('https://tmod.deno.dev/skyclient.json'));
+        var data = json.decode(response.body);
 
         mods = [
           ...mods,
@@ -129,17 +144,30 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
           })
         ];
       }
-    } else {
-      final response =
-          await http.get(Uri.parse('https://tmod.deno.dev/skyclient.json'));
-      var data = json.decode(response.body);
-
+    } catch (_) {
       mods = [
-        ...mods,
-        ...data["mods"].map((x) {
-          x["repo"] = data["id"];
-          return Mod.fromJson(x);
-        })
+        Mod(
+            categories: [],
+            repo: "INVALID",
+            display: "INVALID REPO DETECTED",
+            description:
+                "PLEASE ENSURE THAT ALL REPOS ARE VALID AND WORKING BEFORE ADDING THEM",
+            id: "INVALID",
+            downloads: [
+              DownloadMod(
+                  filename: "INVALID",
+                  id: "INVALID",
+                  mcversion: "0.0.0",
+                  version: "0.0.0",
+                  hash: "sha1;null",
+                  url: "")
+            ],
+            nicknames: [],
+            conflicts: [],
+            forgeid: "INVALID",
+            meta: {},
+            icon:
+                "https://cdn-images-1.medium.com/max/1200/1*5-aoK8IBmXve5whBQM90GA.png")
       ];
     }
   }

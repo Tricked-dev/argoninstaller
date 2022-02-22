@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' as flutter;
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:tmodinstaller/config.dart';
@@ -17,10 +18,33 @@ const List<String> accentColorNames = [
   'Green',
 ];
 
-class Settings extends StatelessWidget {
+class Settings extends StatefulWidget {
   const Settings({Key? key, this.controller}) : super(key: key);
 
   final ScrollController? controller;
+  @override
+  _SettingsState createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  // const Settings({Key? key, }) : super(key: key);
+
+  final _clearController = TextEditingController();
+  String current = "";
+  @override
+  void initState() {
+    super.initState();
+    _clearController.addListener(() {
+      print(_clearController.value);
+      if (_clearController.text.length == 1 && mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _clearController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +80,7 @@ class Settings extends StatelessWidget {
     const biggerSpacer = SizedBox(height: 40.0);
     return ScaffoldPage.scrollable(
       header: const PageHeader(title: Text('Settings')),
-      scrollController: controller,
+      scrollController: widget.controller,
       children: [
         biggerSpacer,
         Text('Accent Color',
@@ -77,6 +101,33 @@ class Settings extends StatelessWidget {
             );
           }),
         ]),
+        biggerSpacer,
+        Text("Mod repo's", style: FluentTheme.of(context).typography.subtitle),
+        const flutter.SelectableText(
+          "Repos are split by ',' the default repos are https://tmod.deno.dev/skyclient.json,https://tmod.deno.dev/feather.json\nA restart is required after updating the repos",
+        ),
+        spacer,
+        TextBox(
+          controller: _clearController,
+          // header: 'Repos split by ","',
+          placeholder: 'Insert repos',
+          onEditingComplete: () {
+            // print("Hello!");
+            // Config.preferences?.setStringList("repos", current.split(","));
+          },
+          onChanged: (v) {
+            current = v;
+          },
+          suffix: IconButton(
+            icon: const Icon(FluentIcons.add_to),
+            onPressed: () {
+              print(current);
+              Config.preferences?.setStringList("repos", current.split(","));
+
+              // _clearController.clear();
+            },
+          ),
+        ),
       ],
     );
   }
