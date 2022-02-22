@@ -23,6 +23,7 @@ class _ModLists extends State<ModListsPage> {
   String _directory = "";
   @override
   Widget build(BuildContext context) {
+    final padding = PageHeader.horizontalPadding(context);
     var dir = Config.preferences?.getString("modfolder");
     if (dir == null) {
       _directory = defaultMinecraft[defaultTargetPlatform]!;
@@ -36,24 +37,100 @@ class _ModLists extends State<ModListsPage> {
     return ScaffoldPage.scrollable(
         header: PageHeader(title: Text('${widget.version} Mods')),
         children: [
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.mods.length,
-              itemBuilder: (context, index) {
-                var mod = widget.mods[index];
-                return TappableListTile(
-                  leading: _icons ? Image.network(mod.icon) : null,
-                  title: Text(mod.display),
-                  subtitle: Text(mod.description),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          _buildPopupDialog(context, mod),
-                    );
-                  },
-                );
+          GridView.extent(
+            shrinkWrap: true,
+            maxCrossAxisExtent: 300,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+
+            // scrollDirection: Axis.vertical,
+            padding: EdgeInsets.only(
+              top: kPageDefaultVerticalPadding,
+              right: padding,
+              left: padding,
+            ),
+            children: [
+              ...widget.mods.map((mod) {
+                final style = FluentTheme.of(context);
+                var tileColor;
+                return HoverButton(
+                    autofocus: true,
+                    builder: ((p0, state) {
+                      final Color _tileColor = () {
+                        if (tileColor != null) {
+                          return tileColor!.resolve(state);
+                        } else if (state.isFocused) {
+                          return style.accentColor.resolve(context);
+                        }
+                        return ButtonThemeData.uncheckedInputColor(
+                            style, state);
+                      }();
+                      return Container(
+                        // color: _tileColor,
+                        decoration: ShapeDecoration(
+                          shape: const ContinuousRectangleBorder(),
+                          color: _tileColor,
+                        ),
+                        child: Row(children: <Widget>[
+                          if (_icons)
+                            Padding(
+                                padding: const EdgeInsets.only(right: 14),
+                                child: Image.network(
+                                  mod.icon,
+                                  width: 128,
+                                  height: 128,
+                                )),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DefaultTextStyle(
+                                    child: Text(mod.display),
+                                    style: const TextStyle().copyWith(
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.fade),
+                                DefaultTextStyle(
+                                  child: Text(mod.description),
+                                  style: const TextStyle(),
+                                  overflow: TextOverflow.fade,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ]),
+                      );
+                    }),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            _buildPopupDialog(context, mod),
+                      );
+                    });
               })
+            ],
+
+            // shrinkWrap: true,
+            // itemCount: widget.mods.length,
+            // itemBuilder: (context, index) {
+            //   var mod = widget.mods[index];
+            // return TappableListTile(
+            //     leading: _icons ? Image.network(mod.icon) : null,
+            //     title: Text(mod.display),
+            //     subtitle: Text(mod.description),
+            //     onTap: () {
+            // showDialog(
+            //   context: context,
+            //   builder: (BuildContext context) =>
+            //       _buildPopupDialog(context, mod),
+            // );
+            //     },
+            //   );
+            // })
+          )
         ]);
   }
 
@@ -78,7 +155,7 @@ class _ModLists extends State<ModListsPage> {
     //     throw ErrorHint("Hash does not match!");
     //   }
     // }
-    File("mods/${version.filename}").writeAsBytes(response.bodyBytes);
+    File("${_directory}/${version.filename}").writeAsBytes(response.bodyBytes);
     // response.bodyBytes
   }
 
@@ -88,8 +165,9 @@ class _ModLists extends State<ModListsPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return ContentDialog(
-            title: Text("Mod installed!"),
-            content: Text("Succesfully installed the mod - press esc to exit"),
+            title: const Text("Mod installed!"),
+            content:
+                const Text("Succesfully installed the mod - press esc to exit"),
             actions: <Widget>[
               FilledButton(
                 onPressed: () {
@@ -152,7 +230,7 @@ class _ModLists extends State<ModListsPage> {
         ],
       );
     }
-    selectedVersion = "${mod.downloads[0].url}";
+    selectedVersion = "${download[0].url}";
     return ContentDialog(
       title: Text('Install ${mod.display}'),
       content: SizedBox(

@@ -8,12 +8,12 @@ import 'package:tmodinstaller/theme.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fluent_ui/fluent_ui.dart';
-// import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -208,13 +208,14 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
           openMaxWidth: 320,
         ),
         header: Container(
-          height: kOneLineTileHeight,
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: const FlutterLogo(
-            style: FlutterLogoStyle.horizontal,
-            size: 100,
-          ),
-        ),
+            height: kOneLineTileHeight,
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: SvgPicture.asset("assets/Logo.svg")
+            // child: const FlutterLogo(
+            //   style: FlutterLogoStyle.horizontal,
+            //   size: 100,
+            // ),
+            ),
         // displayMode: appTheme.displayMode,
         // indicatorBuilder: () {
         //   switch (appTheme.indicator) {
