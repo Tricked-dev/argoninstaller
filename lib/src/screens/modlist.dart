@@ -49,27 +49,6 @@ class _ModLists extends State<ModListsPage> {
       content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [ProgressBar()]),
-      // content: Form(
-      //     child: Form(
-      //   child: DropdownButton<String>(
-      //     items: [
-      //       ...download.map((value) {
-      //         return DropdownMenuItem<String>(
-      //           value: "${value.url}",
-      //           child: Text("${value.mcversion} v${value.version}"),
-      //         );
-      //       })
-      //     ],
-      //     icon: const Icon(Icons.keyboard_arrow_down),
-      //     value: selectedVersion,
-      //     onChanged: (v) {
-      //       setState(() {
-      //         if (v != null) selectedVersion = v;
-      //       });
-      //       print(v);
-      //     },
-      //   ),
-      // )),
       actions: <Widget>[
         // TextButton()
         TextButton(

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
+import 'package:tmodinstaller/config.dart';
 import '../../theme.dart';
 
 const List<String> accentColorNames = [
@@ -64,7 +65,7 @@ class Settings extends StatelessWidget {
         Wrap(children: [
           Tooltip(
             style: tooltipThemeData,
-            child: _buildColorBlock(appTheme, systemAccentColor),
+            child: _buildColorBlock(appTheme, systemAccentColor, -1),
             message: accentColorNames[0],
           ),
           ...List.generate(Colors.accentColors.length, (index) {
@@ -72,7 +73,7 @@ class Settings extends StatelessWidget {
             return Tooltip(
               style: tooltipThemeData,
               message: accentColorNames[index + 1],
-              child: _buildColorBlock(appTheme, color),
+              child: _buildColorBlock(appTheme, color, index),
             );
           }),
         ]),
@@ -80,11 +81,12 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _buildColorBlock(AppTheme appTheme, AccentColor color) {
+  Widget _buildColorBlock(AppTheme appTheme, AccentColor color, int index) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Button(
         onPressed: () {
+          Config.preferences?.setInt("color", index);
           appTheme.color = color;
         },
         style: ButtonStyle(padding: ButtonState.all(EdgeInsets.zero)),

@@ -7,6 +7,10 @@ enum NavigationIndicators { sticky, end }
 
 class AppTheme extends ChangeNotifier {
   AccentColor _color = systemAccentColor;
+  set rawColor(AccentColor color) {
+    _color = color;
+  }
+
   AccentColor get color => _color;
   set color(AccentColor color) {
     _color = color;
