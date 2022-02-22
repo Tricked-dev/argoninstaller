@@ -1,9 +1,11 @@
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:tmodinstaller/config.dart';
+import 'dart:io';
 import '../../theme.dart';
 
 const List<String> accentColorNames = [
@@ -46,9 +48,11 @@ class _SettingsState extends State<Settings> {
     super.dispose();
   }
 
+  String _modfolder = "";
   @override
   Widget build(BuildContext context) {
     var icons = Config.preferences?.getBool("noicons");
+    var modfolder = Config.preferences?.getString("modfolder");
     if (icons != null && icons == true) {
       _checked = true;
     }
@@ -150,7 +154,51 @@ class _SettingsState extends State<Settings> {
               _checked = false;
             }
           }),
-        )
+        ),
+        biggerSpacer,
+        Text("Mod folder", style: FluentTheme.of(context).typography.subtitle),
+        flutter.SelectableText(
+          "Current directory $modfolder",
+        ),
+        spacer,
+        TextBox(
+          // controller: _clearController,
+          // header: 'Repos split by ","',
+          placeholder: 'Change modfolder',
+          onEditingComplete: () {
+            // print("Hello!");
+            // Config.preferences?.setStringList("repos", current.split(","));
+          },
+          onChanged: (v) {
+            _modfolder = v;
+          },
+          suffix: IconButton(
+            icon: const Icon(FluentIcons.add_to),
+            onPressed: () {
+              print(current);
+              setState(() {
+                modfolder = _modfolder;
+                Config.preferences?.setString("modfolder", _modfolder);
+              });
+
+              // _clearController.clear();
+            },
+          ),
+        ),
+        // OutlinedButton(
+        //   child: Text("Change folder!"),
+        //   onPressed: () async {
+        //     String? path = await FilesystemPicker.open(
+        //       title: 'Save to folder',
+        //       context: context,
+        //       rootDirectory: Directory("/"),
+        //       fsType: FilesystemType.folder,
+        //       pickText: 'Save file to this folder',
+        //       folderIconColor: Colors.teal,
+        //     );
+        //     print(path);
+        //   },
+        // )
       ],
     );
   }
