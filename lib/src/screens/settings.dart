@@ -28,7 +28,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   // const Settings({Key? key, }) : super(key: key);
-
+  bool _checked = false;
   final _clearController = TextEditingController();
   String current = "";
   @override
@@ -48,6 +48,10 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    var icons = Config.preferences?.getBool("noicons");
+    if (icons != null && icons == true) {
+      _checked = true;
+    }
     final appTheme = context.watch<AppTheme>();
     final tooltipThemeData = TooltipThemeData(decoration: () {
       const radius = BorderRadius.zero;
@@ -128,6 +132,25 @@ class _SettingsState extends State<Settings> {
             },
           ),
         ),
+        biggerSpacer,
+        Text("Disable icons",
+            style: FluentTheme.of(context).typography.subtitle),
+        const flutter.SelectableText(
+          "Having icons may cause rendering issues this feature disables icons",
+        ),
+        spacer,
+        Checkbox(
+          checked: _checked,
+          onChanged: (value) => setState(() {
+            if (value != null && value == true) {
+              Config.preferences?.setBool("noicons", true);
+              _checked = true;
+            } else {
+              Config.preferences?.setBool("noicons", false);
+              _checked = false;
+            }
+          }),
+        )
       ],
     );
   }

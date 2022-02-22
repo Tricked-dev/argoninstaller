@@ -1,9 +1,10 @@
-// import 'package:flutter/material.dart';
-// import 'package:tmodinstaller/navBar.dart';
-// import 'package:tmodinstaller/utils.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-
+import 'package:tmodinstaller/config.dart';
 import '../models/models.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:io';
+import 'package:crypto/crypto.dart';
 
 class ModListsPage extends StatefulWidget {
   const ModListsPage({Key? key, required this.mods, required this.version})
@@ -16,9 +17,13 @@ class ModListsPage extends StatefulWidget {
 
 class _ModLists extends State<ModListsPage> {
   String selectedVersion = "unknown";
-
+  bool _icons = true;
   @override
   Widget build(BuildContext context) {
+    var noicons = Config.preferences?.getBool("noicons");
+    if (noicons != null && noicons == true) {
+      _icons = false;
+    }
     return ScaffoldPage.scrollable(
         header: PageHeader(title: Text('${widget.version} Mods')),
         children: [
@@ -28,7 +33,7 @@ class _ModLists extends State<ModListsPage> {
               itemBuilder: (context, index) {
                 var mod = widget.mods[index];
                 return TappableListTile(
-                  // leading: Image.network(mod.icon),
+                  leading: _icons ? Image.network(mod.icon) : null,
                   title: Text(mod.display),
                   subtitle: Text(mod.description),
                   onTap: () {
@@ -43,35 +48,99 @@ class _ModLists extends State<ModListsPage> {
         ]);
   }
 
+  Future<void> _install(DownloadMod version) async {
+    final response = await http.get(Uri.parse(version.url));
+    // var hashdata = version.hash.split(";");
+    //TODO HASHING
+    // if (hashdata[0] == "sha1") {
+    //   var fileHash = sha1.convert(response.bodyBytes);
+    //   if (fileHash != hashdata[1]) {
+    //     throw ErrorHint("Hash does not match!");
+    //   }
+    // } else if (hashdata[0] == "sha256") {
+    //   var fileHash = sha256.convert(response.bodyBytes);
+    //   print("FILEHASH ${fileHash} DATA ${version.hash}");
+    //   if (fileHash != hashdata[1]) {
+    //     throw ErrorHint("Hash does not match!");
+    //   }
+    // } else if (hashdata[0] == "md5") {
+    //   var fileHash = md5.convert(response.bodyBytes);
+    //   if (fileHash != hashdata[1]) {
+    //     throw ErrorHint("Hash does not match!");
+    //   }
+    // }
+    File("mods/${version.filename}").writeAsBytes(response.bodyBytes);
+    // response.bodyBytes
+  }
+
   Widget _installer(BuildContext context, Mod mod, DownloadMod version) {
-    return ContentDialog(
-      title: Text('Installing ${mod.display} ${version.version}'),
-      content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [ProgressBar()]),
-      actions: <Widget>[
-        // TextButton()
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Install'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Close'),
-        ),
-      ],
+    return FutureBuilder(
+      future: _install(version),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ContentDialog(
+            title: Text("Mod installed!"),
+            content: Text("Succesfully installed the mod - press esc to exit"),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        }
+        if (snapshot.hasError) {
+          return ContentDialog(
+            title: Text(
+                "Failed to install mod, this is likely due to a hash mismatch"),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        }
+        return ContentDialog(
+          title: Text('Installing ${mod.display} ${version.version}'),
+          content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [const ProgressBar()]),
+        );
+      },
     );
   }
 
   Widget _buildPopupDialog(BuildContext context, Mod mod) {
     var download = mod.downloads;
     if (download.isEmpty) {
-      return const ContentDialog(
+      return ContentDialog(
         title: Text("No mods found weird.."),
+        actions: <Widget>[
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Close'),
+          ),
+        ],
+      );
+    }
+    if (mod.id == "INVALID") {
+      return ContentDialog(
+        title: Text("You cant install this"),
+        actions: <Widget>[
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Close'),
+          ),
+        ],
       );
     }
     selectedVersion = "${mod.downloads[0].url}";
@@ -85,9 +154,6 @@ class _ModLists extends State<ModListsPage> {
               ...download.map((value) {
                 return ComboboxItem<String>(
                     value: "${value.url}",
-                    // leading: const Icon(FluentIcons.align_left),
-                    // title: Text("${value.mcversion} v${value.version}"),
-                    // onTap: () => debugPrint('left'),
                     child: Text("${value.mcversion} v${value.version}"));
               })
             ],
@@ -103,7 +169,7 @@ class _ModLists extends State<ModListsPage> {
           )),
       actions: <Widget>[
         // TextButton()
-        TextButton(
+        FilledButton(
           onPressed: () {
             Navigator.of(context).pop();
             showDialog(
@@ -117,7 +183,7 @@ class _ModLists extends State<ModListsPage> {
           },
           child: const Text('Install'),
         ),
-        TextButton(
+        FilledButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
