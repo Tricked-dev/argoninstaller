@@ -6,19 +6,6 @@ part of 'models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Response _$ResponseFromJson(Map<String, dynamic> json) => Response(
-      id: json['id'] as String,
-      mods: Mod.fromJson(json['mods'] as Map<String, dynamic>),
-      downloads:
-          DownloadMod.fromJson(json['downloads'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$ResponseToJson(Response instance) => <String, dynamic>{
-      'id': instance.id,
-      'mods': instance.mods,
-      'downloads': instance.downloads,
-    };
-
 DownloadMod _$DownloadModFromJson(Map<String, dynamic> json) => DownloadMod(
       mcversion: json['mcversion'] as String,
       version: json['version'] as String,

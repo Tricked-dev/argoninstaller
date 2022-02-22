@@ -1,4 +1,4 @@
-#https://github.com/Thomas-Sohier/jellyflut/blob/main/.github/workflows/main.workflow.yml
+#https://github.com/Thomas-Sohier/tmodinstaller/blob/main/.github/workflows/main.workflow.yml
 name: Main workflow
 on: push
 
@@ -12,14 +12,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
+      - run: ls
+        # - uses: actions/checkout@v2
+        # - uses: subosito/flutter-action@v1
+        #   with:
+        #     channel: 'stable'
 
-      - run: flutter pub get
-      - run: flutter format --set-exit-if-changed .
-      - run: flutter analyze .
+        # - run: flutter pub get
+        # - run: flutter format --set-exit-if-changed .
+        # - run: flutter analyze .
 
   build_windows:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -33,21 +34,21 @@ jobs:
           channel: 'stable'
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
-      - run: cp windows/libs/sqlite3.dll build/windows/runner/Release/sqlite3.dll
+      # - run: cp windows/libs/sqlite3.dll build/windows/runner/Release/sqlite3.dll
 
       - name: Create a windows app-bundle
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           path: 'build/windows/runner/Release'
-          filename: ' jellyflut-windows.zip'
+          filename: 'tmodinstaller-windows.zip'
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           prerelease: false
-          files: jellyflut-windows.zip
+          files: tmodinstaller-windows.zip
           token: ${{ secrets.GITHUB_TOKEN }}
 
   build_linux:
@@ -69,65 +70,65 @@ jobs:
         run: |
           cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb jellyflut-linux-x86_64.deb
+          cp linux/*.deb tmodinstaller-linux-x86_64.deb
 
       - name: Build .rpm executable
         run: |
-          alien -r jellyflut-linux-x86_64.deb
-          mv jellyflut*.rpm jellyflut-linux-x86_64.rpm
+          alien -r tmodinstaller-linux-x86_64.deb
+          mv tmodinstaller*.rpm tmodinstaller-linux-x86_64.rpm
 
       - name: Build Tarball
         run: |
           mkdir -p AppDir/
           cp -r linux/debian/usr AppDir/
-          ln -sr AppDir/usr/bin/jellyflut AppDir/jellyflut
-          tar czf jellyflut-linux-x86_64.tar.gz -C AppDir/ .
+          ln -sr AppDir/usr/bin/tmodinstaller AppDir/tmodinstaller
+          tar czf tmodinstaller-linux-x86_64.tar.gz -C AppDir/ .
 
       - name: Build AppImage
         run: |
           echo '#!/bin/sh
           cd "$(dirname "$0")"
-          exec ./jellyflut' > AppDir/AppRun
+          exec ./tmodinstaller' > AppDir/AppRun
           chmod +x AppDir/AppRun
-          chmod +x AppDir/jellyflut
-          ln -sr AppDir/usr/share/icons/hicolor/256x256/apps/jellyflut.png AppDir/jellyflut.png
-          cp AppDir/usr/share/applications/jellyflut.desktop AppDir/jellyflut.desktop
+          chmod +x AppDir/tmodinstaller
+          cp AppDir/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png AppDir/tmodinstaller.png
+          cp AppDir/usr/share/applications/tmodinstaller.desktop AppDir/tmodinstaller.desktop
           curl -L https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -o appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
-          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ jellyflut-linux-x86_64.AppImage
+          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ tmodinstaller-linux-x86_64.AppImage
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           prerelease: false
-          files: jellyflut-linux-*
+          files: tmodinstaller-linux-*
           token: ${{ secrets.GITHUB_TOKEN }}
 
   # build_android:
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: test
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   needs: test
 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: subosito/flutter-action@v1
+  #       with:
+  #         channel: 'stable'
 
-      - run: echo $ANDROID_KEYS | base64 -d > android/app/key.jks
-        env:
-          ANDROID_KEYS: ${{ secrets.ANDROID_KEYS }}
+  #     - run: echo $ANDROID_KEYS | base64 -d > android/app/key.jks
+  #       env:
+  #         ANDROID_KEYS: ${{ secrets.ANDROID_KEYS }}
 
-      - run: flutter pub get
-      - run: flutter build apk --split-per-abi
-      - run: cp build/app/outputs/flutter-apk/app*.apk .
+  #     - run: flutter pub get
+  #     - run: flutter build apk --split-per-abi
+  #     - run: cp build/app/outputs/flutter-apk/app*.apk .
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          prerelease: false
-          files: |
-            app*.apk
-          token: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         draft: true
+  #         prerelease: false
+  #         files: |
+  #           app*.apk
+  #         token: ${{ secrets.GITHUB_TOKEN }}

@@ -5,18 +5,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
 @JsonSerializable()
-class Response {
-  final String id;
-  final Mod mods;
-  final DownloadMod downloads;
-
-  Response({required this.id, required this.mods, required this.downloads});
-  factory Response.fromJson(Map<String, dynamic> json) =>
-      _$ResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$ResponseToJson(this);
-}
-
-@JsonSerializable()
 class DownloadMod {
   final String mcversion;
   final String version;

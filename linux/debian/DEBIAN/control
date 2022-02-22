@@ -1,0 +1,9 @@
+Package: tmodinstaller
+Version: 1.1.60
+Section: base
+Priority: optional
+Homepage: https://github.com/Tricked-dev/tmodinstaller/
+Architecture: amd64
+Maintainer: Tricked-dev <tricked@tricked.pro>
+Description: tmodinstaller
+  A beautiful mod installer for minecraft supporting custom repositories and more.
