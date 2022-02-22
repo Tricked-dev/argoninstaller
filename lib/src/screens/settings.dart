@@ -57,63 +57,6 @@ class Settings extends StatelessWidget {
       header: const PageHeader(title: Text('Settings')),
       scrollController: controller,
       children: [
-        Text('Theme mode', style: FluentTheme.of(context).typography.subtitle),
-        spacer,
-        ...List.generate(ThemeMode.values.length, (index) {
-          final mode = ThemeMode.values[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: RadioButton(
-              checked: appTheme.mode == mode,
-              onChanged: (value) {
-                if (value) {
-                  appTheme.mode = mode;
-                }
-              },
-              content: Text('$mode'.replaceAll('ThemeMode.', '')),
-            ),
-          );
-        }),
-        biggerSpacer,
-        Text(
-          'Navigation Pane Display Mode',
-          style: FluentTheme.of(context).typography.subtitle,
-        ),
-        spacer,
-        ...List.generate(PaneDisplayMode.values.length, (index) {
-          final mode = PaneDisplayMode.values[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: RadioButton(
-              checked: appTheme.displayMode == mode,
-              onChanged: (value) {
-                if (value) appTheme.displayMode = mode;
-              },
-              content: Text(
-                mode.toString().replaceAll('PaneDisplayMode.', ''),
-              ),
-            ),
-          );
-        }),
-        biggerSpacer,
-        Text('Navigation Indicator',
-            style: FluentTheme.of(context).typography.subtitle),
-        spacer,
-        ...List.generate(NavigationIndicators.values.length, (index) {
-          final mode = NavigationIndicators.values[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: RadioButton(
-              checked: appTheme.indicator == mode,
-              onChanged: (value) {
-                if (value) appTheme.indicator = mode;
-              },
-              content: Text(
-                mode.toString().replaceAll('NavigationIndicators.', ''),
-              ),
-            ),
-          );
-        }),
         biggerSpacer,
         Text('Accent Color',
             style: FluentTheme.of(context).typography.subtitle),
@@ -133,60 +76,6 @@ class Settings extends StatelessWidget {
             );
           }),
         ]),
-        if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) ...[
-          biggerSpacer,
-          Text('Window Transparency',
-              style: FluentTheme.of(context).typography.subtitle),
-          spacer,
-          ...List.generate(flutter_acrylic.WindowEffect.values.length, (index) {
-            final mode = flutter_acrylic.WindowEffect.values[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: RadioButton(
-                checked: appTheme.acrylicEffect == mode,
-                onChanged: (value) {
-                  if (value) {
-                    appTheme.acrylicEffect = mode;
-                    flutter_acrylic.Window.setEffect(
-                      effect: mode,
-                      color: FluentTheme.of(context)
-                          .acrylicBackgroundColor
-                          .withOpacity(0.2),
-                      dark: FluentTheme.of(context).brightness.isDark,
-                    );
-                  }
-                },
-                content: Text(
-                  mode.toString().replaceAll('AcrylicEffect.', ''),
-                ),
-              ),
-            );
-          }),
-        ],
-        biggerSpacer,
-        Text('Text Direction',
-            style: FluentTheme.of(context).typography.subtitle),
-        spacer,
-        ...List.generate(TextDirection.values.length, (index) {
-          final direction = TextDirection.values[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: RadioButton(
-              checked: appTheme.textDirection == direction,
-              onChanged: (value) {
-                if (value) {
-                  appTheme.textDirection = direction;
-                }
-              },
-              content: Text(
-                '$direction'
-                    .replaceAll('TextDirection.', '')
-                    .replaceAll('rtl', 'Right to left')
-                    .replaceAll('ltr', 'Left to right'),
-              ),
-            ),
-          );
-        }).reversed,
       ],
     );
   }

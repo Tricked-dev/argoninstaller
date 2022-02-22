@@ -234,6 +234,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
             PaneItemSeparator(),
             PaneItem(
               icon: const Icon(FluentIcons.settings),
+              title: const Text('Settings'),
             ),
             // _LinkPaneItemAction(
             //   icon: const Icon(FluentIcons.open_source),
