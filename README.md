@@ -1,8 +1,10 @@
 # tmodinstaller
 
-A new Flutter project.
+discord: https://discord.gg/wU9kyjdJup
 
-## Getting Started
+A beautiful mod installer for minecraft supporting custom repositories and more.
+
+## Flutter guide - Contributing
 
 This project is a starting point for a Flutter application.
 
