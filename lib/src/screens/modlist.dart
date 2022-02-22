@@ -3,11 +3,13 @@
 // import 'package:tmodinstaller/utils.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-import 'models.dart';
+import '../models/models.dart';
 
 class ModListsPage extends StatefulWidget {
-  const ModListsPage({Key? key, required this.mods}) : super(key: key);
+  const ModListsPage({Key? key, required this.mods, required this.version})
+      : super(key: key);
   final List<Mod> mods;
+  final String version;
   @override
   State<ModListsPage> createState() => _ModLists();
 }
@@ -17,35 +19,16 @@ class _ModLists extends State<ModListsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Center(
-        child: ListView.builder(
-            //       children: <Widget>[
-            //   ...widget.mods.map(
-            //     (e) => Card(
-            //         child: Column(
-            //       children: <Widget>[
-            //         ListTile(
-            //           leading: Image.network(e.icon),
-            //           title: Text(e.display),
-            //           subtitle: Text(e.description),
-            //           onTap: () {
-            // showDialog(
-            //   context: context,
-            //   builder: (BuildContext context) =>
-            //       _buildPopupDialog(context, e),
-            // );
-            //           },
-            //         ),
-            //       ],
-            //     )),
-            //   )
-            // ]
-            itemCount: widget.mods.length,
-            itemBuilder: (context, index) {
-              var mod = widget.mods[index];
-              return TappableListTile(
-                  leading: Image.network(mod.icon),
+    return ScaffoldPage.scrollable(
+        header: PageHeader(title: Text('${widget.version} Mods')),
+        children: [
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.mods.length,
+              itemBuilder: (context, index) {
+                var mod = widget.mods[index];
+                return TappableListTile(
+                  // leading: Image.network(mod.icon),
                   title: Text(mod.display),
                   subtitle: Text(mod.description),
                   onTap: () {
@@ -55,19 +38,9 @@ class _ModLists extends State<ModListsPage> {
                           _buildPopupDialog(context, mod),
                     );
                   },
-                  // trailing: IconButton(
-                  //   // child: Text("Install"),
-                  //   icon: Icon(FluentIcons.installation),
-                  //   onPressed: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) =>
-                  //           _buildPopupDialog(context, mod),
-                  //     );
-                  //   },
-                  // ),
-                  isThreeLine: true);
-            }));
+                );
+              })
+        ]);
   }
 
   Widget _installer(BuildContext context, Mod mod, DownloadMod version) {

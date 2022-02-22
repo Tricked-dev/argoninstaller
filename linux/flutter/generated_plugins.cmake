@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_linux
   flutter_acrylic
   url_launcher_linux
+  window_manager
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

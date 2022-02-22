@@ -1,14 +1,12 @@
-// import 'package:flutter/material.dart';
-import 'package:tmodinstaller/models.dart';
+import 'package:tmodinstaller/src/models/models.dart';
+import 'package:tmodinstaller/src/screens/modlist.dart';
+import 'package:tmodinstaller/src/utils.dart';
 import 'package:tmodinstaller/theme.dart';
-import 'package:tmodinstaller/utils.dart';
-import 'modlist.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:localstore/localstore.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-// import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
@@ -214,7 +212,6 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
             PaneItemSeparator(),
             PaneItem(
               icon: const Icon(FluentIcons.settings),
-              title: const Text('Settings'),
             ),
             // _LinkPaneItemAction(
             //   icon: const Icon(FluentIcons.open_source),
@@ -233,6 +230,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
                       .where((x) => x.mcversion == version)
                       .isNotEmpty)
                 ],
+                version: version,
               ))
           // const InputsPage(),
           // const Forms(),
