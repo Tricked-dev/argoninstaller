@@ -1,5 +1,6 @@
 import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
+import 'package:tmodinstaller/src/screens/settings.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import 'package:tmodinstaller/theme.dart';
 import 'dart:convert';
@@ -11,10 +12,26 @@ import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  setPathUrlStrategy();
+
+  await flutter_acrylic.Window.initialize();
+  await WindowManager.instance.ensureInitialized();
+  windowManager.waitUntilReadyToShow().then((_) async {
+    // await windowManager.setTitleBarStyle('hidden');
+    // await windowManager.setSize(const Size(755, 545));
+    // await windowManager.setMinimumSize(const Size(755, 545));
+    await windowManager.center();
+    await windowManager.show();
+    await windowManager.setSkipTaskbar(false);
+  });
+
   await _TModInstallerPageState.fetchData();
+
   runApp(const TModInstallerApp());
 }
 
@@ -47,6 +64,12 @@ class TModInstallerApp extends StatelessWidget {
                 glowFactor: is10footScreen() ? 2.0 : 0.0,
               ),
             ),
+            builder: (context, child) {
+              return Directionality(
+                textDirection: appTheme.textDirection,
+                child: child!,
+              );
+            },
             home: const TModInstallerPage(title: 'Tricked mod Installer'),
           );
         });
@@ -64,9 +87,8 @@ class TModInstallerPage extends StatefulWidget {
 
 class _TModInstallerPageState extends State<TModInstallerPage> {
   final db = Localstore.instance;
+
   int index = 0;
-  // List<Mod> mods = [];
-  // List<DownloadMod> versions = [];
 
   final settingsController = ScrollController();
 
@@ -231,7 +253,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
                       .isNotEmpty)
                 ],
                 version: version,
-              ))
+              )),
           // const InputsPage(),
           // const Forms(),
           // const ColorsPage(),
@@ -239,7 +261,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
           // const TypographyPage(),
           // const Mobile(),
           // const Others(),
-          // Settings(controller: settingsController),
+          Settings(controller: settingsController),
         ]),
         // floatingActionButton: FloatingActionButton(
         //   onPressed: _incrementCounter,
