@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Tricked mod installer
+Icon=tmodinstaller
+Exec=tmodinstaller %u
+StartupWMClass=tmodinstaller
+Categories=Utility;
+Keywords=Tmodinstaller,modinstaller,mods,minecraft;
