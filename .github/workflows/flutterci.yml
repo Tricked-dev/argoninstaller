@@ -63,7 +63,7 @@ jobs:
       - run: choco install make -y
       - run: make innoinstall
       - run: make inno
-      - run: make choco
+      # - run: make choco
       - uses: actions/upload-artifact@v2
         with:
           name: Tmodinstaller-Windows-Bundle

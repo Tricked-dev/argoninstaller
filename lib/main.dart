@@ -3,6 +3,7 @@ import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/settings.dart';
+import 'package:tmodinstaller/src/screens/updater.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import 'package:tmodinstaller/theme.dart';
 import 'dart:convert';
@@ -280,14 +281,13 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
         footerItems: [
           PaneItemSeparator(),
           PaneItem(
+            icon: const Icon(FluentIcons.upload),
+            title: const Text('Updater'),
+          ),
+          PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
           ),
-          // _LinkPaneItemAction(
-          //   icon: const Icon(FluentIcons.open_source),
-          //   title: const Text('Source code'),
-          //   link: 'https://github.com/bdlukaa/fluent_ui',
-          // ),
         ],
       ),
 
@@ -301,20 +301,9 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
               ],
               version: version,
             )),
-        // const InputsPage(),
-        // const Forms(),
-        // const ColorsPage(),
-        // const IconsPage(),
-        // const TypographyPage(),
-        // const Mobile(),
-        // const Others(),
+        Updater(),
         Settings(controller: settingsController),
       ]),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }

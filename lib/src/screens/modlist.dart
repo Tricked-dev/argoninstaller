@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' as flutter;
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import '../models/models.dart';
@@ -37,18 +39,18 @@ class _ModLists extends State<ModListsPage> {
     return ScaffoldPage.scrollable(
         header: PageHeader(title: Text('${widget.version} Mods')),
         children: [
-          GridView.extent(
-            shrinkWrap: true,
-            maxCrossAxisExtent: 300,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
+          Column(
+            // shrinkWrap: true,
+            // maxCrossAxisExtent: 300,
+            // mainAxisSpacing: 10,
+            // crossAxisSpacing: 10,
 
-            // scrollDirection: Axis.vertical,
-            padding: EdgeInsets.only(
-              top: kPageDefaultVerticalPadding,
-              right: padding,
-              left: padding,
-            ),
+            // // scrollDirection: Axis.vertical,
+            // padding: EdgeInsets.only(
+            //   top: kPageDefaultVerticalPadding,
+            //   right: padding,
+            //   left: padding,
+            // ),
             children: [
               ...widget.mods.map((mod) {
                 final style = FluentTheme.of(context);
@@ -72,6 +74,7 @@ class _ModLists extends State<ModListsPage> {
                           color: _tileColor,
                         ),
                         child: Row(children: <Widget>[
+                          SizedBox(height: 100),
                           if (_icons)
                             Padding(
                                 padding: const EdgeInsets.only(right: 14),
@@ -93,7 +96,8 @@ class _ModLists extends State<ModListsPage> {
                                     ),
                                     overflow: TextOverflow.fade),
                                 DefaultTextStyle(
-                                  child: Text(mod.description),
+                                  child:
+                                      flutter.SelectableText(mod.description),
                                   style: const TextStyle(),
                                   overflow: TextOverflow.fade,
                                 ),
@@ -156,6 +160,7 @@ class _ModLists extends State<ModListsPage> {
     //   }
     // }
     File("${_directory}/${version.filename}").writeAsBytes(response.bodyBytes);
+
     // response.bodyBytes
   }
 
@@ -164,6 +169,10 @@ class _ModLists extends State<ModListsPage> {
       future: _install(version),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          var currentMods =
+              json.decode(Config.preferences?.getString("mods") ?? "{}");
+          currentMods[mod.id] = version.filename;
+          Config.preferences?.setString("mods", json.encode(currentMods));
           return ContentDialog(
             title: const Text("Mod installed!"),
             content:
