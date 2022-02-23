@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -12,6 +11,7 @@ import 'package:tmodinstaller/src/utils.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import '../../theme.dart';
+import 'package:http/http.dart' as http;
 
 class Updater extends StatefulWidget {
   const Updater({Key? key, this.controller}) : super(key: key);
@@ -26,6 +26,7 @@ class _UpdaterState extends State<Updater> {
   bool _icons = true;
   @override
   Widget build(BuildContext context) {
+    var updater_enabled = false;
     final padding = PageHeader.horizontalPadding(context);
     var dir = Config.preferences?.getString("modfolder");
     if (dir == null) {
@@ -43,9 +44,11 @@ class _UpdaterState extends State<Updater> {
         header: const PageHeader(title: Text('Updater')),
         scrollController: widget.controller,
         children: [
-          Center(
-            child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
-          ),
+          if (updater_enabled)
+            Center(
+              child:
+                  OutlinedButton(onPressed: () {}, child: Text("Update all")),
+            ),
           Column(
               // shrinkWrap: true,
               // maxCrossAxisExtent: 200,
@@ -130,7 +133,8 @@ class _UpdaterState extends State<Updater> {
                                       overflow: TextOverflow.fade),
                                   if (foundMod != null)
                                     DefaultTextStyle(
-                                      child: Text(foundMod!.description),
+                                      child: flutter.SelectableText(
+                                          foundMod!.description),
                                       style: const TextStyle(),
                                       overflow: TextOverflow.fade,
                                     ),
@@ -144,6 +148,63 @@ class _UpdaterState extends State<Updater> {
                                 ],
                               ),
                             ),
+                            Padding(
+                                padding: const EdgeInsets.only(right: 14),
+                                child: Row(
+                                  children: [
+                                    if (updater_enabled &&
+                                        foundMod != null &&
+                                        foundMod?.downloads[0].filename !=
+                                            basename(mod.path))
+                                      OutlinedButton(
+                                          child: Text("Update"),
+                                          onPressed: () async {
+                                            final response = await http.get(
+                                                Uri.parse(foundMod!
+                                                    .downloads[0].url));
+                                            // var hashdata = version.hash.split(";");
+                                            //TODO HASHING
+                                            // if (hashdata[0] == "sha1") {
+                                            //   var fileHash = sha1.convert(response.bodyBytes);
+                                            //   if (fileHash != hashdata[1]) {
+                                            //     throw ErrorHint("Hash does not match!");
+                                            //   }
+                                            // } else if (hashdata[0] == "sha256") {
+                                            //   var fileHash = sha256.convert(response.bodyBytes);
+                                            //   print("FILEHASH ${fileHash} DATA ${version.hash}");
+                                            //   if (fileHash != hashdata[1]) {
+                                            //     throw ErrorHint("Hash does not match!");
+                                            //   }
+                                            // } else if (hashdata[0] == "md5") {
+                                            //   var fileHash = md5.convert(response.bodyBytes);
+                                            //   if (fileHash != hashdata[1]) {
+                                            //     throw ErrorHint("Hash does not match!");
+                                            //   }
+                                            // }
+                                            File("${_directory}/${foundMod!.downloads[0].filename}")
+                                                .writeAsBytes(
+                                                    response.bodyBytes);
+                                            var currentMods = json.decode(Config
+                                                    .preferences
+                                                    ?.getString("mods") ??
+                                                "{}");
+                                            currentMods[foundMod!.id] =
+                                                foundMod!.downloads[0].filename;
+                                            Config.preferences?.setString(
+                                                "mods",
+                                                json.encode(currentMods));
+                                          }),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    OutlinedButton(
+                                        child: Text("Delete"),
+                                        onPressed: () async {
+                                          await mod.delete();
+                                          setState(() {});
+                                        })
+                                  ],
+                                )),
                           ]),
                         );
                       }),
