@@ -52,6 +52,8 @@ jobs:
   #         token: ${{ secrets.GITHUB_TOKEN }}
 
   build_windows:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -64,13 +66,29 @@ jobs:
       - run: make innoinstall
       - run: make inno
       # - run: make choco
-      - uses: actions/upload-artifact@v2
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: Tmodinstaller-Windows-Bundle
+      #     path: |
+      #       build/installer/TModInstaller-windows-x86_64-setup.exe
+      #       scripts/TModInstaller-windows-x86_64-setup.exe
+      #       scripts/TModInstaller-windows-x86_64-setup.exe.exe
+      #       build/tmodinstaller.*.nupkg
+      #       scripts/Output/TModInstaller-windows-x86_64-setup.exe.exe
+      #       scripts/Output/TModInstaller-windows-x86_64-setup.exe
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: Tmodinstaller-Windows-Bundle
-          path: |
-            build/installer/tmoadinstaller-windows-x86_64-setup.exe
+          draft: true
+          prerelease: false
+          files: |
+            build/installer/TModInstaller-windows-x86_64-setup.exe
+            scripts/TModInstaller-windows-x86_64-setup.exe
+            scripts/TModInstaller-windows-x86_64-setup.exe.exe
             build/tmodinstaller.*.nupkg
-
+            scripts/Output/TModInstaller-windows-x86_64-setup.exe.exe
+            scripts/Output/TModInstaller-windows-x86_64-setup.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
   build_linux:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: test
