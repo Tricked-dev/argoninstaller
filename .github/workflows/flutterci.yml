@@ -36,12 +36,12 @@ jobs:
   #     - run: flutter build windows --release
   #     # - run: cp windows/libs/sqlite3.dll build/windows/runner/Release/sqlite3.dll
 
-  #     - name: Create a windows app-bundle
-  #       uses: thedoctor0/zip-release@master
-  #       with:
-  #         type: 'zip'
-  #         path: 'build/windows/runner/Release'
-  #         filename: 'tmodinstaller-windows.zip'
+  # - name: Create a windows app-bundle
+  #   uses: thedoctor0/zip-release@master
+  #   with:
+  #     type: 'zip'
+  #     path: 'build/windows/runner/Release'
+  #     filename: 'tmodinstaller-windows.zip'
 
   #     - name: Release
   #       uses: softprops/action-gh-release@v1
@@ -65,17 +65,12 @@ jobs:
       - run: choco install make -y
       - run: make innoinstall
       - run: make inno
-      # - run: make choco
-      # - uses: actions/upload-artifact@v2
-      #   with:
-      #     name: Tmodinstaller-Windows-Bundle
-      #     path: |
-      #       build/installer/TModInstaller-windows-x86_64-setup.exe
-      #       scripts/TModInstaller-windows-x86_64-setup.exe
-      #       scripts/TModInstaller-windows-x86_64-setup.exe.exe
-      #       build/tmodinstaller.*.nupkg
-      #       scripts/Output/TModInstaller-windows-x86_64-setup.exe.exe
-      #       scripts/Output/TModInstaller-windows-x86_64-setup.exe
+      - name: Create a windows app-bundle
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          path: 'build/windows/runner/Release'
+          filename: 'TModInstaller-windows-x86_64.zip'
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -88,6 +83,7 @@ jobs:
             build/tmodinstaller.*.nupkg
             scripts/Output/TModInstaller-windows-x86_64-setup.exe.exe
             scripts/Output/TModInstaller-windows-x86_64-setup.exe
+            TModInstaller-windows-x86_64.zip
           token: ${{ secrets.GITHUB_TOKEN }}
   build_linux:
     if: startsWith(github.ref, 'refs/tags/v')
