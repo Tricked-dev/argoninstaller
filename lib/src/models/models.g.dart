@@ -1,11 +1,3 @@
-// TMOD Installer (c) by tricked
-// 
-// TMOD Installer is licensed under a
-// Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
-// You should have received a copy of the license along with this
-// work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'models.dart';
@@ -20,7 +12,6 @@ DownloadMod _$DownloadModFromJson(Map<String, dynamic> json) => DownloadMod(
       hash: json['hash'] as String,
       url: json['url'] as String,
       filename: json['filename'] as String,
-      id: json['id'] as String,
     );
 
 Map<String, dynamic> _$DownloadModToJson(DownloadMod instance) =>
@@ -30,7 +21,6 @@ Map<String, dynamic> _$DownloadModToJson(DownloadMod instance) =>
       'hash': instance.hash,
       'url': instance.url,
       'filename': instance.filename,
-      'id': instance.id,
     };
 
 Mod _$ModFromJson(Map<String, dynamic> json) => Mod(

@@ -1,8 +1,8 @@
 // TMOD Installer (c) by tricked
-// 
+//
 // TMOD Installer is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -19,14 +19,13 @@ class DownloadMod {
   final String hash;
   final String url;
   final String filename;
-  final String id;
-  DownloadMod(
-      {required this.mcversion,
-      required this.version,
-      required this.hash,
-      required this.url,
-      required this.filename,
-      required this.id});
+  DownloadMod({
+    required this.mcversion,
+    required this.version,
+    required this.hash,
+    required this.url,
+    required this.filename,
+  });
   factory DownloadMod.fromJson(Map<String, dynamic> json) =>
       _$DownloadModFromJson(json);
   Map<String, dynamic> toJson() => _$DownloadModToJson(this);
