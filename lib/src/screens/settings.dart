@@ -1,8 +1,8 @@
 // TMOD Installer (c) by tricked
-// 
+//
 // TMOD Installer is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -38,7 +38,6 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   // const Settings({Key? key, }) : super(key: key);
-  bool _checked = false;
   final _clearController = TextEditingController();
   String current = "";
   @override
@@ -59,11 +58,8 @@ class _SettingsState extends State<Settings> {
   String _modfolder = "";
   @override
   Widget build(BuildContext context) {
-    var icons = Config.preferences?.getBool("noicons");
     var modfolder = Config.preferences?.getString("modfolder");
-    if (icons != null && icons == true) {
-      _checked = true;
-    }
+
     final appTheme = context.watch<AppTheme>();
     final tooltipThemeData = TooltipThemeData(decoration: () {
       const radius = BorderRadius.zero;
@@ -154,14 +150,12 @@ class _SettingsState extends State<Settings> {
         Row(
           children: [
             Checkbox(
-              checked: _checked,
+              checked: !Config.icons,
               onChanged: (value) => setState(() {
-                if (value != null && value == true) {
-                  Config.preferences?.setBool("noicons", true);
-                  _checked = true;
+                if (value != null && value == false) {
+                  Config.icons = true;
                 } else {
-                  Config.preferences?.setBool("noicons", false);
-                  _checked = false;
+                  Config.icons = false;
                 }
               }),
             ),

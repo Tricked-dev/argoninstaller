@@ -1,8 +1,8 @@
 // TMOD Installer (c) by tricked
-// 
+//
 // TMOD Installer is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -13,6 +13,7 @@ import 'package:tmodinstaller/src/utils.dart';
 class Config {
   static SharedPreferences? preferences;
   static String _directory = "";
+  static bool _icons = true;
 
   static Future<void> initializePreference() async {
     preferences = await SharedPreferences.getInstance();
@@ -32,5 +33,14 @@ class Config {
 
   static String get directory {
     return _directory;
+  }
+
+  static set icons(bool v) {
+    Config.preferences?.setBool("icons", v);
+    _icons = v;
+  }
+
+  static bool get icons {
+    return _icons;
   }
 }

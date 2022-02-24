@@ -6,6 +6,7 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
+import 'package:args/args.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
@@ -24,7 +25,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-void main() async {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setPathUrlStrategy();
@@ -34,6 +35,12 @@ void main() async {
     _TModInstallerPageState.fetchData(),
     WindowManager.instance.ensureInitialized()
   ]);
+
+  var parser = ArgParser();
+  parser.addOption("moddir",
+      abbr: "d", callback: (v) => v != null ? Config.directory = v : null);
+  parser.addFlag("icon", abbr: "i", callback: (v) => Config.icons = v);
+  var result = parser.parse(args);
 
   // await WindowManager.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {

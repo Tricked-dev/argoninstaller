@@ -1,8 +1,8 @@
 // TMOD Installer (c) by tricked
-// 
+//
 // TMOD Installer is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -31,8 +31,6 @@ class Updater extends StatefulWidget {
 }
 
 class _UpdaterState extends State<Updater> {
-  String _directory = "";
-  bool _icons = true;
   @override
   Widget build(BuildContext context) {
     var updater_enabled = false;
@@ -66,10 +64,7 @@ class _UpdaterState extends State<Updater> {
               children: [
                 ...files.map((mod) {
                   final style = FluentTheme.of(context);
-                  var noicons = Config.preferences?.getBool("noicons");
-                  if (noicons != null && noicons == true) {
-                    _icons = false;
-                  }
+
                   Mod? foundMod;
                   DownloadMod? current;
                   DownloadMod? update;
@@ -131,7 +126,7 @@ class _UpdaterState extends State<Updater> {
 
                           child: Row(children: <Widget>[
                             SizedBox(height: 100),
-                            if (_icons && foundMod != null)
+                            if (Config.icons && foundMod != null)
                               Padding(
                                   padding: const EdgeInsets.only(right: 14),
                                   child: Image.network(

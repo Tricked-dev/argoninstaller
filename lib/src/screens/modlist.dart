@@ -1,8 +1,8 @@
 // TMOD Installer (c) by tricked
-// 
+//
 // TMOD Installer is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -28,16 +28,10 @@ class ModListsPage extends StatefulWidget {
 }
 
 class _ModLists extends State<ModListsPage> {
-  String selectedVersion = "unknown";
-  bool _icons = true;
   @override
   Widget build(BuildContext context) {
     final padding = PageHeader.horizontalPadding(context);
 
-    var noicons = Config.preferences?.getBool("noicons");
-    if (noicons != null && noicons == true) {
-      _icons = false;
-    }
     return ScaffoldPage.scrollable(
         header: PageHeader(title: Text('${widget.version} Mods')),
         children: [
@@ -66,7 +60,7 @@ class _ModLists extends State<ModListsPage> {
                         ),
                         child: Row(children: <Widget>[
                           SizedBox(height: 100),
-                          if (_icons)
+                          if (Config.icons)
                             Padding(
                                 padding: const EdgeInsets.only(right: 14),
                                 child: Image.network(
@@ -216,8 +210,8 @@ class _ModLists extends State<ModListsPage> {
               builder: (BuildContext context) => _installer(
                   context,
                   mod,
-                  mod.downloads
-                      .firstWhere((element) => element.url == selectedVersion)),
+                  mod.downloads.firstWhere(
+                      (element) => element.url == _selectedVersion)),
             );
           },
           child: const Text('Install'),
