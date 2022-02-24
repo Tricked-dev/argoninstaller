@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "tmodinstaller")
-set(APPLICATION_ID "com.example.tmodinstaller")
+set(APPLICATION_ID "pro.tricked.tmodinstaller")
 
 cmake_policy(SET CMP0063 NEW)
 

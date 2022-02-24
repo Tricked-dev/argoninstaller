@@ -1,3 +1,11 @@
+// TMOD Installer (c) by tricked
+// 
+// TMOD Installer is licensed under a
+// Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
+// 
+// You should have received a copy of the license along with this
+// work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
+
 // Microsoft Visual C++ generated resource script.
 //
 #pragma code_page(65001)
@@ -89,11 +97,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
+            VALUE "CompanyName", "pro.tricked" "\0"
             VALUE "FileDescription", "tmodinstaller" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "tmodinstaller" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 pro.tricked. All rights reserved." "\0"
             VALUE "OriginalFilename", "tmodinstaller.exe" "\0"
             VALUE "ProductName", "tmodinstaller" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
