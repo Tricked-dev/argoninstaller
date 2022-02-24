@@ -1,14 +1,13 @@
 # tmodinstaller
 
-discord: https://discord.gg/wU9kyjdJup
-
+discord: [here](https://discord.gg/wU9kyjdJup)
 A beautiful mod installer for minecraft supporting custom repositories and more.
 | Cool | Screenshots |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | Mod menu | ![image](https://user-images.githubusercontent.com/72335827/155349272-84136765-4d70-4a11-85d3-cd383158d301.png) |
 | Customizbility | ![image](https://user-images.githubusercontent.com/72335827/155349384-749991b6-6e8f-4c49-9e12-54c1f8b40dc0.png) |
-| Built in mod manager | ![image](https://user-images.githubusercontent.com/72335827/155349557-ea1c71a1-c358-41f7-9555-7825361e22da.png) |
-| FeatherClient mod support | ![image](https://user-images.githubusercontent.com/72335827/155349779-3d4825cb-b49b-4dc9-98a4-cfbe6f8c07fe.png) |
+| Built in mod manager and updater | ![image](https://user-images.githubusercontent.com/72335827/155349557-ea1c71a1-c358-41f7-9555-7825361e22da.png) |
+| Install FeatherClient mods | ![image](https://user-images.githubusercontent.com/72335827/155349779-3d4825cb-b49b-4dc9-98a4-cfbe6f8c07fe.png) |
 
 ## Flutter guide - Contributing
 

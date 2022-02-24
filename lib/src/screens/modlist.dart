@@ -22,16 +22,10 @@ class ModListsPage extends StatefulWidget {
 class _ModLists extends State<ModListsPage> {
   String selectedVersion = "unknown";
   bool _icons = true;
-  String _directory = "";
   @override
   Widget build(BuildContext context) {
     final padding = PageHeader.horizontalPadding(context);
-    var dir = Config.preferences?.getString("modfolder");
-    if (dir == null) {
-      _directory = defaultMinecraft[defaultTargetPlatform]!;
-    } else {
-      _directory = dir;
-    }
+
     var noicons = Config.preferences?.getBool("noicons");
     if (noicons != null && noicons == true) {
       _icons = false;
@@ -40,17 +34,6 @@ class _ModLists extends State<ModListsPage> {
         header: PageHeader(title: Text('${widget.version} Mods')),
         children: [
           Column(
-            // shrinkWrap: true,
-            // maxCrossAxisExtent: 300,
-            // mainAxisSpacing: 10,
-            // crossAxisSpacing: 10,
-
-            // // scrollDirection: Axis.vertical,
-            // padding: EdgeInsets.only(
-            //   top: kPageDefaultVerticalPadding,
-            //   right: padding,
-            //   left: padding,
-            // ),
             children: [
               ...widget.mods.map((mod) {
                 final style = FluentTheme.of(context);
@@ -110,69 +93,24 @@ class _ModLists extends State<ModListsPage> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
-                            _buildPopupDialog(context, mod),
+                        builder: (BuildContext context) => _buildPopupDialog(
+                            context,
+                            mod,
+                            mod.downloads.firstWhere((element) =>
+                                element.mcversion == widget.version)),
                       );
                     });
               })
             ],
-
-            // shrinkWrap: true,
-            // itemCount: widget.mods.length,
-            // itemBuilder: (context, index) {
-            //   var mod = widget.mods[index];
-            // return TappableListTile(
-            //     leading: _icons ? Image.network(mod.icon) : null,
-            //     title: Text(mod.display),
-            //     subtitle: Text(mod.description),
-            //     onTap: () {
-            // showDialog(
-            //   context: context,
-            //   builder: (BuildContext context) =>
-            //       _buildPopupDialog(context, mod),
-            // );
-            //     },
-            //   );
-            // })
           )
         ]);
   }
 
-  Future<void> _install(DownloadMod version) async {
-    final response = await http.get(Uri.parse(version.url));
-    // var hashdata = version.hash.split(";");
-    //TODO HASHING
-    // if (hashdata[0] == "sha1") {
-    //   var fileHash = sha1.convert(response.bodyBytes);
-    //   if (fileHash != hashdata[1]) {
-    //     throw ErrorHint("Hash does not match!");
-    //   }
-    // } else if (hashdata[0] == "sha256") {
-    //   var fileHash = sha256.convert(response.bodyBytes);
-    //   print("FILEHASH ${fileHash} DATA ${version.hash}");
-    //   if (fileHash != hashdata[1]) {
-    //     throw ErrorHint("Hash does not match!");
-    //   }
-    // } else if (hashdata[0] == "md5") {
-    //   var fileHash = md5.convert(response.bodyBytes);
-    //   if (fileHash != hashdata[1]) {
-    //     throw ErrorHint("Hash does not match!");
-    //   }
-    // }
-    File("${_directory}/${version.filename}").writeAsBytes(response.bodyBytes);
-
-    // response.bodyBytes
-  }
-
   Widget _installer(BuildContext context, Mod mod, DownloadMod version) {
     return FutureBuilder(
-      future: _install(version),
+      future: installMod(mod, version),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          var currentMods =
-              json.decode(Config.preferences?.getString("mods") ?? "{}");
-          currentMods[mod.id] = version.filename;
-          Config.preferences?.setString("mods", json.encode(currentMods));
           return ContentDialog(
             title: const Text("Mod installed!"),
             content:
@@ -211,7 +149,9 @@ class _ModLists extends State<ModListsPage> {
     );
   }
 
-  Widget _buildPopupDialog(BuildContext context, Mod mod) {
+  String _selectedVersion = "";
+
+  Widget _buildPopupDialog(BuildContext context, Mod mod, DownloadMod version) {
     var download = mod.downloads;
     if (download.isEmpty) {
       return ContentDialog(
@@ -239,29 +179,24 @@ class _ModLists extends State<ModListsPage> {
         ],
       );
     }
-    selectedVersion = "${download[0].url}";
+    _selectedVersion = version.url;
     return ContentDialog(
       title: Text('Install ${mod.display}'),
       content: SizedBox(
-          width: 200,
+          width: 300,
           // child: Center(
           child: Combobox<String>(
+            placeholder: Text('Select a version'),
+            isExpanded: true,
             items: [
-              ...download.map((value) {
-                return ComboboxItem<String>(
-                    value: "${value.url}",
-                    child: Text("${value.mcversion} v${value.version}"));
-              })
+              ...download.map((value) => ComboboxItem<String>(
+                  value: value.url,
+                  child: Text("${value.mcversion} v${value.version}")))
             ],
-            icon: const Icon(FluentIcons.azure_key_vault),
-            value: selectedVersion,
+            value: _selectedVersion,
             onChanged: (v) {
-              setState(() {
-                if (v != null) selectedVersion = v;
-              });
-              // print(v);
+              if (v != null) setState(() => _selectedVersion = v);
             },
-            // ),
           )),
       actions: <Widget>[
         // TextButton()
