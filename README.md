@@ -1,6 +1,17 @@
+<div align="center">
+
 # tmodinstaller
 
-discord: [here](https://discord.gg/wU9kyjdJup)
+</div>
+
+<div align="center">
+
+[![GitHub issues](https://img.shields.io/github/issues/Tricked-dev/tmodinstaller)](https://github.com/Tricked-dev/tmodinstaller/issues)[![GitHub license](https://img.shields.io/github/license/Tricked-dev/tmodinstaller)](https://github.com/Tricked-dev/tmodinstaller)![GitHub all releases](https://img.shields.io/github/downloads/tricked-dev/tmodinstaller/total)![Fluent Design](https://img.shields.io/badge/fluent-design-blue?color=7A7574&labelColor=0078D7)[![GitHub Sponsors](https://img.shields.io/github/sponsors/tricked-dev)](https://github.com/sponsors/Tricked-dev)[![Discord](https://img.shields.io/discord/945782183656833075)](https://discord.gg/wU9kyjdJup)
+
+</div>
+
+---
+
 A beautiful mod installer for minecraft supporting custom repositories and more.
 | Cool | Screenshots |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
