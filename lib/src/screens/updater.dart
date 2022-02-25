@@ -41,7 +41,6 @@ class _UpdaterState extends State<Updater> {
         .where((x) => x.statSync().type == FileSystemEntityType.file);
     Map<String, dynamic> currentMods =
         json.decode(Config.preferences?.getString("mods") ?? "{}");
-    // print(mods);
     return ScaffoldPage.scrollable(
         header: const PageHeader(title: Text('Updater')),
         scrollController: widget.controller,
@@ -49,160 +48,133 @@ class _UpdaterState extends State<Updater> {
           Center(
             child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
           ),
-          Column(
-              // shrinkWrap: true,
-              // maxCrossAxisExtent: 200,
-              // mainAxisSpacing: 10,
-              // crossAxisSpacing: 10,
+          Column(children: [
+            ...files.map((mod) {
+              final style = FluentTheme.of(context);
 
-              // // scrollDirection: Axis.vertical,
-              // padding: EdgeInsets.only(
-              //   top: kPageDefaultVerticalPadding,
-              //   right: padding,
-              //   left: padding,
-              // ),
-              children: [
-                ...files.map((mod) {
-                  final style = FluentTheme.of(context);
+              Mod? foundMod;
+              DownloadMod? current;
+              DownloadMod? update;
 
-                  Mod? foundMod;
-                  DownloadMod? current;
-                  DownloadMod? update;
-
-                  currentMods.forEach((modname, value) {
-                    if (value.runtimeType == String) return;
-                    var _foundMod = mods
-                        .firstWhereOrNull((element) => element.id == modname);
-                    value.forEach((_ver, value) {
-                      if (value != basename(mod.path)) return;
-                      if (_foundMod != null) {
-                        foundMod = _foundMod;
-                        var _update = _foundMod.downloads.firstWhereOrNull(
-                            (element) => element.mcversions.contains(_ver));
-                        if (_update != null) {
-                          current = _update;
-                          if (basename(mod.path).toLowerCase() !=
-                              _update.filename.toLowerCase()) {
-                            update = _update;
-                          }
-                        }
+              currentMods.forEach((modname, value) {
+                if (value.runtimeType == String) return;
+                var _foundMod =
+                    mods.firstWhereOrNull((element) => element.id == modname);
+                value.forEach((_ver, value) {
+                  if (value != basename(mod.path)) return;
+                  if (_foundMod != null) {
+                    foundMod = _foundMod;
+                    var _update = _foundMod.downloads.firstWhereOrNull(
+                        (element) => element.mcversions.contains(_ver));
+                    if (_update != null) {
+                      current = _update;
+                      if (basename(mod.path).toLowerCase() !=
+                          _update.filename.toLowerCase()) {
+                        update = _update;
                       }
-                    });
-                  });
-                  //TODO fix importing mods - if even possible
-                  // if (foundMod == null) {
-                  //   mods.forEach((modList) {
-                  //     modList.downloads.forEach((element) {
-                  //       if (element.filename == basename(mod.path)) {
-                  //         var currentMods = json.decode(
-                  //             Config.preferences?.getString("mods") ?? "{}");
-                  //         currentMods[modList.id] = element.filename;
-                  //         Config.preferences
-                  //             ?.setString("mods", json.encode(currentMods));
-                  //       }
-                  //     });
-                  //   });
-                  // }
+                    }
+                  }
+                });
+              });
 
-                  var tileColor;
-                  return HoverButton(
-                      autofocus: true,
-                      builder: ((p0, state) {
-                        final Color _tileColor = () {
-                          if (tileColor != null) {
-                            return tileColor!.resolve(state);
-                          } else if (state.isFocused) {
-                            return style.accentColor.resolve(context);
-                          }
-                          return ButtonThemeData.uncheckedInputColor(
-                              style, state);
-                        }();
-                        return Container(
-                          // color: _tileColor,
-                          decoration: ShapeDecoration(
-                            shape: const ContinuousRectangleBorder(),
-                            color: _tileColor,
+              var tileColor;
+              return HoverButton(
+                  autofocus: true,
+                  builder: ((p0, state) {
+                    final Color _tileColor = () {
+                      if (tileColor != null) {
+                        return tileColor!.resolve(state);
+                      } else if (state.isFocused) {
+                        return style.accentColor.resolve(context);
+                      }
+                      return ButtonThemeData.uncheckedInputColor(style, state);
+                    }();
+                    return Container(
+                      // color: _tileColor,
+                      decoration: ShapeDecoration(
+                        shape: const ContinuousRectangleBorder(),
+                        color: _tileColor,
+                      ),
+
+                      child: Row(children: <Widget>[
+                        SizedBox(height: 100),
+                        if (Config.icons && foundMod != null)
+                          Padding(
+                              padding: const EdgeInsets.only(right: 14),
+                              child: Image.network(
+                                foundMod!.icon,
+                                width: 128,
+                                height: 128,
+                              )),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DefaultTextStyle(
+                                  child: Text(foundMod == null
+                                      ? basename(mod.path)
+                                      : "${foundMod?.display} ${current?.version} - ${current?.mcversions[0]}"),
+                                  style: const TextStyle().copyWith(
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.fade),
+                              if (foundMod != null)
+                                DefaultTextStyle(
+                                  child: flutter.SelectableText(
+                                      foundMod!.description),
+                                  style: const TextStyle(),
+                                  overflow: TextOverflow.fade,
+                                ),
+                              if (foundMod == null)
+                                const DefaultTextStyle(
+                                  child: Text(
+                                      "Could not find the origin of this mod"),
+                                  style: const TextStyle(),
+                                  overflow: TextOverflow.fade,
+                                ),
+                            ],
                           ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(right: 14),
+                            child: Row(
+                              children: [
+                                if (update != null && foundMod != null)
+                                  OutlinedButton(
+                                      child: Text("Update"),
+                                      onPressed: () async {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _installer(context, foundMod!,
+                                                  update!, mod),
+                                        );
 
-                          child: Row(children: <Widget>[
-                            SizedBox(height: 100),
-                            if (Config.icons && foundMod != null)
-                              Padding(
-                                  padding: const EdgeInsets.only(right: 14),
-                                  child: Image.network(
-                                    foundMod!.icon,
-                                    width: 128,
-                                    height: 128,
-                                  )),
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  DefaultTextStyle(
-                                      child: Text(foundMod == null
-                                          ? basename(mod.path)
-                                          : "${foundMod?.display} ${current?.version} - ${current?.mcversions[0]}"),
-                                      style: const TextStyle().copyWith(
-                                        fontSize: 16,
-                                      ),
-                                      overflow: TextOverflow.fade),
-                                  if (foundMod != null)
-                                    DefaultTextStyle(
-                                      child: flutter.SelectableText(
-                                          foundMod!.description),
-                                      style: const TextStyle(),
-                                      overflow: TextOverflow.fade,
-                                    ),
-                                  if (foundMod == null)
-                                    const DefaultTextStyle(
-                                      child: Text(
-                                          "Could not find the origin of this mod"),
-                                      style: const TextStyle(),
-                                      overflow: TextOverflow.fade,
-                                    ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(right: 14),
-                                child: Row(
-                                  children: [
-                                    if (update != null && foundMod != null)
-                                      OutlinedButton(
-                                          child: Text("Update"),
-                                          onPressed: () async {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  _installer(context, foundMod!,
-                                                      update!, mod),
-                                            );
+                                        // await installMod(
+                                        //     foundMod!, update!);
+                                        // await mod.delete();
+                                        setState(() {});
+                                      }),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                OutlinedButton(
+                                    child: Text("Delete"),
+                                    onPressed: () async {
+                                      await mod.delete();
 
-                                            // await installMod(
-                                            //     foundMod!, update!);
-                                            // await mod.delete();
-                                            setState(() {});
-                                          }),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    OutlinedButton(
-                                        child: Text("Delete"),
-                                        onPressed: () async {
-                                          await mod.delete();
-
-                                          setState(() {});
-                                        })
-                                  ],
-                                )),
-                          ]),
-                        );
-                      }),
-                      onPressed: () {});
-                })
-              ])
+                                      setState(() {});
+                                    })
+                              ],
+                            )),
+                      ]),
+                    );
+                  }),
+                  onPressed: () {});
+            })
+          ])
         ]);
   }
 

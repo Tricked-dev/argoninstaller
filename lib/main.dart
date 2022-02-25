@@ -136,7 +136,12 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       var repos = Config.preferences?.getStringList("repos");
       if (repos != null) {
         for (var repo in repos) {
-          final res = await http.get(Uri.parse(repo.trim()));
+          var trimmed = repo.trim();
+          //Prevent leading commas from erroring shit
+          if (trimmed == "") continue;
+          final res = await http.get(Uri.parse(trimmed.startsWith("http")
+              ? trimmed
+              : "https://tmod.deno.dev/$trimmed.json"));
           var data = json.decode(res.body);
 
           mods = [

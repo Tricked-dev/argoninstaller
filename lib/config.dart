@@ -14,6 +14,7 @@ class Config {
   static SharedPreferences? preferences;
   static String _directory = "";
   static bool _icons = true;
+  static bool _newMenu = true;
 
   static Future<void> initializePreference() async {
     preferences = await SharedPreferences.getInstance();
@@ -24,6 +25,8 @@ class Config {
     } else {
       _directory = dir;
     }
+    _newMenu = preferences?.getBool("new_menu") ?? true;
+    _icons = preferences?.getBool("icons") ?? true;
   }
 
   static set directory(String v) {
@@ -42,5 +45,14 @@ class Config {
 
   static bool get icons {
     return _icons;
+  }
+
+  static set newMenu(bool v) {
+    Config.preferences?.setBool("new_menu", v);
+    _newMenu = v;
+  }
+
+  static bool get newMenu {
+    return _newMenu;
   }
 }

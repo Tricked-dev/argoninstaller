@@ -29,10 +29,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  # cupertino_icons: ^1.0.2
   http: ^0.13.4
   json_annotation: ^4.4.0
-  json_model: ^1.0.0
+  # json_model: ^1.0.0
   fluent_ui:
     git: https://github.com/bdlukaa/fluent_ui.git
   system_theme: ^1.0.1
@@ -45,12 +45,14 @@ dependencies:
   filesystem_picker: ^2.0.0
   flutter_svg: ^1.0.3
   args: ^2.3.0
+  flutter_markdown: ^0.6.9
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  # flutter_test:
+  #   sdk: flutter
   build_runner: ^2.0.0
   json_serializable: ^6.0.0
+  dependency_validator: ^3.0.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

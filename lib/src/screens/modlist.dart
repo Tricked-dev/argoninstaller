@@ -11,6 +11,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:tmodinstaller/config.dart';
+import 'package:tmodinstaller/src/screens/mod.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import '../models/models.dart';
 import 'package:http/http.dart' as http;
@@ -93,14 +94,27 @@ class _ModLists extends State<ModListsPage> {
                       );
                     }),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => _buildPopupDialog(
-                            context,
-                            mod,
-                            mod.downloads.firstWhere((element) =>
-                                element.mcversions.contains(widget.version))),
-                      );
+                      if (Config.preferences?.getBool("new_menu") == true) {
+                        Navigator.push(
+                          context,
+                          FluentPageRoute(
+                              builder: (context) => ModScreen(
+                                  mod: mod,
+                                  modver: mod.downloads.firstWhere((element) =>
+                                      element.mcversions
+                                          .contains(widget.version)))),
+                        );
+                      }
+                      if (Config.preferences?.getBool("new_menu") != true) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => _buildPopupDialog(
+                              context,
+                              mod,
+                              mod.downloads.firstWhere((element) =>
+                                  element.mcversions.contains(widget.version))),
+                        );
+                      }
                     });
               })
             ],
