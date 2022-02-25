@@ -19,10 +19,12 @@ TMod Installer is a cross platform mod installer and updater you can use it with
 
 | Cool | Screenshots |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Mod menu | ![image](https://user-images.githubusercontent.com/72335827/155805623-e1c6c63c-a730-45ca-84e1-07fb0ba0941c.png) |
+| Mod menu | ![image](https://user-images.githubusercontent.com/72335827/155814614-b46c5127-e972-405f-b512-b7cbd0ef7857.png) |
 | Customizbility | ![image](https://user-images.githubusercontent.com/72335827/155805773-a2813b98-f1dd-4953-9be3-d4f3d7dd36e6.png) |
 | Built in mod manager and updater | ![image](https://user-images.githubusercontent.com/72335827/155349557-ea1c71a1-c358-41f7-9555-7825361e22da.png) |
+| Inspect mods | ![image](https://user-images.githubusercontent.com/72335827/155814688-645ca0c1-5d8e-463e-bd8d-4fae8cc005fc.png) |
 | You can install featherclient mods without featherclient! | ![image](https://user-images.githubusercontent.com/72335827/155349779-3d4825cb-b49b-4dc9-98a4-cfbe6f8c07fe.png) |
+
 
 ## Flutter guide - Contributing
 
