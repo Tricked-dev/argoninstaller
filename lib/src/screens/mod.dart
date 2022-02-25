@@ -27,6 +27,7 @@ import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../theme.dart';
 import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
@@ -45,6 +46,22 @@ class ModScreen extends StatefulWidget {
 class _ModScreenState extends State<ModScreen> {
   @override
   Widget build(BuildContext context) {
+    //Avoid mutating the map.
+    Map<String, String> meta = Map.from(widget.mod.meta);
+    meta.remove("body_url");
+    var r = meta.entries.map(
+      (e) {
+        if (e.value.startsWith("http")) {
+          return flutter.OutlinedButton(
+              onPressed: () async {
+                await launch(e.value);
+              },
+              child: Text(e.key));
+        }
+
+        return Text("${e.key}: ${e.value}");
+      },
+    );
     return ScaffoldPage.scrollable(
         header: const PageHeader(title: Text('Mod Downloader')),
         scrollController: widget.controller,
@@ -111,31 +128,36 @@ class _ModScreenState extends State<ModScreen> {
                     flex: 1,
                     child: Column(
                       children: <Widget>[
-                        FilledButton(
-                            child: Text("Return"),
+                        ...[
+                          ...r,
+                          FilledButton(
+                            child: const Text("Install Mod"),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                            }),
-                        FilledButton(
-                          child: Text("Install Mod"),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  _buildPopupDialog(
-                                      context, widget.mod, widget.modver),
-                            );
-                          },
-                          onLongPress: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => _installer(
-                                  context, widget.mod, widget.modver),
-                            );
-                          },
-                        )
-                        // Text(
-                        //     "This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is ")
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    _buildPopupDialog(
+                                        context, widget.mod, widget.modver),
+                              );
+                            },
+                            onLongPress: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => _installer(
+                                    context, widget.mod, widget.modver),
+                              );
+                            },
+                          ),
+                          FilledButton(
+                              child: const Text("Return"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }),
+
+                          // Text(
+                          //     "This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is This is a long text this is a long test this is ")
+                        ].map((x) => Padding(
+                            padding: const EdgeInsets.all(8.0), child: x))
                       ],
                     ),
                   )
@@ -208,7 +230,7 @@ class _ModScreenState extends State<ModScreen> {
     }
     if (mod.id == "INVALID") {
       return ContentDialog(
-        title: Text("You cant install this"),
+        title: const Text("You cant install this"),
         actions: <Widget>[
           FilledButton(
             onPressed: () {
