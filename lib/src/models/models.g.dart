@@ -7,7 +7,9 @@ part of 'models.dart';
 // **************************************************************************
 
 DownloadMod _$DownloadModFromJson(Map<String, dynamic> json) => DownloadMod(
-      mcversion: json['mcversion'] as String,
+      mcversions: (json['mcversions'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       version: json['version'] as String,
       hash: json['hash'] as String,
       url: json['url'] as String,
@@ -16,7 +18,7 @@ DownloadMod _$DownloadModFromJson(Map<String, dynamic> json) => DownloadMod(
 
 Map<String, dynamic> _$DownloadModToJson(DownloadMod instance) =>
     <String, dynamic>{
-      'mcversion': instance.mcversion,
+      'mcversions': instance.mcversions,
       'version': instance.version,
       'hash': instance.hash,
       'url': instance.url,

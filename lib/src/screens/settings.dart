@@ -44,7 +44,6 @@ class _SettingsState extends State<Settings> {
   void initState() {
     super.initState();
     _clearController.addListener(() {
-      print(_clearController.value);
       if (_clearController.text.length == 1 && mounted) setState(() {});
     });
   }
@@ -116,7 +115,7 @@ class _SettingsState extends State<Settings> {
         biggerSpacer,
         Text("Mod repo's", style: FluentTheme.of(context).typography.subtitle),
         const flutter.SelectableText(
-          "Repos are split by ',' the default repos are https://tmod.deno.dev/skyclient.json,https://tmod.deno.dev/feather.json\nA restart is required after updating the repos",
+          "Repos are split by ',' the default repos are https://tmod.deno.dev/std.json,https://tmod.deno.dev/skyclient.json,https://tmod.deno.dev/feather.json\nA restart is required after updating the repos",
         ),
         spacer,
         TextBox(
@@ -133,7 +132,6 @@ class _SettingsState extends State<Settings> {
           suffix: IconButton(
             icon: const Icon(FluentIcons.add_to),
             onPressed: () {
-              print(current);
               Config.preferences?.setStringList("repos", current.split(","));
 
               // _clearController.clear();

@@ -14,13 +14,13 @@ part 'models.g.dart';
 
 @JsonSerializable()
 class DownloadMod {
-  final String mcversion;
+  final List<String> mcversions;
   final String version;
   final String hash;
   final String url;
   final String filename;
   DownloadMod({
-    required this.mcversion,
+    required this.mcversions,
     required this.version,
     required this.hash,
     required this.url,

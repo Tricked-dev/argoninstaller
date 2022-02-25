@@ -1,8 +1,8 @@
 // TMOD Installer (c) by tricked
-// 
+//
 // TMOD Installer is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -49,6 +49,6 @@ Future<void> installMod(Mod mod, DownloadMod version) async {
 
   var currentMods = json.decode(Config.preferences?.getString("mods") ?? "{}");
   currentMods[mod.id] = Map();
-  currentMods[mod.id][version.mcversion] = version.filename;
+  currentMods[mod.id][version.mcversions[0]] = version.filename;
   Config.preferences?.setString("mods", json.encode(currentMods));
 }

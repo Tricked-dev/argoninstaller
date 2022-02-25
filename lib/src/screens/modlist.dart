@@ -99,7 +99,7 @@ class _ModLists extends State<ModListsPage> {
                             context,
                             mod,
                             mod.downloads.firstWhere((element) =>
-                                element.mcversion == widget.version)),
+                                element.mcversions.contains(widget.version))),
                       );
                     });
               })
@@ -193,7 +193,7 @@ class _ModLists extends State<ModListsPage> {
             items: [
               ...download.map((value) => ComboboxItem<String>(
                   value: value.url,
-                  child: Text("${value.mcversion} v${value.version}")))
+                  child: Text("${widget.version} v${value.version}")))
             ],
             value: _selectedVersion,
             onChanged: (v) {

@@ -78,7 +78,7 @@ class _UpdaterState extends State<Updater> {
                       if (_foundMod != null) {
                         foundMod = _foundMod;
                         var _update = _foundMod.downloads.firstWhereOrNull(
-                            (element) => element.mcversion == _ver);
+                            (element) => element.mcversions.contains(_ver));
                         if (_update != null) {
                           current = _update;
                           if (basename(mod.path).toLowerCase() !=
@@ -143,7 +143,7 @@ class _UpdaterState extends State<Updater> {
                                   DefaultTextStyle(
                                       child: Text(foundMod == null
                                           ? basename(mod.path)
-                                          : "${foundMod?.display} ${current?.version} - ${current?.mcversion}"),
+                                          : "${foundMod?.display} ${current?.version} - ${current?.mcversions[0]}"),
                                       style: const TextStyle().copyWith(
                                         fontSize: 16,
                                       ),

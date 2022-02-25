@@ -143,24 +143,34 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
             ...mods,
             ...data["mods"].map((x) {
               x["repo"] = data["id"];
+              x["meta"].removeWhere((k, v) => v == null);
+              if (x["icon"] == null)
+                x["icon"] =
+                    "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
+
               return Mod.fromJson(x);
             })
           ];
         }
       } else {
         final response =
-            await http.get(Uri.parse('https://tmod.deno.dev/skyclient.json'));
+            await http.get(Uri.parse('https://tmod.deno.dev/std.json'));
         var data = json.decode(response.body);
 
         mods = [
           ...mods,
           ...data["mods"].map((x) {
             x["repo"] = data["id"];
+            x["meta"].removeWhere((k, v) => v == null);
+            if (x["icon"] == null)
+              x["icon"] =
+                  "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
             return Mod.fromJson(x);
           })
         ];
       }
     } catch (_) {
+      print(_);
       mods = [
         Mod(
             categories: [],
@@ -172,7 +182,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
             downloads: [
               DownloadMod(
                   filename: "INVALID",
-                  mcversion: "0.0.0",
+                  mcversions: ["0.0.0"],
                   version: "0.0.0",
                   hash: "sha1;null",
                   url: "")
@@ -190,28 +200,45 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
   @override
   Widget build(BuildContext context) {
     final appTheme = context.watch<AppTheme>();
-
-    List<String> versions = Set.of(mods
-        .map((x) => x.downloads.map((x) => x.mcversion))
-        .expand((i) => i)).toList();
-
-    // snapshot.data.
-    // // print(mods);
-    // // print(versions);
+    final List<String> lastversions = [
+      "1.8.9",
+      "1.12.2",
+      "1.17.1",
+      "1.14.4",
+      "1.16.5"
+    ];
+    List<String> versions = Set.of(Set.of(mods
+        .map((x) => x.downloads.map((x) => x.mcversions))
+        .expand((i) => i)).expand((i) => i)).where((element) {
+      if (element.contains("w") ||
+          element.contains("pre") ||
+          element.contains("rc")) return false;
+      var ver = element.split("-")[0];
+      var t = ver.split(".");
+      t.removeLast();
+      //Removes single versions 1.18
+      if (t.length == 1) return false;
+      //Allows versions that aren't on the list - future proving
+      if (lastversions.every((x) => x.contains(t.join(".")))) return true;
+      //Remove versions that aren't the latest
+      if (!lastversions.contains(ver)) return false;
+      //This version is included in [`lastversions`]
+      return true;
+    }).toList();
     return NavigationView(
       appBar: NavigationAppBar(
         title: () {
           // return const DragToMoveArea(
           //   child: Align(
           //     alignment: AlignmentDirectional.centerStart,
-          //     child: Text("a"),
+          //     child: Text("TMOD Installer"),
           //   ),
           // );
         }(),
         // actions: DragToMoveArea(
         //   child: Row(
         //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     // children: const [Spacer(), WindowButtons()],
+        //     children: const [Spacer(), Text("")],
         //   ),
         // ),
       ),
@@ -231,7 +258,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
             //   size: 100,
             // ),
             ),
-        // displayMode: appTheme.displayMode,
+        displayMode: appTheme.displayMode,
         // indicatorBuilder: () {
         //   switch (appTheme.indicator) {
         //     case NavigationIndicators.end:
@@ -310,8 +337,9 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       content: NavigationBody(index: index, children: [
         ...versions.map((version) => ModListsPage(
               mods: [
-                ...mods.where((x) =>
-                    x.downloads.where((x) => x.mcversion == version).isNotEmpty)
+                ...mods.where((x) => x.downloads
+                    .where((x) => x.mcversions.contains(version))
+                    .isNotEmpty)
               ],
               version: version,
             )),
