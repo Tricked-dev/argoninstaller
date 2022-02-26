@@ -132,6 +132,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
   }
 
   static Future<void> fetchData() async {
+    //TODO save mods somewhere for offline
     try {
       var repos = Config.preferences?.getStringList("repos");
       if (repos != null) {

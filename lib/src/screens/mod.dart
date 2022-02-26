@@ -73,6 +73,7 @@ class _ModScreenState extends State<ModScreen> {
                   Expanded(
                     flex: 2,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Row(
@@ -86,16 +87,21 @@ class _ModScreenState extends State<ModScreen> {
                                     height: 128,
                                   )),
                             Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 DefaultTextStyle(
-                                  child: Text(
+                                  child: SelectableText(
                                     widget.mod.display,
                                   ),
                                   style: const TextStyle().copyWith(
                                     fontSize: 16,
                                   ),
                                 ),
-                                Text(widget.mod.description)
+                                SizedBox(
+                                  width: 500,
+                                  child: SelectableText(widget.mod.description),
+                                )
                               ],
                             ),
                           ],
@@ -107,18 +113,29 @@ class _ModScreenState extends State<ModScreen> {
                               builder: ((context, snapshot) {
                                 if (snapshot.error != null) {
                                   return Text(
-                                      "Error fetching data ${snapshot.error}");
+                                      "Error fetching Description ${snapshot.error}");
                                 }
                                 if (!snapshot.hasData) {
                                   return const Text("Description loading....");
                                 }
-
                                 return SizedBox(
                                     height: 600,
-                                    // width: 500,
                                     child: Markdown(
                                       data: snapshot.data!.body,
                                       selectable: true,
+                                      onTapLink: (name, link, __) async {
+                                        if (link == null) return;
+                                        await launch(link);
+                                      },
+                                      extensionSet: md.ExtensionSet(
+                                        md.ExtensionSet.gitHubFlavored
+                                            .blockSyntaxes,
+                                        [
+                                          md.EmojiSyntax(),
+                                          ...md.ExtensionSet.gitHubFlavored
+                                              .inlineSyntaxes
+                                        ],
+                                      ),
                                     ));
                               }))
                       ],
@@ -127,6 +144,8 @@ class _ModScreenState extends State<ModScreen> {
                   Expanded(
                     flex: 1,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         ...[
                           ...r,
