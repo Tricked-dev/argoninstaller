@@ -13,6 +13,7 @@ import 'package:flutter/material.dart' as flutter;
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:tmodinstaller/config.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import '../../theme.dart';
 
@@ -219,6 +220,30 @@ class _SettingsState extends State<Settings> {
             },
           ),
         ),
+        biggerSpacer,
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(right: 4),
+              child: FilledButton(
+                child: const Text("Discord"),
+                onPressed: () async => launch("https://discord.gg/wU9kyjdJup"),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 4),
+              child: FilledButton(
+                child: const Text("Github"),
+                onPressed: () async =>
+                    launch("https://github.com/Tricked-dev/tmodinstaller"),
+              ),
+            )
+          ],
+        ),
+        spacer,
+        const Text(
+            "TMod Installer created by Tricked-dev licensed under: Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License."),
+
         // OutlinedButton(
         //   child: Text("Change folder!"),
         //   onPressed: () async {
