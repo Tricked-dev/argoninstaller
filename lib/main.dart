@@ -6,13 +6,17 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
+import 'dart:io';
+
 import 'package:args/args.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/settings.dart';
 import 'package:tmodinstaller/src/screens/updater.dart';
+import 'package:tmodinstaller/src/screens/version.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import 'package:tmodinstaller/theme.dart';
 import 'dart:convert';
@@ -40,7 +44,11 @@ void main(List<String> args) async {
   parser.addOption("moddir",
       abbr: "d", callback: (v) => v != null ? Config.directory = v : null);
   parser.addFlag("icon", abbr: "i", callback: (v) => Config.icons = v);
-  var result = parser.parse(args);
+  parser.addOption("appdir",
+      abbr: "a", callback: (v) => v != null ? Config.appDir = v : null);
+  parser.parse(args);
+
+  await Config.initDb();
 
   // await WindowManager.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {
@@ -341,7 +349,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       // appBar: NavigationAppBar(title: Text("Fluent Design App Bar")),
       // content: comp,
       content: NavigationBody(index: index, children: [
-        ...versions.map((version) => ModListsPage(
+        ...versions.map((version) => VersionPage(
               mods: [
                 ...mods.where((x) => x.downloads
                     .where((x) => x.mcversions.contains(version))

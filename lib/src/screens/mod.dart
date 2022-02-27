@@ -34,10 +34,15 @@ import 'package:collection/collection.dart';
 
 class ModScreen extends StatefulWidget {
   ModScreen(
-      {Key? key, this.controller, required this.mod, required this.modver})
+      {Key? key,
+      this.controller,
+      required this.mod,
+      required this.modver,
+      required this.mcv})
       : super(key: key);
   Mod mod;
   DownloadMod modver;
+  String mcv;
   final ScrollController? controller;
   @override
   _ModScreenState createState() => _ModScreenState();
@@ -189,7 +194,7 @@ class _ModScreenState extends State<ModScreen> {
 
   Widget _installer(BuildContext context, Mod mod, DownloadMod version) {
     return FutureBuilder(
-      future: installMod(mod, version),
+      future: installMod(mod, version, widget.mcv),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return ContentDialog(

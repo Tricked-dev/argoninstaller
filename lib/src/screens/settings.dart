@@ -160,25 +160,6 @@ class _SettingsState extends State<Settings> {
             ),
           ],
         ),
-        biggerSpacer,
-        Text("New mod download screen",
-            style: FluentTheme.of(context).typography.subtitle),
-
-        spacer,
-        Row(
-          children: [
-            Checkbox(
-              checked: Config.newMenu,
-              onChanged: (value) => setState(() {
-                if (value != null && value == false) {
-                  Config.newMenu = false;
-                } else {
-                  Config.newMenu = true;
-                }
-              }),
-            ),
-          ],
-        ),
 
         biggerSpacer,
         Text("Mod folder", style: FluentTheme.of(context).typography.subtitle),

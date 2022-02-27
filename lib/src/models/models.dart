@@ -8,6 +8,7 @@
 
 /// DATA MODEL INSPIRED BY: https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/mods.json
 ///
+import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
@@ -68,4 +69,17 @@ class Mod {
 
   factory Mod.fromJson(Map<String, dynamic> json) => _$ModFromJson(json);
   Map<String, dynamic> toJson() => _$ModToJson(this);
+}
+
+@Collection()
+class InstalledMod {
+  @Id()
+  int? id;
+  late String modId;
+  late List<String> mcversions;
+  late String version;
+  late String filename;
+  late String url;
+  late String repo;
+  late String mcv;
 }

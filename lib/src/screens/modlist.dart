@@ -94,149 +94,20 @@ class _ModLists extends State<ModListsPage> {
                       );
                     }),
                     onPressed: () {
-                      if (Config.preferences?.getBool("new_menu") == true) {
-                        Navigator.push(
-                          context,
-                          FluentPageRoute(
-                              builder: (context) => ModScreen(
-                                  mod: mod,
-                                  modver: mod.downloads.firstWhere((element) =>
-                                      element.mcversions
-                                          .contains(widget.version)))),
-                        );
-                      }
-                      if (Config.preferences?.getBool("new_menu") != true) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => _buildPopupDialog(
-                              context,
-                              mod,
-                              mod.downloads.firstWhere((element) =>
-                                  element.mcversions.contains(widget.version))),
-                        );
-                      }
+                      Navigator.push(
+                        context,
+                        FluentPageRoute(
+                            builder: (context) => ModScreen(
+                                mcv: widget.version,
+                                mod: mod,
+                                modver: mod.downloads.firstWhere((element) =>
+                                    element.mcversions
+                                        .contains(widget.version)))),
+                      );
                     });
               })
             ],
           )
         ]);
-  }
-
-  Widget _installer(BuildContext context, Mod mod, DownloadMod version) {
-    return FutureBuilder(
-      future: installMod(mod, version),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return ContentDialog(
-            title: const Text("Mod installed!"),
-            content:
-                const Text("Succesfully installed the mod - press esc to exit"),
-            actions: <Widget>[
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        }
-        if (snapshot.hasError) {
-          return ContentDialog(
-            title: Text(
-                "Failed to install mod, this is likely due to a hash mismatch"),
-            actions: <Widget>[
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        }
-        return ContentDialog(
-          title: Text('Installing ${mod.display} ${version.version}'),
-          content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [const ProgressBar()]),
-        );
-      },
-    );
-  }
-
-  String _selectedVersion = "";
-
-  Widget _buildPopupDialog(BuildContext context, Mod mod, DownloadMod version) {
-    var download = mod.downloads;
-    if (download.isEmpty) {
-      return ContentDialog(
-        title: Text("No mods found weird.."),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Close'),
-          ),
-        ],
-      );
-    }
-    if (mod.id == "INVALID") {
-      return ContentDialog(
-        title: Text("You cant install this"),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Close'),
-          ),
-        ],
-      );
-    }
-    _selectedVersion = version.url;
-    return ContentDialog(
-      title: Text('Install ${mod.display}'),
-      content: SizedBox(
-          width: 300,
-          // child: Center(
-          child: Combobox<String>(
-            placeholder: Text('Select a version'),
-            isExpanded: true,
-            items: [
-              ...download.map((value) => ComboboxItem<String>(
-                  value: value.url,
-                  child: Text("${widget.version} v${value.version}")))
-            ],
-            value: _selectedVersion,
-            onChanged: (v) {
-              if (v != null) setState(() => _selectedVersion = v);
-            },
-          )),
-      actions: <Widget>[
-        // TextButton()
-        FilledButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => _installer(
-                  context,
-                  mod,
-                  mod.downloads.firstWhere(
-                      (element) => element.url == _selectedVersion)),
-            );
-          },
-          child: const Text('Install'),
-        ),
-        FilledButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Close'),
-        ),
-      ],
-    );
   }
 }

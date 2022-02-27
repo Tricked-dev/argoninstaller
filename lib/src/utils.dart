@@ -23,32 +23,26 @@ Map<TargetPlatform, String> defaultMinecraft = {
   TargetPlatform.windows: "${Platform.environment['APPDATA']}\\.minecraft\\mods"
 };
 
-Future<void> installMod(Mod mod, DownloadMod version) async {
+Map<TargetPlatform, String> defaultDirectories = {
+  TargetPlatform.linux: "${Platform.environment['HOME']}/.config/tmodinstaller",
+};
+
+Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
   final response = await http.get(Uri.parse(version.url));
-  // var hashdata = version.hash.split(";");
-  //TODO HASHING
-  // if (hashdata[0] == "sha1") {
-  //   var fileHash = sha1.convert(response.bodyBytes);
-  //   if (fileHash != hashdata[1]) {
-  //     throw ErrorHint("Hash does not match!");
-  //   }
-  // } else if (hashdata[0] == "sha256") {
-  //   var fileHash = sha256.convert(response.bodyBytes);
-  //   print("FILEHASH ${fileHash} DATA ${version.hash}");
-  //   if (fileHash != hashdata[1]) {
-  //     throw ErrorHint("Hash does not match!");
-  //   }
-  // } else if (hashdata[0] == "md5") {
-  //   var fileHash = md5.convert(response.bodyBytes);
-  //   if (fileHash != hashdata[1]) {
-  //     throw ErrorHint("Hash does not match!");
-  //   }
-  // }
-  File("${Config.directory}/${version.filename}")
+  //TODO: Hashing!
+  await Directory("${Config.appDir}/modlists/${mcv}/").create(recursive: true);
+  await File("${Config.appDir}/modlists/${mcv}/${version.filename}")
       .writeAsBytes(response.bodyBytes);
 
-  var currentMods = json.decode(Config.preferences?.getString("mods") ?? "{}");
-  currentMods[mod.id] = Map();
-  currentMods[mod.id][version.mcversions[0]] = version.filename;
-  Config.preferences?.setString("mods", json.encode(currentMods));
+  final data = InstalledMod()
+    ..modId = mod.id
+    ..repo = mod.repo
+    ..url = version.url
+    ..version = version.version
+    ..mcversions = version.mcversions
+    ..filename = version.filename;
+
+  await Config.isar.writeTxn((isar) async {
+    data.id = await isar.installedMods.put(data);
+  });
 }

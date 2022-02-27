@@ -32,6 +32,11 @@ class Updater extends StatefulWidget {
 
 class _UpdaterState extends State<Updater> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var updater_enabled = false;
     final padding = PageHeader.horizontalPadding(context);
@@ -39,8 +44,8 @@ class _UpdaterState extends State<Updater> {
     var files = Directory(Config.directory)
         .listSync()
         .where((x) => x.statSync().type == FileSystemEntityType.file);
-    Map<String, dynamic> currentMods =
-        json.decode(Config.preferences?.getString("mods") ?? "{}");
+    List<InstalledMod> currentMods =
+        Config.isar.installedMods.buildQuery<InstalledMod>().findAllSync();
     return ScaffoldPage.scrollable(
         header: const PageHeader(title: Text('Updater')),
         scrollController: widget.controller,
@@ -52,39 +57,32 @@ class _UpdaterState extends State<Updater> {
             ...files.map((mod) {
               final style = FluentTheme.of(context);
 
-              Mod? foundMod;
-              DownloadMod? current;
-              DownloadMod? update;
+              // Mod? foundMod;
+              // DownloadMod? current;
+              // DownloadMod? update;
 
-              currentMods.forEach((modname, value) {
-                if (value.runtimeType == String) return;
-                var _foundMod =
-                    mods.firstWhereOrNull((element) => element.id == modname);
-                value.forEach((_ver, value) {
-                  if (value != basename(mod.path)) return;
-                  if (_foundMod != null) {
-                    foundMod = _foundMod;
-                    var _update = _foundMod.downloads.firstWhereOrNull(
-                        (element) => element.mcversions.contains(_ver));
-                    if (_update != null) {
-                      current = _update;
-                      if (basename(mod.path).toLowerCase() !=
-                          _update.filename.toLowerCase()) {
-                        update = _update;
-                      }
-                    }
-                  }
-                });
+              var data = currentMods
+                  .firstWhereOrNull((x) => x.filename == basename(mod.path));
+              var foundMod =
+                  mods.firstWhereOrNull((element) => element.id == data?.modId);
+
+              var update = foundMod?.downloads.firstWhereOrNull((element) {
+                bool isLatest = data != null
+                    ? data.mcversions.contains(element.mcversions.firstOrNull)
+                    : false;
+                return element.filename != basename(mod.path) && isLatest;
               });
-
-              var tileColor;
+              var current = foundMod?.downloads.firstWhereOrNull((element) =>
+                      element.filename == basename(mod.path) && data != null
+                          ? !data.mcversions
+                              .contains(element.mcversions.firstOrNull)
+                          : false) ??
+                  update;
               return HoverButton(
                   autofocus: true,
                   builder: ((p0, state) {
                     final Color _tileColor = () {
-                      if (tileColor != null) {
-                        return tileColor!.resolve(state);
-                      } else if (state.isFocused) {
+                      if (state.isFocused) {
                         return style.accentColor.resolve(context);
                       }
                       return ButtonThemeData.uncheckedInputColor(style, state);
@@ -102,7 +100,7 @@ class _UpdaterState extends State<Updater> {
                           Padding(
                               padding: const EdgeInsets.only(right: 14),
                               child: Image.network(
-                                foundMod!.icon,
+                                foundMod.icon,
                                 width: 128,
                                 height: 128,
                               )),
@@ -115,7 +113,7 @@ class _UpdaterState extends State<Updater> {
                               DefaultTextStyle(
                                   child: Text(foundMod == null
                                       ? basename(mod.path)
-                                      : "${foundMod?.display} ${current?.version} - ${current?.mcversions[0]}"),
+                                      : "${foundMod.display} ${current?.version} - ${current?.mcversions[0]}"),
                                   style: const TextStyle().copyWith(
                                     fontSize: 16,
                                   ),
@@ -123,7 +121,7 @@ class _UpdaterState extends State<Updater> {
                               if (foundMod != null)
                                 DefaultTextStyle(
                                   child: flutter.SelectableText(
-                                      foundMod!.description),
+                                      foundMod.description),
                                   style: const TextStyle(),
                                   overflow: TextOverflow.fade,
                                 ),
@@ -141,15 +139,17 @@ class _UpdaterState extends State<Updater> {
                             padding: const EdgeInsets.only(right: 14),
                             child: Row(
                               children: [
-                                if (update != null && foundMod != null)
+                                if (update != null &&
+                                    foundMod != null &&
+                                    update.version != current?.version)
                                   OutlinedButton(
                                       child: Text("Update"),
                                       onPressed: () async {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) =>
-                                              _installer(context, foundMod!,
-                                                  update!, mod),
+                                              _installer(context, foundMod,
+                                                  update, mod, data!.mcv),
                                         );
 
                                         // await installMod(
@@ -164,7 +164,13 @@ class _UpdaterState extends State<Updater> {
                                     child: Text("Delete"),
                                     onPressed: () async {
                                       await mod.delete();
-
+                                      if (data != null) {
+                                        await Config.isar
+                                            .writeTxn((isar) async {
+                                          await Config.isar.installedMods
+                                              .delete(data.id!);
+                                        });
+                                      }
                                       setState(() {});
                                     })
                               ],
@@ -179,9 +185,9 @@ class _UpdaterState extends State<Updater> {
   }
 
   Widget _installer(BuildContext context, Mod mod, DownloadMod version,
-      FileSystemEntity modPath) {
+      FileSystemEntity modPath, String mcv) {
     return FutureBuilder(
-      future: installMod(mod, version),
+      future: installMod(mod, version, mcv),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return ContentDialog(
