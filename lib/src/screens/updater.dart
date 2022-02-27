@@ -7,7 +7,6 @@
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
 import 'dart:convert';
-import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
@@ -21,6 +20,7 @@ import 'package:path/path.dart';
 import '../../theme.dart';
 import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
+import 'package:isar/isar.dart';
 
 class Updater extends StatefulWidget {
   const Updater({Key? key, this.controller, required this.version})
@@ -51,20 +51,16 @@ class _UpdaterState extends State<Updater> {
         .where((element) => element.mcv == widget.version)
         .toList();
     return Column(children: [
-      Center(
-        child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
-      ),
+      // Center(
+      //   child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
+      // ),
       Column(children: [
         ...files.map((mod) {
           final style = FluentTheme.of(context);
 
-          // Mod? foundMod;
-          // DownloadMod? current;
-          // DownloadMod? update;
           currentMods.forEach((element) {
             print(element.mcv);
           });
-          print(currentMods);
           var data = currentMods
               .firstWhereOrNull((x) => x.filename == basename(mod.path));
 
@@ -80,9 +76,7 @@ class _UpdaterState extends State<Updater> {
                   element.filename == basename(mod.path) &&
                   element.mcversions.contains(widget.version)) ??
               update;
-          print(update?.filename);
-          print(current?.filename);
-          print(data?.filename);
+
           return HoverButton(
               autofocus: true,
               builder: ((p0, state) {
@@ -173,12 +167,16 @@ class _UpdaterState extends State<Updater> {
                             OutlinedButton(
                                 child: Text("Delete"),
                                 onPressed: () async {
-                                  await mod.delete();
                                   if (data != null) {
+                                    await UtilMod(
+                                            basename(mod.path), widget.version)
+                                        .delete();
                                     await Config.isar.writeTxn((isar) async {
                                       await Config.isar.installedMods
                                           .delete(data.id!);
                                     });
+                                  } else {
+                                    await mod.delete();
                                   }
                                   setState(() {});
                                 })

@@ -19,6 +19,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:tmodinstaller/config.dart';
+import 'package:tmodinstaller/src/screens/launcher.dart';
 import 'package:tmodinstaller/src/screens/mod.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/updater.dart';
@@ -116,7 +117,7 @@ class _VersionPage extends State<VersionPage> {
                     ? ModListsPage(mods: widget.mods, version: widget.version)
                     : index == 2
                         ? Updater(version: widget.version)
-                        : Text("TODO")
+                        : Launcher(mcv: widget.version)
               ]),
         ),
       ),

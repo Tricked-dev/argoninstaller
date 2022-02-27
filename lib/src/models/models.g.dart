@@ -1290,6 +1290,562 @@ extension InstalledModQueryProperty
   }
 }
 
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast
+
+extension GetVersionCollection on Isar {
+  IsarCollection<Version> get versions {
+    return getCollection('Version');
+  }
+}
+
+final VersionSchema = CollectionSchema(
+  name: 'Version',
+  schema:
+      '{"name":"Version","idName":"id","properties":[{"name":"moddir","type":"String"},{"name":"version","type":"String"}],"indexes":[],"links":[]}',
+  nativeAdapter: const _VersionNativeAdapter(),
+  webAdapter: const _VersionWebAdapter(),
+  idName: 'id',
+  propertyIds: {'moddir': 0, 'version': 1},
+  listProperties: {},
+  indexIds: {},
+  indexTypes: {},
+  linkIds: {},
+  backlinkIds: {},
+  linkedCollections: [],
+  getId: (obj) {
+    if (obj.id == Isar.autoIncrement) {
+      return null;
+    } else {
+      return obj.id;
+    }
+  },
+  setId: (obj, id) => obj.id = id,
+  getLinks: (obj) => [],
+  version: 2,
+);
+
+class _VersionWebAdapter extends IsarWebTypeAdapter<Version> {
+  const _VersionWebAdapter();
+
+  @override
+  Object serialize(IsarCollection<Version> collection, Version object) {
+    final jsObj = IsarNative.newJsObject();
+    IsarNative.jsObjectSet(jsObj, 'id', object.id);
+    IsarNative.jsObjectSet(jsObj, 'moddir', object.moddir);
+    IsarNative.jsObjectSet(jsObj, 'version', object.version);
+    return jsObj;
+  }
+
+  @override
+  Version deserialize(IsarCollection<Version> collection, dynamic jsObj) {
+    final object = Version();
+    object.id = IsarNative.jsObjectGet(jsObj, 'id');
+    object.moddir = IsarNative.jsObjectGet(jsObj, 'moddir') ?? '';
+    object.version = IsarNative.jsObjectGet(jsObj, 'version') ?? '';
+    return object;
+  }
+
+  @override
+  P deserializeProperty<P>(Object jsObj, String propertyName) {
+    switch (propertyName) {
+      case 'id':
+        return (IsarNative.jsObjectGet(jsObj, 'id')) as P;
+      case 'moddir':
+        return (IsarNative.jsObjectGet(jsObj, 'moddir') ?? '') as P;
+      case 'version':
+        return (IsarNative.jsObjectGet(jsObj, 'version') ?? '') as P;
+      default:
+        throw 'Illegal propertyName';
+    }
+  }
+
+  @override
+  void attachLinks(Isar isar, int id, Version object) {}
+}
+
+class _VersionNativeAdapter extends IsarNativeTypeAdapter<Version> {
+  const _VersionNativeAdapter();
+
+  @override
+  void serialize(IsarCollection<Version> collection, IsarRawObject rawObj,
+      Version object, int staticSize, List<int> offsets, AdapterAlloc alloc) {
+    var dynamicSize = 0;
+    final value0 = object.moddir;
+    final _moddir = IsarBinaryWriter.utf8Encoder.convert(value0);
+    dynamicSize += (_moddir.length) as int;
+    final value1 = object.version;
+    final _version = IsarBinaryWriter.utf8Encoder.convert(value1);
+    dynamicSize += (_version.length) as int;
+    final size = staticSize + dynamicSize;
+
+    rawObj.buffer = alloc(size);
+    rawObj.buffer_length = size;
+    final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
+    final writer = IsarBinaryWriter(buffer, staticSize);
+    writer.writeBytes(offsets[0], _moddir);
+    writer.writeBytes(offsets[1], _version);
+  }
+
+  @override
+  Version deserialize(IsarCollection<Version> collection, int id,
+      IsarBinaryReader reader, List<int> offsets) {
+    final object = Version();
+    object.id = id;
+    object.moddir = reader.readString(offsets[0]);
+    object.version = reader.readString(offsets[1]);
+    return object;
+  }
+
+  @override
+  P deserializeProperty<P>(
+      int id, IsarBinaryReader reader, int propertyIndex, int offset) {
+    switch (propertyIndex) {
+      case -1:
+        return id as P;
+      case 0:
+        return (reader.readString(offset)) as P;
+      case 1:
+        return (reader.readString(offset)) as P;
+      default:
+        throw 'Illegal propertyIndex';
+    }
+  }
+
+  @override
+  void attachLinks(Isar isar, int id, Version object) {}
+}
+
+extension VersionQueryWhereSort on QueryBuilder<Version, Version, QWhere> {
+  QueryBuilder<Version, Version, QAfterWhere> anyId() {
+    return addWhereClauseInternal(const WhereClause(indexName: null));
+  }
+}
+
+extension VersionQueryWhere on QueryBuilder<Version, Version, QWhereClause> {
+  QueryBuilder<Version, Version, QAfterWhereClause> idEqualTo(int? id) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: null,
+      lower: [id],
+      includeLower: true,
+      upper: [id],
+      includeUpper: true,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterWhereClause> idNotEqualTo(int? id) {
+    if (whereSortInternal == Sort.asc) {
+      return addWhereClauseInternal(WhereClause(
+        indexName: null,
+        upper: [id],
+        includeUpper: false,
+      )).addWhereClauseInternal(WhereClause(
+        indexName: null,
+        lower: [id],
+        includeLower: false,
+      ));
+    } else {
+      return addWhereClauseInternal(WhereClause(
+        indexName: null,
+        lower: [id],
+        includeLower: false,
+      )).addWhereClauseInternal(WhereClause(
+        indexName: null,
+        upper: [id],
+        includeUpper: false,
+      ));
+    }
+  }
+
+  QueryBuilder<Version, Version, QAfterWhereClause> idGreaterThan(
+    int? id, {
+    bool include = false,
+  }) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: null,
+      lower: [id],
+      includeLower: include,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterWhereClause> idLessThan(
+    int? id, {
+    bool include = false,
+  }) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: null,
+      upper: [id],
+      includeUpper: include,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterWhereClause> idBetween(
+    int? lowerId,
+    int? upperId, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: null,
+      lower: [lowerId],
+      includeLower: includeLower,
+      upper: [upperId],
+      includeUpper: includeUpper,
+    ));
+  }
+}
+
+extension VersionQueryFilter
+    on QueryBuilder<Version, Version, QFilterCondition> {
+  QueryBuilder<Version, Version, QAfterFilterCondition> idIsNull() {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.isNull,
+      property: 'id',
+      value: null,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> idEqualTo(int? value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'id',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> idGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'id',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> idLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'id',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> idBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'id',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'moddir',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'moddir',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'moddir',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'moddir',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'moddir',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'moddir',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'moddir',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> moddirMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'moddir',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'version',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'version',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'version',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'version',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'version',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'version',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'version',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Version, Version, QAfterFilterCondition> versionMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'version',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+}
+
+extension VersionQueryLinks
+    on QueryBuilder<Version, Version, QFilterCondition> {}
+
+extension VersionQueryWhereSortBy on QueryBuilder<Version, Version, QSortBy> {
+  QueryBuilder<Version, Version, QAfterSortBy> sortById() {
+    return addSortByInternal('id', Sort.asc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> sortByIdDesc() {
+    return addSortByInternal('id', Sort.desc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> sortByModdir() {
+    return addSortByInternal('moddir', Sort.asc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> sortByModdirDesc() {
+    return addSortByInternal('moddir', Sort.desc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> sortByVersion() {
+    return addSortByInternal('version', Sort.asc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> sortByVersionDesc() {
+    return addSortByInternal('version', Sort.desc);
+  }
+}
+
+extension VersionQueryWhereSortThenBy
+    on QueryBuilder<Version, Version, QSortThenBy> {
+  QueryBuilder<Version, Version, QAfterSortBy> thenById() {
+    return addSortByInternal('id', Sort.asc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> thenByIdDesc() {
+    return addSortByInternal('id', Sort.desc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> thenByModdir() {
+    return addSortByInternal('moddir', Sort.asc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> thenByModdirDesc() {
+    return addSortByInternal('moddir', Sort.desc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> thenByVersion() {
+    return addSortByInternal('version', Sort.asc);
+  }
+
+  QueryBuilder<Version, Version, QAfterSortBy> thenByVersionDesc() {
+    return addSortByInternal('version', Sort.desc);
+  }
+}
+
+extension VersionQueryWhereDistinct
+    on QueryBuilder<Version, Version, QDistinct> {
+  QueryBuilder<Version, Version, QDistinct> distinctById() {
+    return addDistinctByInternal('id');
+  }
+
+  QueryBuilder<Version, Version, QDistinct> distinctByModdir(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('moddir', caseSensitive: caseSensitive);
+  }
+
+  QueryBuilder<Version, Version, QDistinct> distinctByVersion(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('version', caseSensitive: caseSensitive);
+  }
+}
+
+extension VersionQueryProperty
+    on QueryBuilder<Version, Version, QQueryProperty> {
+  QueryBuilder<Version, int?, QQueryOperations> idProperty() {
+    return addPropertyNameInternal('id');
+  }
+
+  QueryBuilder<Version, String, QQueryOperations> moddirProperty() {
+    return addPropertyNameInternal('moddir');
+  }
+
+  QueryBuilder<Version, String, QQueryOperations> versionProperty() {
+    return addPropertyNameInternal('version');
+  }
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************

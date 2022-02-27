@@ -13,7 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
-import 'package:tmodinstaller/src/screens/login.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/settings.dart';
 import 'package:tmodinstaller/src/screens/updater.dart';
@@ -29,7 +28,6 @@ import 'package:url_launcher/link.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:simple_auth_flutter/simple_auth_flutter.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,7 +127,6 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
   @override
   void initState() {
     super.initState();
-    SimpleAuthFlutter.init(context);
   }
 
   int index = 0;
@@ -216,7 +213,6 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LoginStatefulWidget();
     final appTheme = context.watch<AppTheme>();
     final List<String> lastversions = [
       "1.8.9",

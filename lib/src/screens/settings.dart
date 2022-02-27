@@ -6,7 +6,6 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
@@ -160,7 +159,6 @@ class _SettingsState extends State<Settings> {
             ),
           ],
         ),
-
         biggerSpacer,
         Text("Mod folder", style: FluentTheme.of(context).typography.subtitle),
         flutter.SelectableText(
@@ -224,21 +222,6 @@ class _SettingsState extends State<Settings> {
         spacer,
         const Text(
             "TMod Installer created by Tricked-dev licensed under: Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License."),
-
-        // OutlinedButton(
-        //   child: Text("Change folder!"),
-        //   onPressed: () async {
-        //     String? path = await FilesystemPicker.open(
-        //       title: 'Save to folder',
-        //       context: context,
-        //       rootDirectory: Directory("/"),
-        //       fsType: FilesystemType.folder,
-        //       pickText: 'Save file to this folder',
-        //       folderIconColor: Colors.teal,
-        //     );
-        //     print(path);
-        //   },
-        // )
       ],
     );
   }

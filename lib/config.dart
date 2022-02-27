@@ -47,7 +47,7 @@ class Config {
 
   static Future<void> initDb() async {
     isar = await Isar.open(
-      schemas: [InstalledModSchema],
+      schemas: [InstalledModSchema, VersionSchema],
       name: "data",
       directory: Config.appDir,
       inspector: true,
@@ -79,14 +79,5 @@ class Config {
 
   static bool get icons {
     return _icons;
-  }
-
-  static set newMenu(bool v) {
-    Config.preferences?.setBool("new_menu", v);
-    _newMenu = v;
-  }
-
-  static bool get newMenu {
-    return _newMenu;
   }
 }

@@ -83,3 +83,11 @@ class InstalledMod {
   late String repo;
   late String mcv;
 }
+
+@Collection()
+class Version {
+  @Id()
+  int? id;
+  late String moddir;
+  late String version;
+}
