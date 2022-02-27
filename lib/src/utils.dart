@@ -8,6 +8,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:fluent_ui/fluent_ui.dart';
@@ -39,9 +40,9 @@ Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
     ..repo = mod.repo
     ..url = version.url
     ..version = version.version
+    ..mcv = mcv
     ..mcversions = version.mcversions
     ..filename = version.filename;
-
   await Config.isar.writeTxn((isar) async {
     data.id = await isar.installedMods.put(data);
   });

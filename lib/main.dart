@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
+import 'package:tmodinstaller/src/screens/login.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/settings.dart';
 import 'package:tmodinstaller/src/screens/updater.dart';
@@ -213,6 +214,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
 
   @override
   Widget build(BuildContext context) {
+    return LoginStatefulWidget();
     final appTheme = context.watch<AppTheme>();
     final List<String> lastversions = [
       "1.8.9",
@@ -335,10 +337,10 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
         autoSuggestBoxReplacement: const Icon(FluentIcons.search),
         footerItems: [
           PaneItemSeparator(),
-          PaneItem(
-            icon: const Icon(FluentIcons.upload),
-            title: const Text('Updater'),
-          ),
+          // PaneItem(
+          //   icon: const Icon(FluentIcons.upload),
+          //   title: const Text('Updater'),
+          // ),
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
@@ -357,7 +359,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
               ],
               version: version,
             )),
-        Updater(),
+        // Updater(),
         Settings(controller: settingsController),
       ]),
     );

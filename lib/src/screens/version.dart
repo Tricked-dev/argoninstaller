@@ -67,59 +67,60 @@ class _VersionPage extends State<VersionPage> {
 
   @override
   Widget build(BuildContext context) {
+    Directory("${Config.appDir}/modlists/${widget.version}/").create();
     final padding = PageHeader.horizontalPadding(context);
 
-    return ScaffoldPage.scrollable(
-        // header: PageHeader(title: Text('${widget.version} Mods')),
-        children: [
-          Container(
-            height: 300,
-            decoration: BoxDecoration(
-              color: FluentTheme.of(context).accentColor.resolve(context),
-              // border: Border.all(
-              //     color: FluentTheme.of(context).accentColor, width: 1.0),
-            ),
-            child: TabView(
-              currentIndex: currentIndex,
-              onChanged: _handleTabChanged,
-              // onReorder: (oldIndex, newIndex) {
-              //   setState(() {
-              //     if (oldIndex < newIndex) {
-              //       newIndex -= 1;
-              //     }
-              //     final Tab item = tabs.removeAt(oldIndex);
-              //     tabs.insert(newIndex, item);
-              //     if (currentIndex == newIndex) {
-              //       currentIndex = oldIndex;
-              //     } else if (currentIndex == oldIndex) {
-              //       currentIndex = newIndex;
-              //     }
-              //   });
-              // },
-              // onNewPressed: () {
-              //   setState(() {
-              //     late Tab tab;
-              //     tab = Tab(
-              //       text: Text('Document ${tabs.length}'),
-              //       onClosed: () {
-              //         _handleTabClosed(tab);
-              //       },
-              //     );
-              //     tabs.add(tab);
-              //   });
-              // },
-              tabs: tabs,
-              bodies: List.generate(
-                tabs.length,
-                (index) => index == 1
+    return Container(
+      // height: 300,
+      decoration: BoxDecoration(
+          // color: FluentTheme.of(context).accentColor.resolve(context),
+          // border: Border.all(
+          //     color: FluentTheme.of(context).accentColor, width: 1.0),
+          ),
+      child: TabView(
+        currentIndex: currentIndex,
+        onChanged: _handleTabChanged,
+        // onReorder: (oldIndex, newIndex) {
+        //   setState(() {
+        //     if (oldIndex < newIndex) {
+        //       newIndex -= 1;
+        //     }
+        //     final Tab item = tabs.removeAt(oldIndex);
+        //     tabs.insert(newIndex, item);
+        //     if (currentIndex == newIndex) {
+        //       currentIndex = oldIndex;
+        //     } else if (currentIndex == oldIndex) {
+        //       currentIndex = newIndex;
+        //     }
+        //   });
+        // },
+        // onNewPressed: () {
+        //   setState(() {
+        //     late Tab tab;
+        //     tab = Tab(
+        //       text: Text('Document ${tabs.length}'),
+        //       onClosed: () {
+        //         _handleTabClosed(tab);
+        //       },
+        //     );
+        //     tabs.add(tab);
+        //   });
+        // },
+        tabs: tabs,
+        bodies: List.generate(
+          tabs.length,
+          (index) => ScaffoldPage.scrollable(
+              // header: PageHeader(title: Text('${widget.version} Mods')),
+              children: [
+                index == 1
                     ? ModListsPage(mods: widget.mods, version: widget.version)
                     : index == 2
-                        ? Updater()
-                        : Text("TODO"),
-              ),
-            ),
-          ),
-        ]);
+                        ? Updater(version: widget.version)
+                        : Text("TODO")
+              ]),
+        ),
+      ),
+    );
   }
 
   void _handleTabChanged(int index) {

@@ -49,6 +49,7 @@ dependencies:
   path_provider: ^2.0.9
   isar: 2.2.1
   isar_flutter_libs: 2.2.1 # contains the binarie
+  social_login_buttons: ^1.0.6+2
 
 dev_dependencies:
   # flutter_test:

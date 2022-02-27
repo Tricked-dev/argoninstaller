@@ -23,8 +23,9 @@ import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
 
 class Updater extends StatefulWidget {
-  const Updater({Key? key, this.controller}) : super(key: key);
-
+  const Updater({Key? key, this.controller, required this.version})
+      : super(key: key);
+  final String version;
   final ScrollController? controller;
   @override
   _UpdaterState createState() => _UpdaterState();
@@ -40,148 +41,156 @@ class _UpdaterState extends State<Updater> {
   Widget build(BuildContext context) {
     var updater_enabled = false;
     final padding = PageHeader.horizontalPadding(context);
-
-    var files = Directory(Config.directory)
+//  await Directory("${Config.appDir}/modlists/${mcv}/").create(recursive: true);
+    var files = Directory("${Config.appDir}/modlists/${widget.version}/")
         .listSync()
         .where((x) => x.statSync().type == FileSystemEntityType.file);
-    List<InstalledMod> currentMods =
-        Config.isar.installedMods.buildQuery<InstalledMod>().findAllSync();
-    return ScaffoldPage.scrollable(
-        header: const PageHeader(title: Text('Updater')),
-        scrollController: widget.controller,
-        children: [
-          Center(
-            child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
-          ),
-          Column(children: [
-            ...files.map((mod) {
-              final style = FluentTheme.of(context);
+    List<InstalledMod> currentMods = Config.isar.installedMods
+        .buildQuery<InstalledMod>()
+        .findAllSync()
+        .where((element) => element.mcv == widget.version)
+        .toList();
+    return Column(children: [
+      Center(
+        child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
+      ),
+      Column(children: [
+        ...files.map((mod) {
+          final style = FluentTheme.of(context);
 
-              // Mod? foundMod;
-              // DownloadMod? current;
-              // DownloadMod? update;
+          // Mod? foundMod;
+          // DownloadMod? current;
+          // DownloadMod? update;
+          currentMods.forEach((element) {
+            print(element.mcv);
+          });
+          print(currentMods);
+          var data = currentMods
+              .firstWhereOrNull((x) => x.filename == basename(mod.path));
 
-              var data = currentMods
-                  .firstWhereOrNull((x) => x.filename == basename(mod.path));
-              var foundMod =
-                  mods.firstWhereOrNull((element) => element.id == data?.modId);
+          // print(data?.mcv);
+          var foundMod =
+              mods.firstWhereOrNull((element) => element.id == data?.modId);
 
-              var update = foundMod?.downloads.firstWhereOrNull((element) {
-                bool isLatest = data != null
-                    ? data.mcversions.contains(element.mcversions.firstOrNull)
-                    : false;
-                return element.filename != basename(mod.path) && isLatest;
-              });
-              var current = foundMod?.downloads.firstWhereOrNull((element) =>
-                      element.filename == basename(mod.path) && data != null
-                          ? !data.mcversions
-                              .contains(element.mcversions.firstOrNull)
-                          : false) ??
-                  update;
-              return HoverButton(
-                  autofocus: true,
-                  builder: ((p0, state) {
-                    final Color _tileColor = () {
-                      if (state.isFocused) {
-                        return style.accentColor.resolve(context);
-                      }
-                      return ButtonThemeData.uncheckedInputColor(style, state);
-                    }();
-                    return Container(
-                      // color: _tileColor,
-                      decoration: ShapeDecoration(
-                        shape: const ContinuousRectangleBorder(),
-                        color: _tileColor,
+          var update = foundMod?.downloads.firstWhereOrNull((element) {
+            return element.filename != basename(mod.path) &&
+                element.mcversions.contains(widget.version);
+          });
+          var current = foundMod?.downloads.firstWhereOrNull((element) =>
+                  element.filename == basename(mod.path) &&
+                  element.mcversions.contains(widget.version)) ??
+              update;
+          print(update?.filename);
+          print(current?.filename);
+          print(data?.filename);
+          return HoverButton(
+              autofocus: true,
+              builder: ((p0, state) {
+                final Color _tileColor = () {
+                  if (state.isFocused) {
+                    return style.accentColor.resolve(context);
+                  }
+                  return ButtonThemeData.uncheckedInputColor(style, state);
+                }();
+                return Container(
+                  // color: _tileColor,
+                  decoration: ShapeDecoration(
+                    shape: const ContinuousRectangleBorder(),
+                    color: _tileColor,
+                  ),
+
+                  child: Row(children: <Widget>[
+                    SizedBox(height: 100),
+                    if (Config.icons && foundMod != null)
+                      Padding(
+                          padding: const EdgeInsets.only(right: 14),
+                          child: Image.network(
+                            foundMod.icon,
+                            width: 128,
+                            height: 128,
+                          )),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DefaultTextStyle(
+                              child: Text(foundMod == null
+                                  ? basename(mod.path)
+                                  : "${foundMod.display} ${current?.version} - ${current?.mcversions[0]}"),
+                              style: const TextStyle().copyWith(
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.fade),
+                          if (foundMod != null)
+                            DefaultTextStyle(
+                              child:
+                                  flutter.SelectableText(foundMod.description),
+                              style: const TextStyle(),
+                              overflow: TextOverflow.fade,
+                            ),
+                          if (foundMod == null)
+                            const DefaultTextStyle(
+                              child:
+                                  Text("Could not find the origin of this mod"),
+                              style: const TextStyle(),
+                              overflow: TextOverflow.fade,
+                            ),
+                        ],
                       ),
-
-                      child: Row(children: <Widget>[
-                        SizedBox(height: 100),
-                        if (Config.icons && foundMod != null)
-                          Padding(
-                              padding: const EdgeInsets.only(right: 14),
-                              child: Image.network(
-                                foundMod.icon,
-                                width: 128,
-                                height: 128,
-                              )),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              DefaultTextStyle(
-                                  child: Text(foundMod == null
-                                      ? basename(mod.path)
-                                      : "${foundMod.display} ${current?.version} - ${current?.mcversions[0]}"),
-                                  style: const TextStyle().copyWith(
-                                    fontSize: 16,
-                                  ),
-                                  overflow: TextOverflow.fade),
-                              if (foundMod != null)
-                                DefaultTextStyle(
-                                  child: flutter.SelectableText(
-                                      foundMod.description),
-                                  style: const TextStyle(),
-                                  overflow: TextOverflow.fade,
-                                ),
-                              if (foundMod == null)
-                                const DefaultTextStyle(
-                                  child: Text(
-                                      "Could not find the origin of this mod"),
-                                  style: const TextStyle(),
-                                  overflow: TextOverflow.fade,
-                                ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(right: 14),
-                            child: Row(
-                              children: [
-                                if (update != null &&
-                                    foundMod != null &&
-                                    update.version != current?.version)
-                                  OutlinedButton(
-                                      child: Text("Update"),
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              _installer(context, foundMod,
-                                                  update, mod, data!.mcv),
-                                        );
-
-                                        // await installMod(
-                                        //     foundMod!, update!);
-                                        // await mod.delete();
-                                        setState(() {});
-                                      }),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                                OutlinedButton(
-                                    child: Text("Delete"),
-                                    onPressed: () async {
-                                      await mod.delete();
-                                      if (data != null) {
-                                        await Config.isar
-                                            .writeTxn((isar) async {
-                                          await Config.isar.installedMods
-                                              .delete(data.id!);
-                                        });
-                                      }
-                                      setState(() {});
-                                    })
-                              ],
-                            )),
-                      ]),
-                    );
-                  }),
-                  onPressed: () {});
-            })
-          ])
-        ]);
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(right: 14),
+                        child: Row(
+                          children: [
+                            if (update != null &&
+                                foundMod != null &&
+                                update.version != current?.version)
+                              OutlinedButton(
+                                  child: Text("Update"),
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _installer(context, foundMod, update,
+                                              mod, data!.mcv),
+                                    );
+                                    if (data != null) {
+                                      await Config.isar.writeTxn((isar) async {
+                                        await Config.isar.installedMods
+                                            .delete(data.id!);
+                                      });
+                                    }
+                                    // await installMod(
+                                    //     foundMod!, update!);
+                                    // await mod.delete();
+                                    setState(() {});
+                                  }),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            OutlinedButton(
+                                child: Text("Delete"),
+                                onPressed: () async {
+                                  await mod.delete();
+                                  if (data != null) {
+                                    await Config.isar.writeTxn((isar) async {
+                                      await Config.isar.installedMods
+                                          .delete(data.id!);
+                                    });
+                                  }
+                                  setState(() {});
+                                })
+                          ],
+                        )),
+                  ]),
+                );
+              }),
+              onPressed: () {});
+        })
+      ])
+    ]);
   }
 
   Widget _installer(BuildContext context, Mod mod, DownloadMod version,

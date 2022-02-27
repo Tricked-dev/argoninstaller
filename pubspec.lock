@@ -620,6 +620,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  social_login_buttons:
+    dependency: "direct main"
+    description:
+      name: social_login_buttons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6+2"
   source_gen:
     dependency: transitive
     description:

@@ -33,81 +33,74 @@ class _ModLists extends State<ModListsPage> {
   Widget build(BuildContext context) {
     final padding = PageHeader.horizontalPadding(context);
 
-    return ScaffoldPage.scrollable(
-        header: PageHeader(title: Text('${widget.version} Mods')),
-        children: [
-          Column(
-            children: [
-              ...widget.mods.map((mod) {
-                final style = FluentTheme.of(context);
-                var tileColor;
-                return HoverButton(
-                    autofocus: true,
-                    builder: ((p0, state) {
-                      final Color _tileColor = () {
-                        if (tileColor != null) {
-                          return tileColor!.resolve(state);
-                        } else if (state.isFocused) {
-                          return style.accentColor.resolve(context);
-                        }
-                        return ButtonThemeData.uncheckedInputColor(
-                            style, state);
-                      }();
-                      return Container(
-                        // color: _tileColor,
-                        decoration: ShapeDecoration(
-                          shape: const ContinuousRectangleBorder(),
-                          color: _tileColor,
-                        ),
-                        child: Row(children: <Widget>[
-                          SizedBox(height: 100),
-                          if (Config.icons)
-                            Padding(
-                                padding: const EdgeInsets.only(right: 14),
-                                child: Image.network(
-                                  mod.icon,
-                                  width: 128,
-                                  height: 128,
-                                )),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                DefaultTextStyle(
-                                    child: Text(mod.display),
-                                    style: const TextStyle().copyWith(
-                                      fontSize: 16,
-                                    ),
-                                    overflow: TextOverflow.fade),
-                                DefaultTextStyle(
-                                  child:
-                                      flutter.SelectableText(mod.description),
-                                  style: const TextStyle(),
-                                  overflow: TextOverflow.fade,
-                                ),
-                              ],
-                            ),
+    return Column(
+      children: [
+        ...widget.mods.map((mod) {
+          final style = FluentTheme.of(context);
+          var tileColor;
+          return HoverButton(
+              autofocus: true,
+              builder: ((p0, state) {
+                final Color _tileColor = () {
+                  if (tileColor != null) {
+                    return tileColor!.resolve(state);
+                  } else if (state.isFocused) {
+                    return style.accentColor.resolve(context);
+                  }
+                  return ButtonThemeData.uncheckedInputColor(style, state);
+                }();
+                return Container(
+                  // color: _tileColor,
+                  decoration: ShapeDecoration(
+                    shape: const ContinuousRectangleBorder(),
+                    color: _tileColor,
+                  ),
+                  child: Row(children: <Widget>[
+                    SizedBox(height: 100),
+                    if (Config.icons)
+                      Padding(
+                          padding: const EdgeInsets.only(right: 14),
+                          child: Image.network(
+                            mod.icon,
+                            width: 128,
+                            height: 128,
+                          )),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DefaultTextStyle(
+                              child: Text(mod.display),
+                              style: const TextStyle().copyWith(
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.fade),
+                          DefaultTextStyle(
+                            child: flutter.SelectableText(mod.description),
+                            style: const TextStyle(),
+                            overflow: TextOverflow.fade,
                           ),
-                        ]),
-                      );
-                    }),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        FluentPageRoute(
-                            builder: (context) => ModScreen(
-                                mcv: widget.version,
-                                mod: mod,
-                                modver: mod.downloads.firstWhere((element) =>
-                                    element.mcversions
-                                        .contains(widget.version)))),
-                      );
-                    });
-              })
-            ],
-          )
-        ]);
+                        ],
+                      ),
+                    ),
+                  ]),
+                );
+              }),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  FluentPageRoute(
+                      builder: (context) => ModScreen(
+                          mcv: widget.version,
+                          mod: mod,
+                          modver: mod.downloads.firstWhere((element) =>
+                              element.mcversions.contains(widget.version)))),
+                );
+              });
+        })
+      ],
+    );
   }
 }
