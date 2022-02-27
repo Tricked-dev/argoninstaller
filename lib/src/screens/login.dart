@@ -7,6 +7,7 @@
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:tmodinstaller/src/models/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -26,7 +27,11 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     return Center(
       child: SocialLoginButton(
         buttonType: SocialLoginButtonType.microsoft,
-        onPressed: () {},
+        onPressed: () async {
+          var success = await MSAuth.azureApi.authenticate();
+          print(success?.toJson());
+          // showMessage("Logged in success: $success");
+        },
       ),
     );
     // return Padding(

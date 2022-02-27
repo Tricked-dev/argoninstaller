@@ -4,6 +4,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:simple_auth/simple_auth.dart' as simpleAuth;
+import '../../config.dart';
 
 enum Reason {
   //"The account is not satisfied with this action"
@@ -15,8 +17,24 @@ class MSAuthError extends Error {
   MSAuthError(this.reason);
 }
 
+class TAzure extends simpleAuth.AzureADApi implements showAuthenticator {
+  TAzure(String identifier, String clientId, String tokenUrl, String resource,
+      String authorizationUrl, String redirectUrl)
+      : super(identifier, clientId, tokenUrl, resource, authorizationUrl,
+            redirectUrl);
+}
+
 class MSAuth {
   static const MICROSOFT_CLIENT_ID = "e2d21d17-35c3-46e6-9afd-f475b0f08c46";
+  static const AZURE_TENNANT = "f8cdef31-a31e-4b4a-93e4-5f571e91255a";
+  static final simpleAuth.AzureADApi azureApi = simpleAuth.AzureADApi(
+      "azure",
+      MICROSOFT_CLIENT_ID,
+      "https://login.microsoftonline.com/$AZURE_TENNANT/oauth2/authorize",
+      "https://login.microsoftonline.com/$AZURE_TENNANT/oauth2/token",
+      "https://management.azure.com/",
+      "redirecturl");
+
   static Future<Map> authCode2AuthToken(String code) async {
     var map = <String, dynamic>{};
     map["code"] = code;
@@ -172,6 +190,9 @@ class MSAuth {
         return false;
       }
       // updateAccountToken(account, mcToken, params["refresh_token"]);
+      Config.preferences?.setString("account", json.encode(account));
+      Config.preferences?.setString("mcToken", json.encode(mcToken));
+      Config.preferences?.setString("refresh_token", params["refresh_token"]);
       return true;
     } catch (e) {
       return false;

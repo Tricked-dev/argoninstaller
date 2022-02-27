@@ -29,6 +29,7 @@ import 'package:url_launcher/link.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simple_auth_flutter/simple_auth_flutter.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -128,6 +129,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
   @override
   void initState() {
     super.initState();
+    SimpleAuthFlutter.init(context);
   }
 
   int index = 0;
