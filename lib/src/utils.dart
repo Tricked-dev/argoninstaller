@@ -8,7 +8,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
@@ -40,8 +39,8 @@ class UtilMod {
   write(Uint8List bytes) async {
     try {
       await Future.wait([
-        File("${Config.appDir}/modlists/${mcv}/${name}").writeAsBytes(bytes),
-        File("${getModFolder(mcv)}/${name}").writeAsBytes(bytes)
+        File("${Config.appDir}/modlists/$mcv/$name").writeAsBytes(bytes),
+        File("${getModFolder(mcv)}/$name").writeAsBytes(bytes)
       ]);
     } catch (e) {
       print(e);
@@ -51,8 +50,8 @@ class UtilMod {
   delete() async {
     try {
       await Future.wait([
-        File("${Config.appDir}/modlists/${mcv}/${name}").delete(),
-        File("${getModFolder(mcv)}/${name}").delete()
+        File("${Config.appDir}/modlists/$mcv/$name").delete(),
+        File("${getModFolder(mcv)}/$name").delete()
       ]);
     } catch (e) {
       print(e);
@@ -63,7 +62,7 @@ class UtilMod {
 Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
   final response = await http.get(Uri.parse(version.url));
   //TODO: Hashing!
-  await Directory("${Config.appDir}/modlists/${mcv}/").create(recursive: true);
+  await Directory("${Config.appDir}/modlists/$mcv/").create(recursive: true);
 
   UtilMod(version.filename, mcv).write(response.bodyBytes);
 
@@ -106,9 +105,10 @@ Future<void> fetchData() async {
           ...data["mods"].map((x) {
             x["repo"] = data["id"];
             x["meta"].removeWhere((k, v) => v == null);
-            if (x["icon"] == null)
+            if (x["icon"] == null) {
               x["icon"] =
                   "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
+            }
 
             return Mod.fromJson(x);
           })
@@ -124,9 +124,10 @@ Future<void> fetchData() async {
         ...data["mods"].map((x) {
           x["repo"] = data["id"];
           x["meta"].removeWhere((k, v) => v == null);
-          if (x["icon"] == null)
+          if (x["icon"] == null) {
             x["icon"] =
                 "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
+          }
           return Mod.fromJson(x);
         })
       ];

@@ -6,10 +6,8 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -248,8 +246,8 @@ class _SettingsState extends State<Settings> {
 
   Widget _invaliddir() {
     return ContentDialog(
-      title: Text("Directory does not exist"),
-      content: Text("beep boop"),
+      title: const Text("Directory does not exist"),
+      content: const Text("beep boop"),
       actions: <Widget>[
         FilledButton(
           onPressed: () {

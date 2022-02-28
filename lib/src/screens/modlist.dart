@@ -6,18 +6,11 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'dart:convert';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/screens/mod.dart';
-import 'package:tmodinstaller/src/utils.dart';
 import '../models/models.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:io';
-import 'package:crypto/crypto.dart';
 
 class ModListsPage extends StatefulWidget {
   const ModListsPage({Key? key, required this.mods, required this.version})
@@ -56,7 +49,7 @@ class _ModLists extends State<ModListsPage> {
                     color: _tileColor,
                   ),
                   child: Row(children: <Widget>[
-                    SizedBox(height: 100),
+                    const SizedBox(height: 100),
                     if (Config.icons)
                       Padding(
                           padding: const EdgeInsets.only(right: 14),

@@ -14,21 +14,13 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'dart:convert';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' as flutter;
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/screens/launcher.dart';
-import 'package:tmodinstaller/src/screens/mod.dart';
 import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/updater.dart';
-import 'package:tmodinstaller/src/utils.dart';
 import '../models/models.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:io';
-import 'package:crypto/crypto.dart';
 
 class VersionPage extends StatefulWidget {
   const VersionPage({Key? key, required this.mods, required this.version})
@@ -79,7 +71,7 @@ class _VersionPage extends State<VersionPage> {
 
     return Container(
       // height: 300,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           // color: FluentTheme.of(context).accentColor.resolve(context),
           // border: Border.all(
           //     color: FluentTheme.of(context).accentColor, width: 1.0),

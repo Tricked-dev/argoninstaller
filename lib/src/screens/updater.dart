@@ -6,21 +6,14 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
-import 'package:provider/provider.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import 'dart:io';
 import 'package:path/path.dart';
-import '../../theme.dart';
-import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
-import 'package:isar/isar.dart';
 
 class Updater extends StatefulWidget {
   const Updater({Key? key, this.controller, required this.version})
@@ -39,7 +32,7 @@ class _UpdaterState extends State<Updater> {
 
   @override
   Widget build(BuildContext context) {
-    var updater_enabled = false;
+    var updaterEnabled = false;
     final padding = PageHeader.horizontalPadding(context);
 //  await Directory("${Config.appDir}/modlists/${mcv}/").create(recursive: true);
     var files = Directory("${Config.appDir}/modlists/${widget.version}/")
@@ -60,9 +53,6 @@ class _UpdaterState extends State<Updater> {
         ...files.map((mod) {
           final style = FluentTheme.of(context);
 
-          currentMods.forEach((element) {
-            print(element.mcv);
-          });
           var data = currentMods
               .firstWhereOrNull((x) => x.filename == basename(mod.path));
 
@@ -96,7 +86,7 @@ class _UpdaterState extends State<Updater> {
                   ),
 
                   child: Row(children: <Widget>[
-                    SizedBox(height: 100),
+                    const SizedBox(height: 100),
                     if (Config.icons && foundMod != null)
                       Padding(
                           padding: const EdgeInsets.only(right: 14),
@@ -143,7 +133,7 @@ class _UpdaterState extends State<Updater> {
                                 foundMod != null &&
                                 update.version != current?.version)
                               OutlinedButton(
-                                  child: Text("Update"),
+                                  child: const Text("Update"),
                                   onPressed: () async {
                                     showDialog(
                                       context: context,
@@ -166,7 +156,7 @@ class _UpdaterState extends State<Updater> {
                               width: 4,
                             ),
                             OutlinedButton(
-                                child: Text("Delete"),
+                                child: const Text("Delete"),
                                 onPressed: () async {
                                   if (data != null) {
                                     await UtilMod(
@@ -214,7 +204,7 @@ class _UpdaterState extends State<Updater> {
         }
         if (snapshot.hasError) {
           return ContentDialog(
-            title: Text(
+            title: const Text(
                 "Failed to install mod, this is likely due to a hash mismatch"),
             actions: <Widget>[
               FilledButton(
@@ -230,7 +220,7 @@ class _UpdaterState extends State<Updater> {
           title: Text('Updating ${mod.display} ${version.version}'),
           content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [const ProgressBar()]),
+              children: const [ProgressBar()]),
         );
       },
     );

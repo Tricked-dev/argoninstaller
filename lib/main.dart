@@ -6,25 +6,15 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'dart:io';
-
 import 'package:args/args.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmodinstaller/config.dart';
-import 'package:tmodinstaller/src/models/models.dart';
-import 'package:tmodinstaller/src/screens/modlist.dart';
 import 'package:tmodinstaller/src/screens/settings.dart';
-import 'package:tmodinstaller/src/screens/updater.dart';
 import 'package:tmodinstaller/src/screens/version.dart';
 import 'package:tmodinstaller/src/utils.dart';
 import 'package:tmodinstaller/theme.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';
-import 'package:url_launcher/link.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';

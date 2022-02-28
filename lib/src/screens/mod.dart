@@ -15,21 +15,13 @@
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
-import 'package:provider/provider.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/utils.dart';
-import 'dart:io';
-import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../theme.dart';
 import 'package:http/http.dart' as http;
-import 'package:collection/collection.dart';
 
 class ModScreen extends StatefulWidget {
   ModScreen(
@@ -213,7 +205,7 @@ class _ModScreenState extends State<ModScreen> {
         }
         if (snapshot.hasError) {
           return ContentDialog(
-            title: Text(
+            title: const Text(
                 "Failed to install mod, this is likely due to a hash mismatch"),
             actions: <Widget>[
               FilledButton(
@@ -229,7 +221,7 @@ class _ModScreenState extends State<ModScreen> {
           title: Text('Installing ${mod.display} ${version.version}'),
           content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [const ProgressBar()]),
+              children: const [ProgressBar()]),
         );
       },
     );
@@ -241,7 +233,7 @@ class _ModScreenState extends State<ModScreen> {
     var download = mod.downloads;
     if (download.isEmpty) {
       return ContentDialog(
-        title: Text("No mods found weird.."),
+        title: const Text("No mods found weird.."),
         actions: <Widget>[
           FilledButton(
             onPressed: () {
@@ -272,7 +264,7 @@ class _ModScreenState extends State<ModScreen> {
           width: 300,
           // child: Center(
           child: Combobox<String>(
-            placeholder: Text('Select a version'),
+            placeholder: const Text('Select a version'),
             isExpanded: true,
             items: [
               ...download.map((value) => ComboboxItem<String>(
