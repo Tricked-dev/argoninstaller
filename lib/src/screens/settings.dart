@@ -15,6 +15,7 @@ import 'package:tmodinstaller/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import '../../theme.dart';
+import '../utils.dart';
 
 const List<String> accentColorNames = [
   'System',
@@ -93,6 +94,24 @@ class _SettingsState extends State<Settings> {
       header: const PageHeader(title: Text('Settings')),
       scrollController: widget.controller,
       children: [
+        Text('Theme mode', style: FluentTheme.of(context).typography.subtitle),
+        spacer,
+        ...List.generate(ThemeMode.values.length, (index) {
+          final mode = ThemeMode.values[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: RadioButton(
+              checked: appTheme.mode == mode,
+              onChanged: (value) {
+                if (value) {
+                  Config.preferences?.setInt("theme", index);
+                  appTheme.mode = mode;
+                }
+              },
+              content: Text('$mode'.replaceAll('ThemeMode.', '')),
+            ),
+          );
+        }),
         biggerSpacer,
         Text('Accent Color',
             style: FluentTheme.of(context).typography.subtitle),
@@ -115,7 +134,7 @@ class _SettingsState extends State<Settings> {
         biggerSpacer,
         Text("Mod repo's", style: FluentTheme.of(context).typography.subtitle),
         const flutter.SelectableText(
-          "Repos are split by ',' the default repos are https://tmod.deno.dev/std.json,https://tmod.deno.dev/skyclient.json,https://tmod.deno.dev/feather.json\nA restart is required after updating the repos",
+          "Repos are split by ',' the available repos are: skyclient,feather,std. Use urls for external ones.\nA restart is required after updating the repos",
         ),
         spacer,
         TextBox(
@@ -131,9 +150,10 @@ class _SettingsState extends State<Settings> {
           },
           suffix: IconButton(
             icon: const Icon(FluentIcons.add_to),
-            onPressed: () {
+            onPressed: () async {
               Config.preferences?.setStringList("repos", current.split(","));
-
+              fetchData();
+              setState(() {});
               // _clearController.clear();
             },
           ),

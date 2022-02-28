@@ -36,7 +36,7 @@ void main(List<String> args) async {
   await Config.initializePreference();
   await Future.wait([
     flutter_acrylic.Window.initialize(),
-    _TModInstallerPageState.fetchData(),
+    fetchData(),
     WindowManager.instance.ensureInitialized()
   ]);
 
@@ -74,18 +74,24 @@ class TModInstallerApp extends StatelessWidget {
         builder: (context, _) {
           final appTheme = context.watch<AppTheme>();
           //Quick and dirty way to set the color!
-          var theme = Config.preferences?.getInt("color");
-          if (theme != null) {
-            if (theme == -1) {
+          var color = Config.preferences?.getInt("color");
+          if (color != null) {
+            if (color == -1) {
               appTheme.rawColor = systemAccentColor;
             } else {
-              appTheme.rawColor = Colors.accentColors[theme];
+              appTheme.rawColor = Colors.accentColors[color];
             }
+          }
+
+          var theme = Config.preferences?.getInt("theme");
+          if (theme != null) {
+            appTheme.rawMode = ThemeMode.values[theme];
           }
 
           return FluentApp(
             title: 'Tricked mod Installer',
             debugShowCheckedModeBanner: false,
+            themeMode: appTheme.mode,
             color: appTheme.color,
             darkTheme: ThemeData(
               brightness: Brightness.dark,
@@ -139,87 +145,20 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
     super.dispose();
   }
 
-  static Future<void> fetchData() async {
-    //TODO save mods somewhere for offline
-    try {
-      var repos = Config.preferences?.getStringList("repos");
-      if (repos != null) {
-        for (var repo in repos) {
-          var trimmed = repo.trim();
-          //Prevent leading commas from erroring shit
-          if (trimmed == "") continue;
-          final res = await http.get(Uri.parse(trimmed.startsWith("http")
-              ? trimmed
-              : "https://tmod.deno.dev/$trimmed.json"));
-          var data = json.decode(res.body);
-
-          mods = [
-            ...mods,
-            ...data["mods"].map((x) {
-              x["repo"] = data["id"];
-              x["meta"].removeWhere((k, v) => v == null);
-              if (x["icon"] == null)
-                x["icon"] =
-                    "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
-
-              return Mod.fromJson(x);
-            })
-          ];
-        }
-      } else {
-        final response =
-            await http.get(Uri.parse('https://tmod.deno.dev/std.json'));
-        var data = json.decode(response.body);
-
-        mods = [
-          ...mods,
-          ...data["mods"].map((x) {
-            x["repo"] = data["id"];
-            x["meta"].removeWhere((k, v) => v == null);
-            if (x["icon"] == null)
-              x["icon"] =
-                  "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
-            return Mod.fromJson(x);
-          })
-        ];
-      }
-    } catch (_) {
-      print(_);
-      mods = [
-        Mod(
-            categories: [],
-            repo: "INVALID",
-            display: "INVALID REPO DETECTED",
-            description:
-                "PLEASE ENSURE THAT ALL REPOS ARE VALID AND WORKING BEFORE ADDING THEM",
-            id: "INVALID",
-            downloads: [
-              DownloadMod(
-                  filename: "INVALID",
-                  mcversions: ["0.0.0"],
-                  version: "0.0.0",
-                  hash: "sha1;null",
-                  url: "")
-            ],
-            nicknames: [],
-            conflicts: [],
-            forgeid: "INVALID",
-            meta: {},
-            icon:
-                "https://cdn-images-1.medium.com/max/1200/1*5-aoK8IBmXve5whBQM90GA.png")
-      ];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final appTheme = context.watch<AppTheme>();
+
     final List<String> lastversions = [
-      "1.8.9",
-      "1.12.2",
+      "1.18.2",
+      "1.18.1",
       "1.17.1",
-      "1.14.4",
-      "1.16.5"
+      "1.16.5",
+      // "1.15.2",
+      // "1.14.4",
+      // "1.13.2",
+      "1.12.2",
+      "1.8.9",
     ];
     List<String> versions = Set.of(Set.of(mods
         .map((x) => x.downloads.map((x) => x.mcversions))

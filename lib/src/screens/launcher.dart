@@ -63,6 +63,7 @@ class _LauncherState extends State<Launcher> {
           flutter.SelectableText(
             "This will empty the current mod folder and install all mods from this version that you installed",
           ),
+          spacer,
           FilledButton(
               child: Text("Click here!"),
               onPressed: () async {
@@ -83,7 +84,7 @@ class _LauncherState extends State<Launcher> {
               style: FluentTheme.of(context).typography.subtitle),
           spacer,
           flutter.SelectableText(
-            "Current directory $_modfolder",
+            "Current directory $_modfolder ${_modfolder == Config.directory ? "(Default)" : ""}",
           ),
           spacer,
           TextBox(

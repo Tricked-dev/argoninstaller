@@ -55,6 +55,8 @@ class _UpdaterState extends State<Updater> {
       //   child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
       // ),
       Column(children: [
+        if (files.length == 0)
+          const Text("No mods found get back later when you installed some"),
         ...files.map((mod) {
           final style = FluentTheme.of(context);
 
@@ -126,8 +128,8 @@ class _UpdaterState extends State<Updater> {
                             ),
                           if (foundMod == null)
                             const DefaultTextStyle(
-                              child:
-                                  Text("Could not find the origin of this mod"),
+                              child: Text(
+                                  "Could not find the origin of this mod, Maybe the repo of this mod is not enabled?"),
                               style: const TextStyle(),
                               overflow: TextOverflow.fade,
                             ),

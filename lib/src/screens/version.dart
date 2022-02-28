@@ -49,11 +49,17 @@ class _VersionPage extends State<VersionPage> {
     tabs = List.generate(3, (index) {
       late Tab tab;
       tab = Tab(
-        text: Text(index == 1
-            ? "Mod Installer"
-            : index == 2
-                ? "Mod Updater"
-                : "Launcher"),
+        closeIcon: FluentIcons.emi,
+        icon: Icon(index == 0
+            ? FluentIcons.rocket
+            : index == 1
+                ? FluentIcons.download
+                : FluentIcons.library),
+        text: Text(index == 0
+            ? "Launcher"
+            : index == 1
+                ? "Mod Installer"
+                : "Mod Manager"),
         //   _handleTabClosed(tab);
         // },
       );

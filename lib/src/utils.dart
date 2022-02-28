@@ -85,3 +85,76 @@ String getModFolder(String mcv) {
   var version = versions.firstWhereOrNull((element) => element.version == mcv);
   return version?.moddir ?? Config.directory;
 }
+
+Future<void> fetchData() async {
+  mods = [];
+  //TODO save mods somewhere for offline
+  try {
+    var repos = Config.preferences?.getStringList("repos");
+    if (repos != null) {
+      for (var repo in repos) {
+        var trimmed = repo.trim();
+        //Prevent leading commas from erroring shit
+        if (trimmed == "") continue;
+        final res = await http.get(Uri.parse(trimmed.startsWith("http")
+            ? trimmed
+            : "https://tmod.deno.dev/$trimmed.json"));
+        var data = json.decode(res.body);
+
+        mods = [
+          ...mods,
+          ...data["mods"].map((x) {
+            x["repo"] = data["id"];
+            x["meta"].removeWhere((k, v) => v == null);
+            if (x["icon"] == null)
+              x["icon"] =
+                  "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
+
+            return Mod.fromJson(x);
+          })
+        ];
+      }
+    } else {
+      final response =
+          await http.get(Uri.parse('https://tmod.deno.dev/std.json'));
+      var data = json.decode(response.body);
+
+      mods = [
+        ...mods,
+        ...data["mods"].map((x) {
+          x["repo"] = data["id"];
+          x["meta"].removeWhere((k, v) => v == null);
+          if (x["icon"] == null)
+            x["icon"] =
+                "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
+          return Mod.fromJson(x);
+        })
+      ];
+    }
+  } catch (_) {
+    print(_);
+    mods = [
+      Mod(
+          categories: [],
+          repo: "INVALID",
+          display: "INVALID REPO DETECTED",
+          description:
+              "PLEASE ENSURE THAT ALL REPOS ARE VALID AND WORKING BEFORE ADDING THEM",
+          id: "INVALID",
+          downloads: [
+            DownloadMod(
+                filename: "INVALID",
+                mcversions: ["0.0.0"],
+                version: "0.0.0",
+                hash: "sha1;null",
+                url: "")
+          ],
+          nicknames: [],
+          conflicts: [],
+          forgeid: "INVALID",
+          meta: {},
+          icon:
+              "https://cdn-images-1.medium.com/max/1200/1*5-aoK8IBmXve5whBQM90GA.png")
+    ];
+  }
+}

@@ -152,6 +152,7 @@ class _ModScreenState extends State<ModScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         ...[
+                          Text("Repo: ${widget.mod.repo}"),
                           ...r,
                           FilledButton(
                             child: const Text("Install Mod"),
