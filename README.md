@@ -16,13 +16,19 @@ A beautiful mod installer for minecraft supporting custom repositories and more.
 
 TMod Installer is a cross platform mod installer and updater you can use it with your own repo's or the standart provided [repos](https://github.com/Tricked-dev/tmodinstallerrepo).
 
+## Features
+
+- You can create your own repos for tmodinstaller and that way easily share your mods with other users.
+- Easily update and change your mods with the built in updater
+- Switch mod folders with the click of only one button
+
 | Cool                                                      | Screenshots                                                                                                     |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Mod menu                                                  | ![image](https://user-images.githubusercontent.com/72335827/155814614-b46c5127-e972-405f-b512-b7cbd0ef7857.png) |
+| Install mods                                                  | ![image](https://user-images.githubusercontent.com/72335827/155962358-f7d5a924-1c64-49f5-8b02-f6d87ecaf93d.png) |
 | Customizbility                                            | ![image](https://user-images.githubusercontent.com/72335827/155805773-a2813b98-f1dd-4953-9be3-d4f3d7dd36e6.png) |
-| Built in mod manager and updater                          | ![image](https://user-images.githubusercontent.com/72335827/155349557-ea1c71a1-c358-41f7-9555-7825361e22da.png) |
-| Inspect mods                                              | ![image](https://user-images.githubusercontent.com/72335827/155814688-645ca0c1-5d8e-463e-bd8d-4fae8cc005fc.png) |
-| You can install featherclient mods without featherclient! | ![image](https://user-images.githubusercontent.com/72335827/155349779-3d4825cb-b49b-4dc9-98a4-cfbe6f8c07fe.png) |
+| Built in mod manager and updater                          | ![image](https://user-images.githubusercontent.com/72335827/155962546-2fc5b8e0-d454-4c79-8205-921052642eac.png) |
+| Inspect mods                                              | ![image](https://user-images.githubusercontent.com/72335827/155962136-0e84de22-29dc-4fde-9bd5-6904b3f03935.png) |
+
 
 ## Why another mod installer
 
