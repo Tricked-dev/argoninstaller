@@ -6,6 +6,7 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
+import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:provider/provider.dart';
@@ -183,40 +184,61 @@ class _SettingsState extends State<Settings> {
           "Current directory $modfolder",
         ),
         spacer,
-        TextBox(
-          // controller: _clearController,
-          // header: 'Repos split by ","',
-          placeholder: 'Change modfolder',
-          onEditingComplete: () {
-            // print("Hello!");
-            // Config.preferences?.setStringList("repos", current.split(","));
+        FilledButton(
+          child: Text("Select new directory"),
+          onPressed: () async {
+            var dir = await getDirectoryPath(
+              initialDirectory: _modfolder,
+            );
+            if (dir == null) return;
+            var r = await Directory(dir).exists();
+            if (r) {
+              setState(() {
+                Config.preferences?.setString("modfolder", dir);
+              });
+              setState(() {});
+            } else {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => _invaliddir(),
+              );
+            }
           },
-          onChanged: (v) {
-            _modfolder = v;
-          },
-          suffix: IconButton(
-            icon: const Icon(FluentIcons.add_to),
-            onPressed: () async {
-              var fold = _modfolder
-                  .replaceFirst("~", Platform.environment['HOME'] ?? "NO_HOME")
-                  .replaceFirst("%APPDATA%",
-                      Platform.environment['APPDATA'] ?? "NO_APPDATA");
-              var r = await Directory(fold).exists();
-              if (r) {
-                setState(() {
-                  Config.preferences?.setString("modfolder", fold);
-                });
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => _invaliddir(),
-                );
-              }
-
-              // _clearController.clear();
-            },
-          ),
         ),
+        // TextBox(
+        //   // controller: _clearController,
+        //   // header: 'Repos split by ","',
+        //   placeholder: 'Change modfolder',
+        //   onEditingComplete: () {
+        //     // print("Hello!");
+        //     // Config.preferences?.setStringList("repos", current.split(","));
+        //   },
+        //   onChanged: (v) {
+        //     _modfolder = v;
+        //   },
+        //   suffix: IconButton(
+        //     icon: const Icon(FluentIcons.add_to),
+        //     onPressed: () async {
+        //       var fold = _modfolder
+        //           .replaceFirst("~", Platform.environment['HOME'] ?? "NO_HOME")
+        //           .replaceFirst("%APPDATA%",
+        //               Platform.environment['APPDATA'] ?? "NO_APPDATA");
+        //       var r = await Directory(fold).exists();
+        //       if (r) {
+        // setState(() {
+        //   Config.preferences?.setString("modfolder", fold);
+        // });
+        //       } else {
+        //         showDialog(
+        //           context: context,
+        //           builder: (BuildContext context) => _invaliddir(),
+        //         );
+        //       }
+
+        //       // _clearController.clear();
+        //     },
+        //   ),
+        // ),
         biggerSpacer,
         Row(
           children: [

@@ -1,7 +1,7 @@
 name: tmodinstaller
 description: A beautiful mod installer for minecraft supporting custom repositories and more.
 publish_to: 'none'
-version: 0.0.8
+version: 0.0.10
 
 environment:
   sdk: '>=2.16.0 <3.0.0'
@@ -32,6 +32,12 @@ dependencies:
   path_provider: ^2.0.9
   isar: 2.2.1
   isar_flutter_libs: 2.2.1
+
+  file_selector_platform_interface: ^2.0.4
+  file_selector_linux:
+  file_selector_macos:
+  file_selector_windows:
+  file_selector: ^0.8.3
 
 dev_dependencies:
   build_runner: ^2.0.0

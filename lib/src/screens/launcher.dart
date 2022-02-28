@@ -6,6 +6,7 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
+import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:tmodinstaller/config.dart';
@@ -81,41 +82,68 @@ class _LauncherState extends State<Launcher> {
             "Current directory $_modfolder ${_modfolder == Config.directory ? "(Default)" : ""}",
           ),
           spacer,
-          TextBox(
-            placeholder: 'Change ',
-            onEditingComplete: () {},
-            onChanged: (v) {
-              _newmodfolder = v;
-            },
-            suffix: IconButton(
-              icon: const Icon(FluentIcons.add_to),
-              onPressed: () async {
-                var fold = _newmodfolder
-                    .replaceFirst(
-                        "~", Platform.environment['HOME'] ?? "NO_HOME")
-                    .replaceFirst("%APPDATA%",
-                        Platform.environment['APPDATA'] ?? "NO_APPDATA");
-                var r = await Directory(fold).exists();
-                if (r) {
-                  final data = Version()
-                    ..version = widget.mcv
-                    ..moddir = fold;
-                  if (version?.id != null) {
-                    data.id = version?.id;
-                  }
-                  await Config.isar.writeTxn((isar) async {
-                    data.id = await isar.versions.put(data);
-                  });
-                  setState(() {});
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => _invaliddir(context),
-                  );
+          FilledButton(
+            child: Text("Select new directory"),
+            onPressed: () async {
+              var dir = await getDirectoryPath(
+                initialDirectory: _modfolder,
+              );
+              if (dir == null) return;
+              var r = await Directory(dir).exists();
+              if (r) {
+                final data = Version()
+                  ..version = widget.mcv
+                  ..moddir = dir;
+                if (version?.id != null) {
+                  data.id = version?.id;
                 }
-              },
-            ),
-          ),
+                await Config.isar.writeTxn((isar) async {
+                  data.id = await isar.versions.put(data);
+                });
+                setState(() {});
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _invaliddir(context),
+                );
+              }
+            },
+          )
+          // TextBox(
+          //   placeholder: 'Change ',
+          //   onEditingComplete: () {},
+          //   onChanged: (v) {
+          //     _newmodfolder = v;
+          //   },
+          //   suffix: IconButton(
+          //     icon: const Icon(FluentIcons.add_to),
+          //     onPressed: () async {
+          //       var fold = _newmodfolder
+          //           .replaceFirst(
+          //               "~", Platform.environment['HOME'] ?? "NO_HOME")
+          //           .replaceFirst("%APPDATA%",
+          //               Platform.environment['APPDATA'] ?? "NO_APPDATA");
+          // var r = await Directory(fold).exists();
+          // if (r) {
+          //   final data = Version()
+          //     ..version = widget.mcv
+          //     ..moddir = fold;
+          //   if (version?.id != null) {
+          //     data.id = version?.id;
+          //   }
+          //   await Config.isar.writeTxn((isar) async {
+          //     data.id = await isar.versions.put(data);
+          //   });
+          //   setState(() {});
+          // } else {
+          //   showDialog(
+          //     context: context,
+          //     builder: (BuildContext context) => _invaliddir(context),
+          //   );
+          // }
+          //     },
+          //   ),
+          // ),
         ]);
   }
 
