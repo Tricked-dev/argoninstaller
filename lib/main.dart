@@ -114,7 +114,12 @@ class TModInstallerApp extends StatelessWidget {
                 child: child!,
               );
             },
-            home: const TModInstallerPage(title: 'Tricked mod Installer'),
+            initialRoute: '/',
+            routes: {
+              '/': (_) =>
+                  const TModInstallerPage(title: 'Tricked mod Installer')
+            },
+            // home: const TModInstallerPage(title: 'Tricked mod Installer'),
           );
         });
   }

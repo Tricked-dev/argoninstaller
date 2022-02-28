@@ -55,7 +55,7 @@ class _UpdaterState extends State<Updater> {
       //   child: OutlinedButton(onPressed: () {}, child: Text("Update all")),
       // ),
       Column(children: [
-        if (files.length == 0)
+        if (files.isEmpty)
           const Text("No mods found get back later when you installed some"),
         ...files.map((mod) {
           final style = FluentTheme.of(context);
@@ -115,22 +115,21 @@ class _UpdaterState extends State<Updater> {
                               child: Text(foundMod == null
                                   ? basename(mod.path)
                                   : "${foundMod.display} ${current?.version} - ${current?.mcversions[0]}"),
-                              style: const TextStyle().copyWith(
-                                fontSize: 16,
-                              ),
+                              style:
+                                  FluentTheme.of(context).typography.bodyLarge!,
                               overflow: TextOverflow.fade),
                           if (foundMod != null)
                             DefaultTextStyle(
                               child:
                                   flutter.SelectableText(foundMod.description),
-                              style: const TextStyle(),
+                              style: FluentTheme.of(context).typography.body!,
                               overflow: TextOverflow.fade,
                             ),
                           if (foundMod == null)
-                            const DefaultTextStyle(
-                              child: Text(
+                            DefaultTextStyle(
+                              child: const Text(
                                   "Could not find the origin of this mod, Maybe the repo of this mod is not enabled?"),
-                              style: const TextStyle(),
+                              style: FluentTheme.of(context).typography.body!,
                               overflow: TextOverflow.fade,
                             ),
                         ],

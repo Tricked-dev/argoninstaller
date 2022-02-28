@@ -73,13 +73,12 @@ class _ModLists extends State<ModListsPage> {
                         children: [
                           DefaultTextStyle(
                               child: Text(mod.display),
-                              style: const TextStyle().copyWith(
-                                fontSize: 16,
-                              ),
+                              style:
+                                  FluentTheme.of(context).typography.bodyLarge!,
                               overflow: TextOverflow.fade),
                           DefaultTextStyle(
                             child: flutter.SelectableText(mod.description),
-                            style: const TextStyle(),
+                            style: FluentTheme.of(context).typography.body!,
                             overflow: TextOverflow.fade,
                           ),
                         ],

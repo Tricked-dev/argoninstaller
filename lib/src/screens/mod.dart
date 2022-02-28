@@ -98,9 +98,9 @@ class _ModScreenState extends State<ModScreen> {
                                   child: SelectableText(
                                     widget.mod.display,
                                   ),
-                                  style: const TextStyle().copyWith(
-                                    fontSize: 16,
-                                  ),
+                                  style: FluentTheme.of(context)
+                                      .typography
+                                      .subtitle!,
                                 ),
                                 SizedBox(
                                   width: 500,
