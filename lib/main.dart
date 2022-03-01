@@ -40,11 +40,12 @@ void main(List<String> args) async {
 
   await Config.initDb();
 
-  // await WindowManager.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {
-    // await windowManager.setTitleBarStyle('hidden');
-    // await windowManager.setSize(const Size(755, 545));
-    // await windowManager.setMinimumSize(const Size(755, 545));
+    // Hide window title bar
+
+    await windowManager.setTitleBarStyle('hidden');
+    await windowManager.setSize(const Size(800, 600));
+    await windowManager.setMinimumSize(const Size(755, 545));
     await windowManager.center();
     await windowManager.show();
     await windowManager.setSkipTaskbar(false);

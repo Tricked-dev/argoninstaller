@@ -63,15 +63,34 @@ class _LauncherState extends State<Launcher> {
           FilledButton(
               child: const Text("Click here!"),
               onPressed: () async {
-                await Directory(_modfolder).delete(recursive: true);
-                await Directory(_modfolder).create();
-                var files =
-                    Directory("${Config.appDir}/modlists/${widget.mcv}/")
-                        .listSync();
-                for (var element in files) {
-                  await File(element.path)
-                      .copy("$_modfolder/${basename(element.path)}");
-                  // element.("$_modfolder/${basename(element.path)}");
+                var backupDir =
+                    "${Directory(_modfolder).parent.path}/mods.back";
+                try {
+                  await Directory(backupDir).delete(recursive: true);
+                } catch (e) {
+                  print("Backup mods folder doesn't exist");
+                }
+                try {
+                  await Directory(_modfolder).rename(
+                    backupDir,
+                  );
+                  await File("$backupDir/hi.txt").writeAsString(
+                      "Accidentally clicked this button? dw just rename this folder to mods");
+
+                  // await Directory(_modfolder).delete(recursive: true);
+                  await Directory(_modfolder).create();
+                  var files =
+                      Directory("${Config.appDir}/modlists/${widget.mcv}/")
+                          .listSync();
+                  for (var element in files) {
+                    if (element.statSync().type == FileSystemEntityType.file) {
+                      await File(element.path)
+                          .copy("$_modfolder/${basename(element.path)}");
+                    }
+                  }
+                } catch (e) {
+                  print(e);
+                  print("Failed to refresh mod folder");
                 }
               }),
           biggerSpacer,
