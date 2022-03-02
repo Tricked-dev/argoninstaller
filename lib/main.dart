@@ -209,15 +209,15 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
                 )
             : null,
         displayMode: appTheme.displayMode,
-        // indicatorBuilder: () {
-        //   switch (appTheme.indicator) {
-        //     case NavigationIndicators.end:
-        //       return NavigationIndicator.end;
-        //     case NavigationIndicators.sticky:
-        //     default:
-        //       return NavigationIndicator.sticky;
-        //   }
-        // }(),
+        indicatorBuilder: () {
+          switch (appTheme.indicator) {
+            case NavigationIndicators.end:
+              return NavigationIndicator.end;
+            case NavigationIndicators.sticky:
+            default:
+              return NavigationIndicator.sticky;
+          }
+        }(),
         items: [
           ...versions.map(
             (e) => PaneItem(
