@@ -43,6 +43,10 @@ class AppTheme extends ChangeNotifier {
     notifyListeners();
   }
 
+  set rawDisplayMode(PaneDisplayMode displayMode) {
+    _displayMode = displayMode;
+  }
+
   NavigationIndicators _indicator = NavigationIndicators.sticky;
   NavigationIndicators get indicator => _indicator;
   set indicator(NavigationIndicators indicator) {

@@ -6,6 +6,7 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -16,68 +17,91 @@ import 'package:tmodinstaller/src/models/models.dart';
 import 'package:tmodinstaller/src/utils.dart';
 
 class Config {
-  static SharedPreferences? preferences;
-  static String _directory = "";
-  static String _appDir = "";
-  static bool _icons = true;
-  static bool _newMenu = true;
+  static File _configFile = File("");
+  static String _appdir = "";
+  static Map _config = json.decode(_configFile.readAsStringSync());
   static late Isar isar;
-
-  static Future<void> initializePreference() async {
-    preferences = await SharedPreferences.getInstance();
-    var dir = Config.preferences?.getString("modfolder");
-    if (dir == null) {
-      _directory = defaultMinecraft[defaultTargetPlatform]!;
-      Config.preferences?.setString("modfolder", _directory);
-    } else {
-      _directory = dir;
-    }
-    _newMenu = preferences?.getBool("new_menu") ?? true;
-    _icons = preferences?.getBool("icons") ?? true;
-
-    var appdir = Config.preferences?.getString("appdir");
-    if (appdir == null) {
-      _appDir = defaultDirectories[defaultTargetPlatform] ??
-          (await getApplicationSupportDirectory()).path;
-      Directory(_appDir).createSync(recursive: true);
-    } else {
-      _appDir = appdir;
-    }
-  }
 
   static Future<void> initDb() async {
     isar = await Isar.open(
       schemas: [InstalledModSchema, VersionSchema],
       name: "data",
-      directory: Config.appDir,
-      inspector: true,
+      directory: _appdir,
+      inspector: false,
     );
   }
 
-  static set directory(String v) {
-    Config.preferences?.setString("modfolder", v);
-    _directory = v;
+  static init() async {
+    _appdir = defaultDirectories[TargetPlatform.linux] ??
+        (await getApplicationSupportDirectory()).path;
+    _configFile = File("$_appdir/settings.json");
+
+    if (!_configFile.existsSync()) {
+      _configFile.createSync(recursive: true);
+      _configFile.writeAsStringSync(json.encode({}));
+    }
+    await initDb();
   }
 
-  static String get directory {
-    return _directory;
+  Config(File configFile) {
+    _configFile = configFile;
+    _config = json.decode(configFile.readAsStringSync());
+  }
+
+  static final Map defaultConfigMap = {
+    "icons": true,
+    "theme": 0,
+    "color": -1,
+    "use_top_nav": false,
+    "mod_repos": ["std"],
+    "mod_folder": "${defaultMinecraft[defaultTargetPlatform]}/mods",
+  };
+
+  static void change(String key, value) {
+    Config(_configFile).Change(key, value);
+  }
+
+  void Change(String key, value) {
+    _config[key] = value;
+    Save();
+  }
+
+  static Map toMap() {
+    return Config(_configFile).ToMap();
+  }
+
+  Map ToMap() {
+    return _config;
+  }
+
+  static dynamic getValue(String key, {dynamic defaultValue}) {
+    return Config(_configFile).GetValue(key, defaultValue: defaultValue);
+  }
+
+  dynamic GetValue(String key, {dynamic defaultValue}) {
+    if (!_config.containsKey(key)) {
+      _config[key] = defaultConfigMap[key] ?? defaultValue;
+      Save();
+    }
+    return _config[key] ?? defaultValue;
+  }
+
+  static void save() {
+    Config(_configFile).Save();
+  }
+
+  void Save() {
+    try {
+      _configFile.writeAsStringSync(json.encode(_config));
+    } on FileSystemException {}
   }
 
   static set appDir(String v) {
-    Config.preferences?.setString("appdir", v);
-    _appDir = v;
+    Config.change("app_dir", v);
+    _appdir = v;
   }
 
   static String get appDir {
-    return _appDir;
-  }
-
-  static set icons(bool v) {
-    Config.preferences?.setBool("icons", v);
-    _icons = v;
-  }
-
-  static bool get icons {
-    return _icons;
+    return _appdir;
   }
 }

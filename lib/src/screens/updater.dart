@@ -87,7 +87,8 @@ class _UpdaterState extends State<Updater> {
 
                   child: Row(children: <Widget>[
                     const SizedBox(height: 100),
-                    if (Config.icons && foundMod != null)
+                    if (Config.getValue("icons", defaultValue: true) &&
+                        foundMod != null)
                       Padding(
                           padding: const EdgeInsets.only(right: 14),
                           child: Image.network(

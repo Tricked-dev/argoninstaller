@@ -82,42 +82,22 @@ Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
 String getModFolder(String mcv) {
   var versions = Config.isar.versions.where().findAllSync();
   var version = versions.firstWhereOrNull((element) => element.version == mcv);
-  return version?.moddir ?? Config.directory;
+  return version?.moddir ?? Config.getValue("mod_folder");
 }
 
 Future<void> fetchData() async {
   mods = [];
   //TODO save mods somewhere for offline
   try {
-    var repos = Config.preferences?.getStringList("repos");
-    if (repos != null) {
-      for (var repo in repos) {
-        var trimmed = repo.trim();
-        //Prevent leading commas from erroring shit
-        if (trimmed == "") continue;
-        final res = await http.get(Uri.parse(trimmed.startsWith("http")
-            ? trimmed
-            : "https://tmod.deno.dev/$trimmed.json"));
-        var data = json.decode(res.body);
-
-        mods = [
-          ...mods,
-          ...data["mods"].map((x) {
-            x["repo"] = data["id"];
-            x["meta"].removeWhere((k, v) => v == null);
-            if (x["icon"] == null) {
-              x["icon"] =
-                  "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
-            }
-
-            return Mod.fromJson(x);
-          })
-        ];
-      }
-    } else {
-      final response =
-          await http.get(Uri.parse('https://tmod.deno.dev/std.json'));
-      var data = json.decode(response.body);
+    var repos = Config.getValue("mod_repos")!;
+    for (var repo in repos) {
+      var trimmed = repo.trim();
+      //Prevent leading commas from erroring shit
+      if (trimmed == "") continue;
+      final res = await http.get(Uri.parse(trimmed.startsWith("http")
+          ? trimmed
+          : "https://tmod.deno.dev/$trimmed.json"));
+      var data = json.decode(res.body);
 
       mods = [
         ...mods,
@@ -128,6 +108,7 @@ Future<void> fetchData() async {
             x["icon"] =
                 "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
           }
+
           return Mod.fromJson(x);
         })
       ];

@@ -98,7 +98,7 @@ class _LauncherState extends State<Launcher> {
               style: FluentTheme.of(context).typography.subtitle),
           spacer,
           flutter.SelectableText(
-            "Current directory $_modfolder ${_modfolder == Config.directory ? "(Default)" : ""}",
+            "Current directory $_modfolder ${_modfolder == Config.getValue("mod_folder") ? "(Default)" : ""}",
           ),
           spacer,
           FilledButton(

@@ -23,7 +23,7 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setPathUrlStrategy();
-  await Config.initializePreference();
+  await Config.init();
   await Future.wait([
     flutter_acrylic.Window.initialize(),
     fetchData(),
@@ -32,13 +32,9 @@ void main(List<String> args) async {
 
   var parser = ArgParser();
   parser.addOption("moddir",
-      abbr: "d", callback: (v) => v != null ? Config.directory = v : null);
-  parser.addFlag("icon", abbr: "i", callback: (v) => Config.icons = v);
-  parser.addOption("appdir",
-      abbr: "a", callback: (v) => v != null ? Config.appDir = v : null);
+      abbr: "d",
+      callback: (v) => v != null ? Config.change("mod_folder", v) : null);
   parser.parse(args);
-
-  await Config.initDb();
 
   windowManager.waitUntilReadyToShow().then((_) async {
     // Hide window title bar
@@ -65,7 +61,7 @@ class TModInstallerApp extends StatelessWidget {
         builder: (context, _) {
           final appTheme = context.watch<AppTheme>();
           //Quick and dirty way to set the color!
-          var color = Config.preferences?.getInt("color");
+          var color = Config.getValue("color");
           if (color != null) {
             if (color == -1) {
               appTheme.rawColor = systemAccentColor;
@@ -73,8 +69,11 @@ class TModInstallerApp extends StatelessWidget {
               appTheme.rawColor = Colors.accentColors[color];
             }
           }
+          if (Config.getValue("use_top_nav", defaultValue: false)) {
+            appTheme.rawDisplayMode = PaneDisplayMode.top;
+          }
 
-          var theme = Config.preferences?.getInt("theme");
+          var theme = Config.getValue("theme");
           if (theme != null) {
             appTheme.rawMode = ThemeMode.values[theme];
           }
@@ -198,15 +197,17 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
           openMinWidth: 250,
           openMaxWidth: 320,
         ),
-        header: Container(
-            height: kOneLineTileHeight,
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: SvgPicture.asset("assets/Logo.svg")
-            // child: const FlutterLogo(
-            //   style: FlutterLogoStyle.horizontal,
-            //   size: 100,
-            // ),
-            ),
+        header: !Config.getValue("use_top_nav", defaultValue: false)
+            ? Container(
+                height: kOneLineTileHeight,
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: SvgPicture.asset("assets/Logo.svg")
+                // child: const FlutterLogo(
+                //   style: FlutterLogoStyle.horizontal,
+                //   size: 100,
+                // ),
+                )
+            : null,
         displayMode: appTheme.displayMode,
         // indicatorBuilder: () {
         //   switch (appTheme.indicator) {

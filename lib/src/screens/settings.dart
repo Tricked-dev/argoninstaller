@@ -57,7 +57,7 @@ class _SettingsState extends State<Settings> {
   String _modfolder = "";
   @override
   Widget build(BuildContext context) {
-    var modfolder = Config.preferences?.getString("modfolder");
+    var modfolder = Config.getValue("mod_folder");
 
     final appTheme = context.watch<AppTheme>();
     final tooltipThemeData = TooltipThemeData(decoration: () {
@@ -103,7 +103,7 @@ class _SettingsState extends State<Settings> {
               checked: appTheme.mode == mode,
               onChanged: (value) {
                 if (value) {
-                  Config.preferences?.setInt("theme", index);
+                  Config.change("theme", index);
                   appTheme.mode = mode;
                 }
               },
@@ -150,7 +150,7 @@ class _SettingsState extends State<Settings> {
           suffix: IconButton(
             icon: const Icon(FluentIcons.add_to),
             onPressed: () async {
-              Config.preferences?.setStringList("repos", current.split(","));
+              Config.change("mod_repos", current.split(","));
               fetchData();
               setState(() {});
               // _clearController.clear();
@@ -167,17 +167,39 @@ class _SettingsState extends State<Settings> {
         Row(
           children: [
             Checkbox(
-              checked: !Config.icons,
+              checked: !Config.getValue("icons"),
               onChanged: (value) => setState(() {
                 if (value != null && value == false) {
-                  Config.icons = true;
+                  Config.change("icons", true);
                 } else {
-                  Config.icons = false;
+                  Config.change("icons", false);
                 }
               }),
             ),
           ],
         ),
+        biggerSpacer,
+        Text("Use top nav", style: FluentTheme.of(context).typography.subtitle),
+        const flutter.SelectableText(
+          "You shouldn't want this",
+        ),
+        spacer,
+        Row(
+          children: [
+            Checkbox(
+              checked: Config.getValue("use_top_nav"),
+              onChanged: (value) => setState(() {
+                if (value != null) {
+                  value == true
+                      ? appTheme.displayMode = PaneDisplayMode.top
+                      : appTheme.displayMode = PaneDisplayMode.auto;
+                  Config.change("use_top_nav", value);
+                }
+              }),
+            ),
+          ],
+        ),
+
         biggerSpacer,
         Text("Mod folder", style: FluentTheme.of(context).typography.subtitle),
         flutter.SelectableText(
@@ -194,7 +216,8 @@ class _SettingsState extends State<Settings> {
             var r = await Directory(dir).exists();
             if (r) {
               setState(() {
-                Config.preferences?.setString("modfolder", dir);
+                Config.change("mod_folder", dir);
+                // Config.preferences?.setString("/modfolder", dir);
               });
               setState(() {});
             } else {
@@ -286,7 +309,7 @@ class _SettingsState extends State<Settings> {
       padding: const EdgeInsets.all(2.0),
       child: Button(
         onPressed: () {
-          Config.preferences?.setInt("color", index);
+          Config.change("color", index);
           appTheme.color = color;
         },
         style: ButtonStyle(padding: ButtonState.all(EdgeInsets.zero)),

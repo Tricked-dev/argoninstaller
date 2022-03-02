@@ -6,13 +6,6 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-// TMOD Installer (c) by tricked
-//
-// TMOD Installer is licensed under a
-// Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-//
-// You should have received a copy of the license along with this
-// work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:fluent_ui/fluent_ui.dart';
@@ -74,7 +67,7 @@ class _ModScreenState extends State<ModScreen> {
                       children: <Widget>[
                         Row(
                           children: [
-                            if (Config.icons)
+                            if (Config.getValue("icons"))
                               Padding(
                                   padding: const EdgeInsets.only(right: 14),
                                   child: Image.network(

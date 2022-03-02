@@ -50,7 +50,7 @@ class _ModLists extends State<ModListsPage> {
                   ),
                   child: Row(children: <Widget>[
                     const SizedBox(height: 100),
-                    if (Config.icons)
+                    if (Config.getValue("icons"))
                       Padding(
                           padding: const EdgeInsets.only(right: 14),
                           child: Image.network(
