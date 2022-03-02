@@ -54,7 +54,7 @@ class Config {
     "color": -1,
     "use_top_nav": false,
     "mod_repos": ["std"],
-    "mod_folder": "${defaultMinecraft[defaultTargetPlatform]}/mods",
+    "mod_folder": "${defaultMinecraft[defaultTargetPlatform]}",
   };
 
   static void change(String key, value) {

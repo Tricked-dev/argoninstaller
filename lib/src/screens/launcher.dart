@@ -63,35 +63,10 @@ class _LauncherState extends State<Launcher> {
           FilledButton(
               child: const Text("Click here!"),
               onPressed: () async {
-                var backupDir =
-                    "${Directory(_modfolder).parent.path}/mods.back";
-                try {
-                  await Directory(backupDir).delete(recursive: true);
-                } catch (e) {
-                  print("Backup mods folder doesn't exist");
-                }
-                try {
-                  await Directory(_modfolder).rename(
-                    backupDir,
-                  );
-                  await File("$backupDir/hi.txt").writeAsString(
-                      "Accidentally clicked this button? dw just rename this folder to mods");
-
-                  // await Directory(_modfolder).delete(recursive: true);
-                  await Directory(_modfolder).create();
-                  var files =
-                      Directory("${Config.appDir}/modlists/${widget.mcv}/")
-                          .listSync();
-                  for (var element in files) {
-                    if (element.statSync().type == FileSystemEntityType.file) {
-                      await File(element.path)
-                          .copy("$_modfolder/${basename(element.path)}");
-                    }
-                  }
-                } catch (e) {
-                  print(e);
-                  print("Failed to refresh mod folder");
-                }
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _refresh(context, version),
+                );
               }),
           biggerSpacer,
           Text("Mod folder",
@@ -173,6 +148,55 @@ class _LauncherState extends State<Launcher> {
       actions: <Widget>[
         FilledButton(
           onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+
+  Widget _refresh(BuildContext context, Version? version) {
+    return ContentDialog(
+      title: const Text(
+          "Refresh mod folder this will delete the mod folder and replace the mods"),
+      content: const Text("This action CANNOT be undone"),
+      actions: <Widget>[
+        FilledButton(
+          onPressed: () async {
+            var backupDir = "${Directory(_modfolder).parent.path}/mods.back";
+            try {
+              await Directory(backupDir).delete(recursive: true);
+            } catch (e) {
+              print("Backup mods folder doesn't exist");
+            }
+            try {
+              await Directory(_modfolder).rename(
+                backupDir,
+              );
+              await File("$backupDir/hi.txt").writeAsString(
+                  "Accidentally clicked this button? dw just rename this folder to mods");
+
+              // await Directory(_modfolder).delete(recursive: true);
+              await Directory(_modfolder).create();
+              var files = Directory("${Config.appDir}/modlists/${widget.mcv}/")
+                  .listSync();
+              for (var element in files) {
+                if (element.statSync().type == FileSystemEntityType.file) {
+                  await File(element.path)
+                      .copy("$_modfolder/${basename(element.path)}");
+                }
+              }
+            } catch (e) {
+              print(e);
+              print("Failed to refresh mod folder");
+            }
+            Navigator.of(context).pop();
+          },
+          child: const Text('Continue'),
+        ),
+        FilledButton(
+          onPressed: () async {
             Navigator.of(context).pop();
           },
           child: const Text('Close'),

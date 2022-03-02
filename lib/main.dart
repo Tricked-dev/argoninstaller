@@ -6,7 +6,9 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:args/args.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tmodinstaller/config.dart';
 import 'package:tmodinstaller/src/screens/settings.dart';
 import 'package:tmodinstaller/src/screens/version.dart';
@@ -176,19 +178,21 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
     return NavigationView(
       appBar: NavigationAppBar(
         title: () {
-          // return const DragToMoveArea(
-          //   child: Align(
-          //     alignment: AlignmentDirectional.centerStart,
-          //     child: Text("TMOD Installer"),
-          //   ),
-          // );
+          return const DragToMoveArea(
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text("TMod Installer"),
+            ),
+          );
         }(),
-        // actions: DragToMoveArea(
-        //   child: Row(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: const [Spacer(), Text("")],
-        //   ),
-        // ),
+        actions: defaultTargetPlatform == TargetPlatform.windows
+            ? DragToMoveArea(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [Spacer(), WindowButtons()],
+                ),
+              )
+            : null,
       ),
       pane: NavigationPane(
         selected: index,
@@ -201,12 +205,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
             ? Container(
                 height: kOneLineTileHeight,
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset("assets/Logo.svg")
-                // child: const FlutterLogo(
-                //   style: FlutterLogoStyle.horizontal,
-                //   size: 100,
-                // ),
-                )
+                child: SvgPicture.asset("assets/Logo.svg"))
             : null,
         displayMode: appTheme.displayMode,
         indicatorBuilder: () {
@@ -225,65 +224,16 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
               title: Text(e),
             ),
           )
-          // It doesn't look good when resizing from compact to open
-          // PaneItemHeader(header: Text('User Interaction')),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.checkbox_composite),
-          //   title: const Text('Inputs'),
-          // ),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.text_field),
-          //   title: const Text('Forms'),
-          // ),
-          // PaneItemSeparator(),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.color),
-          //   title: const Text('Colors'),
-          // ),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.icon_sets_flag),
-          //   title: const Text('Icons'),
-          // ),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.plain_text),
-          //   title: const Text('Typography'),
-          // ),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.cell_phone),
-          //   title: const Text('Mobile'),
-          // ),
-          // PaneItem(
-          //   icon: Icon(
-          //     appTheme.displayMode == PaneDisplayMode.top
-          //         ? FluentIcons.more
-          //         : FluentIcons.more_vertical,
-          //   ),
-          //   title: const Text('Others'),
-          //   infoBadge: const InfoBadge(
-          //     source: Text('9'),
-          //   ),
-          // ),
         ],
-        // autoSuggestBox: AutoSuggestBox(
-        //   controller: TextEditingController(),
-        //   items: const ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-        // ),
         autoSuggestBoxReplacement: const Icon(FluentIcons.search),
         footerItems: [
           PaneItemSeparator(),
-          // PaneItem(
-          //   icon: const Icon(FluentIcons.upload),
-          //   title: const Text('Updater'),
-          // ),
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
           ),
         ],
       ),
-
-      // appBar: NavigationAppBar(title: Text("Fluent Design App Bar")),
-      // content: comp,
       content: NavigationBody(index: index, children: [
         ...versions.map((version) => VersionPage(
               mods: [
@@ -297,5 +247,55 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
         Settings(controller: settingsController),
       ]),
     );
+  }
+}
+
+class WindowButtons extends StatelessWidget {
+  const WindowButtons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    assert(debugCheckHasFluentTheme(context));
+    assert(debugCheckHasFluentLocalizations(context));
+    final ThemeData theme = FluentTheme.of(context);
+    final buttonColors = WindowButtonColors(
+      iconNormal: theme.inactiveColor,
+      iconMouseDown: theme.inactiveColor,
+      iconMouseOver: theme.inactiveColor,
+      mouseOver: ButtonThemeData.buttonColor(
+          theme.brightness, {ButtonStates.hovering}),
+      mouseDown: ButtonThemeData.buttonColor(
+          theme.brightness, {ButtonStates.pressing}),
+    );
+    final closeButtonColors = WindowButtonColors(
+      mouseOver: Colors.red,
+      mouseDown: Colors.red.dark,
+      iconNormal: theme.inactiveColor,
+      iconMouseOver: Colors.red.basedOnLuminance(),
+      iconMouseDown: Colors.red.dark.basedOnLuminance(),
+    );
+    return Row(children: [
+      Tooltip(
+        message: FluentLocalizations.of(context).minimizeWindowTooltip,
+        child: MinimizeWindowButton(colors: buttonColors),
+      ),
+      Tooltip(
+        message: FluentLocalizations.of(context).restoreWindowTooltip,
+        child: WindowButton(
+          colors: buttonColors,
+          iconBuilder: (context) {
+            if (appWindow.isMaximized) {
+              return RestoreIcon(color: context.iconColor);
+            }
+            return MaximizeIcon(color: context.iconColor);
+          },
+          onPressed: appWindow.maximizeOrRestore,
+        ),
+      ),
+      Tooltip(
+        message: FluentLocalizations.of(context).closeWindowTooltip,
+        child: CloseWindowButton(colors: closeButtonColors),
+      ),
+    ]);
   }
 }
