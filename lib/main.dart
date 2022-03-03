@@ -40,10 +40,11 @@ void main(List<String> args) async {
 
   windowManager.waitUntilReadyToShow().then((_) async {
     // Hide window title bar
-
-    await windowManager.setTitleBarStyle('hidden');
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      await windowManager.setTitleBarStyle('hidden');
+      await windowManager.setMinimumSize(const Size(755, 545));
+    }
     await windowManager.setSize(const Size(800, 600));
-    await windowManager.setMinimumSize(const Size(755, 545));
     await windowManager.center();
     await windowManager.show();
     await windowManager.setSkipTaskbar(false);
@@ -176,24 +177,23 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       return true;
     }).toList();
     return NavigationView(
-      appBar: NavigationAppBar(
-        title: () {
-          return const DragToMoveArea(
-            child: Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text("TMod Installer"),
-            ),
-          );
-        }(),
-        actions: defaultTargetPlatform == TargetPlatform.windows
-            ? DragToMoveArea(
+      appBar: defaultTargetPlatform == TargetPlatform.windows
+          ? NavigationAppBar(
+              title: () {
+                return const DragToMoveArea(
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text("TMod Installer"),
+                  ),
+                );
+              }(),
+              actions: DragToMoveArea(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [Spacer(), WindowButtons()],
                 ),
-              )
-            : null,
-      ),
+              ))
+          : null,
       pane: NavigationPane(
         selected: index,
         onChanged: (i) => setState(() => index = i),
