@@ -6,7 +6,7 @@
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+// import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:args/args.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tmodinstaller/config.dart';
@@ -40,10 +40,10 @@ void main(List<String> args) async {
 
   windowManager.waitUntilReadyToShow().then((_) async {
     // Hide window title bar
-    if (defaultTargetPlatform == TargetPlatform.windows) {
-      await windowManager.setTitleBarStyle('hidden');
-      await windowManager.setMinimumSize(const Size(755, 545));
-    }
+    // if (defaultTargetPlatform == TargetPlatform.windows) {
+    //   await windowManager.setTitleBarStyle('hidden');
+    //   await windowManager.setMinimumSize(const Size(755, 545));
+    // }
     await windowManager.setSize(const Size(800, 600));
     await windowManager.center();
     await windowManager.show();
@@ -177,23 +177,23 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       return true;
     }).toList();
     return NavigationView(
-      appBar: defaultTargetPlatform == TargetPlatform.windows
-          ? NavigationAppBar(
-              title: () {
-                return const DragToMoveArea(
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text("TMod Installer"),
-                  ),
-                );
-              }(),
-              actions: DragToMoveArea(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [Spacer(), WindowButtons()],
-                ),
-              ))
-          : null,
+      // appBar: defaultTargetPlatform == TargetPlatform.windows
+      //     ? NavigationAppBar(
+      //         title: () {
+      //           return const DragToMoveArea(
+      //             child: Align(
+      //               alignment: AlignmentDirectional.centerStart,
+      //               child: Text("TMod Installer"),
+      //             ),
+      //           );
+      //         }(),
+      //         actions: DragToMoveArea(
+      //           child: Row(
+      //             crossAxisAlignment: CrossAxisAlignment.start,
+      //             children: const [Spacer(), WindowButtons()],
+      //           ),
+      //         ))
+      //     : null,
       pane: NavigationPane(
         selected: index,
         onChanged: (i) => setState(() => index = i),
@@ -250,52 +250,52 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
   }
 }
 
-class WindowButtons extends StatelessWidget {
-  const WindowButtons({Key? key}) : super(key: key);
+// class WindowButtons extends StatelessWidget {
+//   const WindowButtons({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    assert(debugCheckHasFluentTheme(context));
-    assert(debugCheckHasFluentLocalizations(context));
-    final ThemeData theme = FluentTheme.of(context);
-    final buttonColors = WindowButtonColors(
-      iconNormal: theme.inactiveColor,
-      iconMouseDown: theme.inactiveColor,
-      iconMouseOver: theme.inactiveColor,
-      mouseOver: ButtonThemeData.buttonColor(
-          theme.brightness, {ButtonStates.hovering}),
-      mouseDown: ButtonThemeData.buttonColor(
-          theme.brightness, {ButtonStates.pressing}),
-    );
-    final closeButtonColors = WindowButtonColors(
-      mouseOver: Colors.red,
-      mouseDown: Colors.red.dark,
-      iconNormal: theme.inactiveColor,
-      iconMouseOver: Colors.red.basedOnLuminance(),
-      iconMouseDown: Colors.red.dark.basedOnLuminance(),
-    );
-    return Row(children: [
-      Tooltip(
-        message: FluentLocalizations.of(context).minimizeWindowTooltip,
-        child: MinimizeWindowButton(colors: buttonColors),
-      ),
-      Tooltip(
-        message: FluentLocalizations.of(context).restoreWindowTooltip,
-        child: WindowButton(
-          colors: buttonColors,
-          iconBuilder: (context) {
-            if (appWindow.isMaximized) {
-              return RestoreIcon(color: context.iconColor);
-            }
-            return MaximizeIcon(color: context.iconColor);
-          },
-          onPressed: appWindow.maximizeOrRestore,
-        ),
-      ),
-      Tooltip(
-        message: FluentLocalizations.of(context).closeWindowTooltip,
-        child: CloseWindowButton(colors: closeButtonColors),
-      ),
-    ]);
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     assert(debugCheckHasFluentTheme(context));
+//     assert(debugCheckHasFluentLocalizations(context));
+//     final ThemeData theme = FluentTheme.of(context);
+//     final buttonColors = WindowButtonColors(
+//       iconNormal: theme.inactiveColor,
+//       iconMouseDown: theme.inactiveColor,
+//       iconMouseOver: theme.inactiveColor,
+//       mouseOver: ButtonThemeData.buttonColor(
+//           theme.brightness, {ButtonStates.hovering}),
+//       mouseDown: ButtonThemeData.buttonColor(
+//           theme.brightness, {ButtonStates.pressing}),
+//     );
+//     final closeButtonColors = WindowButtonColors(
+//       mouseOver: Colors.red,
+//       mouseDown: Colors.red.dark,
+//       iconNormal: theme.inactiveColor,
+//       iconMouseOver: Colors.red.basedOnLuminance(),
+//       iconMouseDown: Colors.red.dark.basedOnLuminance(),
+//     );
+//     return Row(children: [
+//       Tooltip(
+//         message: FluentLocalizations.of(context).minimizeWindowTooltip,
+//         child: MinimizeWindowButton(colors: buttonColors),
+//       ),
+//       Tooltip(
+//         message: FluentLocalizations.of(context).restoreWindowTooltip,
+//         child: WindowButton(
+//           colors: buttonColors,
+//           iconBuilder: (context) {
+//             if (appWindow.isMaximized) {
+//               return RestoreIcon(color: context.iconColor);
+//             }
+//             return MaximizeIcon(color: context.iconColor);
+//           },
+//           onPressed: appWindow.maximizeOrRestore,
+//         ),
+//       ),
+//       Tooltip(
+//         message: FluentLocalizations.of(context).closeWindowTooltip,
+//         child: CloseWindowButton(colors: closeButtonColors),
+//       ),
+//     ]);
+//   }
+// }
