@@ -16,6 +16,7 @@ import 'package:isar/isar.dart';
 import 'package:tmodinstaller/config.dart';
 import 'models/models.dart';
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
 
 List<Mod> mods = [];
 
@@ -59,8 +60,33 @@ class UtilMod {
   }
 }
 
+class HashingError extends Error {
+  String reason;
+  HashingError(this.reason);
+}
+
 Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
   final response = await http.get(Uri.parse(version.url));
+
+  var hashData = version.hash.split(";");
+  Digest Function(List<int> data) hashFun;
+  if (hashData[0] == "sha1") {
+    hashFun = sha1.convert;
+  } else if (hashData[0] == "md5") {
+    hashFun = md5.convert;
+  } else if (hashData[0] == "sha256") {
+    hashFun = sha256.convert;
+  } else if (hashData[0] == "sha512") {
+    hashFun = sha512.convert;
+  } else {
+    throw HashingError("Invalid hashing algorithm ${hashData[0]}");
+  }
+  print(hashFun);
+  print(hashData);
+  if (hashFun(response.bodyBytes).toString() != hashData[1]) {
+    throw HashingError(
+        "Hash mismatch file hash: ${hashFun(response.bodyBytes).toString()}. Expected hash ${hashData[1]}");
+  }
   //TODO: Hashing!
   await Directory("${Config.appDir}/modlists/$mcv/").create(recursive: true);
 

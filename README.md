@@ -12,6 +12,8 @@
 
 ---
 
+## ⚠️⚠️ THIS PROJECT IS STILL IN EARLY DEVELOPMENT AND NEEDS A NEW NAME SUBMISSIONS CAN BE MADE IN THE [DISCORD](https://discord.gg/wU9kyjdJup) OR AS A ISSUE ⚠️⚠️
+
 A beautiful mod installer for minecraft supporting custom repositories and more.
 
 TMod Installer is a cross platform mod installer and updater you can use it with your own repo's or the standard provided [repos](https://github.com/Tricked-dev/tmodinstallerrepo).

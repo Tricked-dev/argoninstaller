@@ -197,6 +197,19 @@ class _ModScreenState extends State<ModScreen> {
           );
         }
         if (snapshot.hasError) {
+          if (snapshot.error is HashingError) {
+            return ContentDialog(
+              title: Text((snapshot.error as HashingError).reason),
+              actions: <Widget>[
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          }
           return ContentDialog(
             title: const Text(
                 "Failed to install mod, this is likely due to a hash mismatch"),

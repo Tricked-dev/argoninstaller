@@ -40,9 +40,15 @@ dev_dependencies:
   dependency_validator: ^3.0.0
   isar_generator: 2.2.1
   flutter_lints: ^1.0.0
+  msix: ^3.3.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+msix_config:
+  identity_name: pro.tricked.tmodinstaller
+  install_certificate: false
+  capabilities: internetClient
 
 flutter_native_splash:
   color: '#42a5f5'

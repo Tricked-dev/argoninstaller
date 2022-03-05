@@ -63,6 +63,7 @@ jobs:
           cache: true
       - run: flutter config --enable-windows-desktop
       - run: flutter pub get
+      # - run: flutter pub run msix:create
       - run: flutter pub run flutter_native_splash:create
       - run: flutter build windows
       - run: choco install make -y
