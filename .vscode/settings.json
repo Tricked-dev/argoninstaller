@@ -1,5 +1,6 @@
 {
 	"licenser.license": "CC-BY-NC-ND-3",
 	"licenser.projectName": "TMOD Installer",
-	"licenser.author": "Tricked-dev <tricked@tricked.pro>"
+	"licenser.author": "Tricked-dev <tricked@tricked.pro>",
+	"deno.enable": false
 }

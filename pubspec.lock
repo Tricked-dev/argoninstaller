@@ -21,7 +21,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.1"
+    version: "3.2.2"
   args:
     dependency: "direct main"
     description:
@@ -77,7 +77,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.7"
+    version: "2.1.8"
   build_runner_core:
     dependency: transitive
     description:
@@ -189,7 +189,7 @@ packages:
       name: dart_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   dartx:
     dependency: transitive
     description:
@@ -231,7 +231,7 @@ packages:
       name: file_selector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.3"
+    version: "0.8.4+1"
   file_selector_linux:
     dependency: "direct main"
     description:
@@ -245,7 +245,7 @@ packages:
       name: file_selector_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+1"
+    version: "0.8.2"
   file_selector_platform_interface:
     dependency: "direct main"
     description:
@@ -277,11 +277,9 @@ packages:
   fluent_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "5989734567e1da47923f05d435b0c386229b81d4"
-      url: "https://github.com/bdlukaa/fluent_ui.git"
-    source: git
+      name: fluent_ui
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "3.9.1"
   flutter:
     dependency: "direct main"
@@ -294,7 +292,7 @@ packages:
       name: flutter_acrylic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0+1"
+    version: "1.0.0+2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -315,7 +313,7 @@ packages:
       name: flutter_native_splash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -444,7 +442,7 @@ packages:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.4"
+    version: "6.1.5"
   lints:
     dependency: transitive
     description:
@@ -500,7 +498,7 @@ packages:
       name: msix
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.1"
+    version: "3.3.2"
   nested:
     dependency: transitive
     description:
@@ -633,7 +631,7 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   pubspec_parse:
     dependency: transitive
     description:
@@ -932,7 +930,7 @@ packages:
       name: window_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.8"
+    version: "0.2.0"
   xdg_directories:
     dependency: transitive
     description:

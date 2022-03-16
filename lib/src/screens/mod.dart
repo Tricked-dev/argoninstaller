@@ -70,11 +70,13 @@ class _ModScreenState extends State<ModScreen> {
                             if (Config.getValue("icons"))
                               Padding(
                                   padding: const EdgeInsets.only(right: 14),
-                                  child: Image.network(
-                                    widget.mod.icon,
-                                    width: 128,
-                                    height: 128,
-                                  )),
+                                  child: Hero(
+                                      tag: widget.mod.id,
+                                      child: Image.network(
+                                        widget.mod.icon,
+                                        width: 128,
+                                        height: 128,
+                                      ))),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,

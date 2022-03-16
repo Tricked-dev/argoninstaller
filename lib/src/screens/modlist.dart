@@ -53,11 +53,13 @@ class _ModLists extends State<ModListsPage> {
                     if (Config.getValue("icons"))
                       Padding(
                           padding: const EdgeInsets.only(right: 14),
-                          child: Image.network(
-                            mod.icon,
-                            width: 128,
-                            height: 128,
-                          )),
+                          child: Hero(
+                              tag: mod.id,
+                              child: Image.network(
+                                mod.icon,
+                                width: 128,
+                                height: 128,
+                              ))),
                     Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
