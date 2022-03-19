@@ -81,12 +81,10 @@ jobs:
           draft: true
           prerelease: false
           files: |
-            build/installer/ArgonInstaller-windows-x86_64-setup.exe
-            scripts/ArgonInstaller-windows-x86_64-setup.exe
-            scripts/ArgonInstaller-windows-x86_64-setup.exe.exe
-            build/argoninstaller.*.nupkg
-            scripts/Output/ArgonInstaller-windows-x86_64-setup.exe.exe
-            scripts/Output/ArgonInstaller-windows-x86_64-setup.exe
+            build/installer/*-setup.exe
+            build/*-setup.exe
+            scripts/*-setup.exe
+            scripts/Output/*-setup.exe
             ArgonInstaller-windows-x86_64.zip
           token: ${{ secrets.GITHUB_TOKEN }}
 

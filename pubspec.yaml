@@ -17,7 +17,6 @@ dependencies:
   flutter_native_splash: ^2.0.5
   url_launcher: ^6.0.20
   url_strategy: ^0.2.0
-  # bitsdojo_window: ^0.1.1+1
   window_manager: ^0.2.0
   shared_preferences: ^2.0.8
   flutter_svg: ^1.0.3
@@ -31,7 +30,8 @@ dependencies:
   file_selector_macos:
   file_selector_windows:
   file_selector: ^0.8.3
-  fluent_ui: ^3.9.1
+  fluent_ui:
+    git: https://github.com/bdlukaa/fluent_ui.git
 
 dev_dependencies:
   build_runner: ^2.0.0
@@ -39,15 +39,6 @@ dev_dependencies:
   dependency_validator: ^3.0.0
   isar_generator: 2.2.1
   flutter_lints: ^1.0.0
-  msix: ^3.3.1
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-msix_config:
-  identity_name: pro.tricked.argoninstaller
-  install_certificate: false
-  capabilities: internetClient
 
 flutter_native_splash:
   color: '#42a5f5'

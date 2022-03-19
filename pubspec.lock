@@ -120,20 +120,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  cli_dialog:
-    dependency: transitive
-    description:
-      name: cli_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
-  cli_util:
-    dependency: transitive
-    description:
-      name: cli_util
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.5"
   clock:
     dependency: transitive
     description:
@@ -176,13 +162,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  dart_console:
-    dependency: transitive
-    description:
-      name: dart_console
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -277,10 +256,12 @@ packages:
   fluent_ui:
     dependency: "direct main"
     description:
-      name: fluent_ui
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.9.1"
+      path: "."
+      ref: HEAD
+      resolved-ref: "99282610c6660da08030ec2550464b9de069563d"
+      url: "https://github.com/bdlukaa/fluent_ui.git"
+    source: git
+    version: "3.9.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -300,6 +281,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -492,13 +478,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  msix:
-    dependency: "direct dev"
-    description:
-      name: msix
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.2"
   nested:
     dependency: transitive
     description:
