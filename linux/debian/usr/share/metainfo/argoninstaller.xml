@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>argoninstaller</id>
+	<name>Argoninstaller</name>
+	<summary>A beautiful mod installer for minecraft supporting custom repositories and more.</summary>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>CC-BY-NC-ND-3.0</project_license>
+	<recommends>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>touch</control>
+	</recommends>
+	<developer_name>Tricked-dev</developer_name>
+	<url type="homepage">https://github.com/tricked-dev/argoninstaller</url>
+	<description>
+		A beautiful mod installer for minecraft supporting custom repositories and more.
+	
+	</description>
+	<screenshots>
+		<screenshot></screenshot>
+	</screenshots>
+	<launchable type="desktop-id">argoninstaller.desktop</launchable>
+	<releases></releases>
+	<content_rating type="oars-1.0" />
+	<update_contact>tricked@tricked.pro</update_contact>
+</component>

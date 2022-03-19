@@ -9,9 +9,9 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:tmodinstaller/config.dart';
-import 'package:tmodinstaller/src/models/models.dart';
-import 'package:tmodinstaller/src/utils.dart';
+import 'package:argoninstaller/config.dart';
+import 'package:argoninstaller/src/models/models.dart';
+import 'package:argoninstaller/src/utils.dart';
 import 'dart:io';
 import 'package:isar/isar.dart';
 import 'package:collection/collection.dart';

@@ -1,9 +1,9 @@
-Package: tmodinstaller
+Package: argoninstaller
 Version: 1.1.60
 Section: base
 Priority: optional
-Homepage: https://github.com/Tricked-dev/tmodinstaller/
+Homepage: https://github.com/Tricked-dev/argoninstaller/
 Architecture: amd64
 Maintainer: Tricked-dev <tricked@tricked.pro>
-Description: tmodinstaller
+Description: argoninstaller
   A beautiful mod installer for minecraft supporting custom repositories and more.

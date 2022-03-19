@@ -1,4 +1,4 @@
-name: tmodinstaller
+name: argoninstaller
 description: A beautiful mod installer for minecraft supporting custom repositories and more.
 publish_to: 'none'
 version: 0.0.10
@@ -45,18 +45,18 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 msix_config:
-  identity_name: pro.tricked.tmodinstaller
+  identity_name: pro.tricked.argoninstaller
   install_certificate: false
   capabilities: internetClient
 
 flutter_native_splash:
   color: '#42a5f5'
-  image: assets/tmodinstaller.png
+  image: assets/argoninstaller.png
 
 flutter:
   assets:
     - assets/Logo.svg
-    - assets/tmodinstaller.png
+    - assets/argoninstaller.png
 
   uses-material-design: true
 

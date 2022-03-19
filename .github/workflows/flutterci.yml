@@ -1,4 +1,4 @@
-#https://github.com/Thomas-Sohier/tmodinstaller/blob/main/.github/workflows/main.workflow.yml
+#https://github.com/Thomas-Sohier/argoninstaller/blob/main/.github/workflows/main.workflow.yml
 name: Main workflow
 on: push
 
@@ -41,14 +41,14 @@ jobs:
   #   with:
   #     type: 'zip'
   #     path: 'build/windows/runner/Release'
-  #     filename: 'tmodinstaller-windows.zip'
+  #     filename: 'argoninstaller-windows.zip'
 
   #     - name: Release
   #       uses: softprops/action-gh-release@v1
   #       with:
   #         draft: true
   #         prerelease: false
-  #         files: tmodinstaller-windows.zip
+  #         files: argoninstaller-windows.zip
   #         token: ${{ secrets.GITHUB_TOKEN }}
 
   build_windows:
@@ -74,20 +74,20 @@ jobs:
         with:
           type: 'zip'
           path: 'build/windows/runner/Release'
-          filename: 'TModInstaller-windows-x86_64.zip'
+          filename: 'ArgonInstaller-windows-x86_64.zip'
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           prerelease: false
           files: |
-            build/installer/TModInstaller-windows-x86_64-setup.exe
-            scripts/TModInstaller-windows-x86_64-setup.exe
-            scripts/TModInstaller-windows-x86_64-setup.exe.exe
-            build/tmodinstaller.*.nupkg
-            scripts/Output/TModInstaller-windows-x86_64-setup.exe.exe
-            scripts/Output/TModInstaller-windows-x86_64-setup.exe
-            TModInstaller-windows-x86_64.zip
+            build/installer/ArgonInstaller-windows-x86_64-setup.exe
+            scripts/ArgonInstaller-windows-x86_64-setup.exe
+            scripts/ArgonInstaller-windows-x86_64-setup.exe.exe
+            build/argoninstaller.*.nupkg
+            scripts/Output/ArgonInstaller-windows-x86_64-setup.exe.exe
+            scripts/Output/ArgonInstaller-windows-x86_64-setup.exe
+            ArgonInstaller-windows-x86_64.zip
           token: ${{ secrets.GITHUB_TOKEN }}
 
   build_linux:
@@ -111,39 +111,39 @@ jobs:
         run: |
           cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb tmodinstaller-linux-x86_64.deb
+          cp linux/*.deb argoninstaller-linux-x86_64.deb
 
       - name: Build .rpm executable
         run: |
-          alien -r tmodinstaller-linux-x86_64.deb
-          mv tmodinstaller*.rpm tmodinstaller-linux-x86_64.rpm
+          alien -r argoninstaller-linux-x86_64.deb
+          mv argoninstaller*.rpm argoninstaller-linux-x86_64.rpm
 
       - name: Build Tarball
         run: |
           mkdir -p AppDir/
           cp -r linux/debian/usr AppDir/
-          ln -sr AppDir/usr/bin/tmodinstaller AppDir/tmodinstaller
-          tar czf tmodinstaller-linux-x86_64.tar.gz -C AppDir/ .
+          ln -sr AppDir/usr/bin/argoninstaller AppDir/argoninstaller
+          tar czf argoninstaller-linux-x86_64.tar.gz -C AppDir/ .
 
       - name: Build AppImage
         run: |
           echo '#!/bin/sh
           cd "$(dirname "$0")"
-          exec ./tmodinstaller' > AppDir/AppRun
+          exec ./argoninstaller' > AppDir/AppRun
           chmod +x AppDir/AppRun
-          chmod +x AppDir/tmodinstaller
-          cp AppDir/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png AppDir/tmodinstaller.png
-          cp AppDir/usr/share/applications/tmodinstaller.desktop AppDir/tmodinstaller.desktop
+          chmod +x AppDir/argoninstaller
+          cp AppDir/usr/share/icons/hicolor/256x256/apps/argoninstaller.png AppDir/argoninstaller.png
+          cp AppDir/usr/share/applications/argoninstaller.desktop AppDir/argoninstaller.desktop
           curl -L https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -o appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
-          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ tmodinstaller-linux-x86_64.AppImage
+          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ argoninstaller-linux-x86_64.AppImage
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           prerelease: false
-          files: tmodinstaller-linux-*
+          files: argoninstaller-linux-*
           token: ${{ secrets.GITHUB_TOKEN }}
 
   # macos-Build:
@@ -171,17 +171,17 @@ jobs:
   #         cd build/macos/Build/Products
   #         brew install create-dmg
   #         create-dmg \
-  #         --volname "TModInstaller" \
+  #         --volname "ArgonInstaller" \
   #         --volicon "MacOS_Logo_Icon.icns" \
   #         --window-pos 200 120 \
   #         --window-size 800 529 \
   #         --icon-size 130 \
   #         --text-size 14 \
-  #         --icon "TModInstaller.app" 260 250 \
-  #         --hide-extension "TModInstaller.app" \
+  #         --icon "ArgonInstaller.app" 260 250 \
+  #         --hide-extension "ArgonInstaller.app" \
   #         --app-drop-link 540 250 \
   #         --hdiutil-quiet \
-  #         "TModInstaller-MacOS-Installer.dmg" \
+  #         "ArgonInstaller-MacOS-Installer.dmg" \
   #         "Release/"
   #       continue-on-error: true
   #     - name: Update File

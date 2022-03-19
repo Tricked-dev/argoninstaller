@@ -98,12 +98,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "pro.tricked" "\0"
-            VALUE "FileDescription", "tmodinstaller" "\0"
+            VALUE "FileDescription", "argoninstaller" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "tmodinstaller" "\0"
+            VALUE "InternalName", "argoninstaller" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 pro.tricked. All rights reserved." "\0"
-            VALUE "OriginalFilename", "tmodinstaller.exe" "\0"
-            VALUE "ProductName", "tmodinstaller" "\0"
+            VALUE "OriginalFilename", "argoninstaller.exe" "\0"
+            VALUE "ProductName", "argoninstaller" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

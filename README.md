@@ -1,22 +1,22 @@
 <div align="center">
 
-# tmodinstaller
+# argoninstaller
 
 </div>
 
 <div align="center">
 
-[![GitHub issues](https://img.shields.io/github/issues/Tricked-dev/tmodinstaller)](https://github.com/Tricked-dev/tmodinstaller/issues)[![GitHub license](https://img.shields.io/badge/license-CC--BY--NC--ND--3-orange)](https://github.com/Tricked-dev/tmodinstaller)![GitHub all releases](https://img.shields.io/github/downloads/tricked-dev/tmodinstaller/total)![Fluent Design](https://img.shields.io/badge/fluent-design-blue?color=7A7574&labelColor=0078D7)[![GitHub Sponsors](https://img.shields.io/github/sponsors/tricked-dev)](https://github.com/sponsors/Tricked-dev)[![Discord](https://img.shields.io/discord/945782183656833075)](https://discord.gg/wU9kyjdJup)
+[![GitHub issues](https://img.shields.io/github/issues/Tricked-dev/argoninstaller)](https://github.com/Tricked-dev/argoninstaller/issues)[![GitHub license](https://img.shields.io/badge/license-CC--BY--NC--ND--3-orange)](https://github.com/Tricked-dev/argoninstaller)![GitHub all releases](https://img.shields.io/github/downloads/tricked-dev/argoninstaller/total)![Fluent Design](https://img.shields.io/badge/fluent-design-blue?color=7A7574&labelColor=0078D7)[![GitHub Sponsors](https://img.shields.io/github/sponsors/tricked-dev)](https://github.com/sponsors/Tricked-dev)[![Discord](https://img.shields.io/discord/945782183656833075)](https://discord.gg/wU9kyjdJup)
 
 </div>
 
 ---
 
-## ⚠️⚠️ THIS PROJECT IS STILL IN EARLY DEVELOPMENT AND NEEDS A NEW NAME SUBMISSIONS CAN BE MADE IN THE [DISCORD](https://discord.gg/wU9kyjdJup) OR AS A ISSUE ⚠️⚠️
+#### ⚠️⚠️ THIS PROJECT IS STILL IN EARLY DEVELOPMENT ⚠️⚠️
 
 A beautiful mod installer for minecraft supporting custom repositories and more.
 
-TMod Installer is a cross platform mod installer and updater you can use it with your own repo's or the standard provided [repos](https://github.com/Tricked-dev/tmodinstallerrepo).
+TMod Installer is a cross platform mod installer and updater you can use it with your own repo's or the standard provided [repos](https://github.com/Tricked-dev/argoninstallerrepo).
 
 ## Features
 
@@ -37,7 +37,7 @@ Skyclient and Feather "client" are both windows only and don't support importing
 
 ## TMod Installer art
 
-The current TMod installer art can be found here: https://www.figma.com/file/iH6zwbkTFIYeCuSMYHJxs1/TMOD-INSTALLER?node-id=0%3A1 feel free to dm me if your interested into making/have made new art to use anything is probably better than this same goes for the name of the project if you have a better idea lol.
+The current TMod installer art can be found here: <https://www.figma.com/file/iH6zwbkTFIYeCuSMYHJxs1/TMOD-INSTALLER?node-id=0%3A1> feel free to dm me if your interested into making/have made new art to use anything is probably better than this same goes for the name of the project if you have a better idea lol.
 
 ## Flutter guide - Contributing
 

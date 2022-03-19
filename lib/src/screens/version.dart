@@ -15,10 +15,10 @@
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:tmodinstaller/config.dart';
-import 'package:tmodinstaller/src/screens/launcher.dart';
-import 'package:tmodinstaller/src/screens/modlist.dart';
-import 'package:tmodinstaller/src/screens/updater.dart';
+import 'package:argoninstaller/config.dart';
+import 'package:argoninstaller/src/screens/launcher.dart';
+import 'package:argoninstaller/src/screens/modlist.dart';
+import 'package:argoninstaller/src/screens/updater.dart';
 import '../models/models.dart';
 import 'dart:io';
 

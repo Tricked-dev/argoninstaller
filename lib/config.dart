@@ -13,8 +13,8 @@ import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tmodinstaller/src/models/models.dart';
-import 'package:tmodinstaller/src/utils.dart';
+import 'package:argoninstaller/src/models/models.dart';
+import 'package:argoninstaller/src/utils.dart';
 
 class Config {
   static File _configFile = File("");

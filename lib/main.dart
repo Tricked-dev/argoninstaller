@@ -9,11 +9,11 @@
 // import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:args/args.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tmodinstaller/config.dart';
-import 'package:tmodinstaller/src/screens/settings.dart';
-import 'package:tmodinstaller/src/screens/version.dart';
-import 'package:tmodinstaller/src/utils.dart';
-import 'package:tmodinstaller/theme.dart';
+import 'package:argoninstaller/config.dart';
+import 'package:argoninstaller/src/screens/settings.dart';
+import 'package:argoninstaller/src/screens/version.dart';
+import 'package:argoninstaller/src/utils.dart';
+import 'package:argoninstaller/theme.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:provider/provider.dart';

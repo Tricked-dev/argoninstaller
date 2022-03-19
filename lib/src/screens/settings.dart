@@ -10,7 +10,7 @@ import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
 import 'package:provider/provider.dart';
-import 'package:tmodinstaller/config.dart';
+import 'package:argoninstaller/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import '../../theme.dart';
@@ -277,7 +277,7 @@ class _SettingsState extends State<Settings> {
               child: FilledButton(
                 child: const Text("Github"),
                 onPressed: () async =>
-                    launch("https://github.com/Tricked-dev/tmodinstaller"),
+                    launch("https://github.com/Tricked-dev/argoninstaller"),
               ),
             )
           ],

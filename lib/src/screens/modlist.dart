@@ -8,8 +8,8 @@
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:tmodinstaller/config.dart';
-import 'package:tmodinstaller/src/screens/mod.dart';
+import 'package:argoninstaller/config.dart';
+import 'package:argoninstaller/src/screens/mod.dart';
 import '../models/models.dart';
 
 class ModListsPage extends StatefulWidget {

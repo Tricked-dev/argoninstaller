@@ -13,7 +13,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:isar/isar.dart';
-import 'package:tmodinstaller/config.dart';
+import 'package:argoninstaller/config.dart';
 import 'models/models.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
@@ -28,7 +28,8 @@ Map<TargetPlatform, String> defaultMinecraft = {
 };
 
 Map<TargetPlatform, String> defaultDirectories = {
-  TargetPlatform.linux: "${Platform.environment['HOME']}/.config/tmodinstaller",
+  TargetPlatform.linux:
+      "${Platform.environment['HOME']}/.config/argoninstaller",
 };
 
 class UtilMod {
@@ -132,7 +133,7 @@ Future<void> fetchData() async {
           x["meta"].removeWhere((k, v) => v == null);
           if (x["icon"] == null) {
             x["icon"] =
-                "https://raw.githubusercontent.com/Tricked-dev/tmodinstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/tmodinstaller.png";
+                "https://raw.githubusercontent.com/Tricked-dev/argoninstaller/master/linux/debian/usr/share/icons/hicolor/256x256/apps/argoninstaller.png";
           }
 
           return Mod.fromJson(x);

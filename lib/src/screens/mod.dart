@@ -10,9 +10,9 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:tmodinstaller/config.dart';
-import 'package:tmodinstaller/src/models/models.dart';
-import 'package:tmodinstaller/src/utils.dart';
+import 'package:argoninstaller/config.dart';
+import 'package:argoninstaller/src/models/models.dart';
+import 'package:argoninstaller/src/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
