@@ -54,7 +54,7 @@ jobs:
   build_windows:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: test
-    runs-on: windows-latest
+    runs-on: Windows-2019
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2.2.0
