@@ -35,6 +35,8 @@ class _UpdaterState extends State<Updater> {
     var updaterEnabled = false;
     final padding = PageHeader.horizontalPadding(context);
 //  await Directory("${Config.appDir}/modlists/${mcv}/").create(recursive: true);
+    Directory("${Config.appDir}/modlists/${widget.version}/")
+        .createSync(recursive: true);
     var files = Directory("${Config.appDir}/modlists/${widget.version}/")
         .listSync()
         .where((x) => x.statSync().type == FileSystemEntityType.file);

@@ -53,7 +53,7 @@ class Config {
     "theme": 0,
     "color": -1,
     "use_top_nav": false,
-    "mod_repos": ["std"],
+    "mod_repos": ["std", "skyclient"],
     "mod_folder": "${defaultMinecraft[defaultTargetPlatform]}",
   };
 
