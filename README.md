@@ -16,11 +16,11 @@
 
 A beautiful mod installer for minecraft supporting custom repositories and more.
 
-TMod Installer is a cross platform mod installer and updater you can use it with your own repo's or the standard provided [repos](https://github.com/Tricked-dev/argoninstallerrepo).
+ArgonInstaller is a cross platform mod installer and updater you can use it with your own repo's or the standard provided [repos](https://github.com/Tricked-dev/argoninstallerrepo).
 
 ## Features
 
-- You can create your own repos for TMod Installer and that way easily share your mods with other users.
+- You can create your own repos for Argon and that way easily share your mods with other users.
 - Easily update and change your mods with the built in updater
 - Switch mod folders with the click of only one button
 
@@ -33,11 +33,11 @@ TMod Installer is a cross platform mod installer and updater you can use it with
 
 ## Why another mod installer
 
-Skyclient and Feather "client" are both windows only and don't support importing custom mod repos. This makes it tedious to add your own mods and keep them updated TMod Installer aims to fix this issue allowing anyone to maintain a repo with their favorite mods and update it themself
+Feather "client" is currently both windows only and paid, and free alternatives such as Skyclient don't support importing custom mod your own custom repos. This makes it tedious to add your own mods and keep them updated. ArgonInstaller aims to fix this issue allowing anyone to maintain a repo with their favorite mods and update it themself
 
-## TMod Installer art
+## Argon Installer art
 
-The current TMod installer art can be found here: <https://www.figma.com/file/iH6zwbkTFIYeCuSMYHJxs1/TMOD-INSTALLER?node-id=0%3A1> feel free to dm me if your interested into making/have made new art to use anything is probably better than this same goes for the name of the project if you have a better idea lol.
+The current Argon installer art can be found here: <https://www.figma.com/file/iH6zwbkTFIYeCuSMYHJxs1/TMOD-INSTALLER?node-id=0%3A1> feel free to dm me if your interested into making/have made new art to use anything is probably better than this same goes for the name of the project if you have a better idea lol.
 
 ## Flutter guide - Contributing
 
