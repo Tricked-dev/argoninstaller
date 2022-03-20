@@ -32,7 +32,7 @@ class Config {
   }
 
   static init() async {
-    _appdir = defaultDirectories[TargetPlatform.linux] ??
+    _appdir = defaultDirectories[defaultTargetPlatform] ??
         (await getApplicationSupportDirectory()).path;
     _configFile = File("$_appdir/settings.json");
 
