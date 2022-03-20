@@ -31,7 +31,9 @@ dependencies:
   file_selector_windows:
   file_selector: ^0.8.3
   fluent_ui:
-    git: https://github.com/bdlukaa/fluent_ui.git
+    git:
+      url: https://github.com/bdlukaa/fluent_ui
+      ref: b99d1f51404e806339c1e632e93f4b1ff8049753
 
 dev_dependencies:
   build_runner: ^2.0.0
