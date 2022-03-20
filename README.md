@@ -2,6 +2,9 @@
 
 # argoninstaller
 
+<a href="https://discord.gg/wU9kyjdJup">
+   <img src="assets/argoninstaller.png" height="150px">
+</a>
 </div>
 
 <div align="center">
@@ -23,6 +26,7 @@ ArgonInstaller is a cross platform mod installer and updater you can use it with
 - You can create your own repos for Argon and that way easily share your mods with other users.
 - Easily update and change your mods with the built in updater
 - Switch mod folders with the click of only one button
+- Hash checking Argon checks every hash of the mod being installed if its the right one if not it will throw a error.
 
 | Feature                          | Screenshots                                                                                                     |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |

@@ -108,11 +108,7 @@ class ArgonInstallerApp extends StatelessWidget {
               );
             },
             initialRoute: '/',
-            routes: {
-              '/': (_) =>
-                  const ArgonInstallerPage(title: 'Tricked mod Installer')
-            },
-            // home: const ArgonInstallerPage(title: 'Tricked mod Installer'),
+            routes: {'/': (_) => const ArgonInstallerPage(title: 'Argon')},
           );
         });
   }

@@ -6,4 +6,4 @@ Icon=argoninstaller
 Exec=argoninstaller %u
 StartupWMClass=argoninstaller
 Categories=Utility;
-Keywords=Tmodinstaller,modinstaller,mods,minecraft;
+Keywords=argon,modinstaller,mods,minecraft,argoninstaller;
