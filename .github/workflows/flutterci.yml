@@ -2,12 +2,6 @@
 name: Main workflow
 on: push
 
-# env:
-#   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-#   KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-#   ALIAS: ${{ secrets.ALIAS }}
-#   KEY_PATH: key.jks
-
 jobs:
   build_windows:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -16,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2.2.0
         with:
-          channel: beta
+          channel: stable
           cache: true
       - run: flutter config --enable-windows-desktop
       - run: flutter pub get
@@ -97,75 +91,3 @@ jobs:
           prerelease: false
           files: argoninstaller-linux-*
           token: ${{ secrets.GITHUB_TOKEN }}
-
-  # macos-Build:
-  #   if: startsWith(github.ref, 'refs/tags/v')
-  #   runs-on: macos-11
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Cache flutter
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: ${{ runner.tool_cache }}/flutter
-  #         key: ${{ runner.os }}-2.10.0-0.3.pre
-  #     - uses: subosito/flutter-action@master
-  #       with:
-  #         channel: beta
-  #         flutter-version: 2.10.0-0.2.pre
-  #     - name: Build
-  #       run: |
-  #         flutter pub get
-  #         flutter config --enable-macos-desktop
-  #         dart pub global activate cider
-  #         dart pub global run cider version ${{ env.rwl_version_full }}
-  #         flutter build macos --dart-define="build_id=${{ github.run_number }}" --dart-define="version_type=${{  env.version_type  }}" --dart-define="version=${{ secrets.VERSION  }}" --release
-  #         cp assets/images/MacOS_Logo_Icon.icns build/macos/Build/Products
-  #         cd build/macos/Build/Products
-  #         brew install create-dmg
-  #         create-dmg \
-  #         --volname "ArgonInstaller" \
-  #         --volicon "MacOS_Logo_Icon.icns" \
-  #         --window-pos 200 120 \
-  #         --window-size 800 529 \
-  #         --icon-size 130 \
-  #         --text-size 14 \
-  #         --icon "ArgonInstaller.app" 260 250 \
-  #         --hide-extension "ArgonInstaller.app" \
-  #         --app-drop-link 540 250 \
-  #         --hdiutil-quiet \
-  #         "ArgonInstaller-MacOS-Installer.dmg" \
-  #         "Release/"
-  #       continue-on-error: true
-  #     - name: Update File
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: TMod Instakker-MacOS
-  #         path: build/macos/Build/Products/TMod Instakker-MacOS-Installer.dmg
-  #         retention-days: 1
-  # build_android:
-  #   if: startsWith(github.ref, 'refs/tags/v')
-  #   needs: test
-
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: subosito/flutter-action@v1
-  #       with:
-  #         channel: 'stable'
-
-  #     - run: echo $ANDROID_KEYS | base64 -d > android/app/key.jks
-  #       env:
-  #         ANDROID_KEYS: ${{ secrets.ANDROID_KEYS }}
-
-  #     - run: flutter pub get
-  #     - run: flutter build apk --split-per-abi
-  #     - run: cp build/app/outputs/flutter-apk/app*.apk .
-
-  #     - name: Release
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         draft: true
-  #         prerelease: false
-  #         files: |
-  #           app*.apk
-  #         token: ${{ secrets.GITHUB_TOKEN }}
