@@ -257,9 +257,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "99282610c6660da08030ec2550464b9de069563d"
-      url: "https://github.com/bdlukaa/fluent_ui.git"
+      ref: b99d1f51404e806339c1e632e93f4b1ff8049753
+      resolved-ref: b99d1f51404e806339c1e632e93f4b1ff8049753
+      url: "https://github.com/bdlukaa/fluent_ui"
     source: git
     version: "3.9.2"
   flutter:
@@ -281,11 +281,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  flutter_localizations:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   flutter_markdown:
     dependency: "direct main"
     description:
