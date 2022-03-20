@@ -66,7 +66,7 @@ class _VersionPage extends State<VersionPage> {
 
   @override
   Widget build(BuildContext context) {
-    Directory("${Config.appDir}/modlists/${widget.version}/").create();
+    Directory("${Config.appDir}/modlists/${widget.version}/").create(recursive: true);
     final padding = PageHeader.horizontalPadding(context);
 
     return Container(
