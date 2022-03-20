@@ -1,6 +1,6 @@
-// TMOD Installer (c) by tricked
+// ArgonInstaller (c) by tricked
 //
-// TMOD Installer is licensed under a
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
 //
 // You should have received a copy of the license along with this
@@ -50,11 +50,11 @@ void main(List<String> args) async {
     await windowManager.setSkipTaskbar(false);
   });
 
-  runApp(const TModInstallerApp());
+  runApp(const ArgonInstallerApp());
 }
 
-class TModInstallerApp extends StatelessWidget {
-  const TModInstallerApp({Key? key}) : super(key: key);
+class ArgonInstallerApp extends StatelessWidget {
+  const ArgonInstallerApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -110,24 +110,24 @@ class TModInstallerApp extends StatelessWidget {
             initialRoute: '/',
             routes: {
               '/': (_) =>
-                  const TModInstallerPage(title: 'Tricked mod Installer')
+                  const ArgonInstallerPage(title: 'Tricked mod Installer')
             },
-            // home: const TModInstallerPage(title: 'Tricked mod Installer'),
+            // home: const ArgonInstallerPage(title: 'Tricked mod Installer'),
           );
         });
   }
 }
 
-class TModInstallerPage extends StatefulWidget {
-  const TModInstallerPage({Key? key, required this.title}) : super(key: key);
+class ArgonInstallerPage extends StatefulWidget {
+  const ArgonInstallerPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<TModInstallerPage> createState() => _TModInstallerPageState();
+  State<ArgonInstallerPage> createState() => _ArgonInstallerPageState();
 }
 
-class _TModInstallerPageState extends State<TModInstallerPage> {
+class _ArgonInstallerPageState extends State<ArgonInstallerPage> {
   @override
   void initState() {
     super.initState();
@@ -183,7 +183,7 @@ class _TModInstallerPageState extends State<TModInstallerPage> {
       //           return const DragToMoveArea(
       //             child: Align(
       //               alignment: AlignmentDirectional.centerStart,
-      //               child: Text("TMod Installer"),
+      //               child: Text("Argon Installer"),
       //             ),
       //           );
       //         }(),

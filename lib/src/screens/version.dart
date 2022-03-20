@@ -1,14 +1,14 @@
-// TMOD Installer (c) by Tricked-dev <tricked@tricked.pro>
+// ArgonInstaller (c) by Tricked-dev <tricked@tricked.pro>
 //
-// TMOD Installer is licensed under a
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
 //
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
-// TMOD Installer (c) by tricked
+// ArgonInstaller (c) by tricked
 //
-// TMOD Installer is licensed under a
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
 //
 // You should have received a copy of the license along with this
@@ -66,7 +66,8 @@ class _VersionPage extends State<VersionPage> {
 
   @override
   Widget build(BuildContext context) {
-    Directory("${Config.appDir}/modlists/${widget.version}/").create(recursive: true);
+    Directory("${Config.appDir}/modlists/${widget.version}/")
+        .create(recursive: true);
     final padding = PageHeader.horizontalPadding(context);
 
     return Container(

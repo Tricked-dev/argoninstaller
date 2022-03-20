@@ -1,6 +1,6 @@
-// TMOD Installer (c) by tricked
+// ArgonInstaller (c) by tricked
 //
-// TMOD Installer is licensed under a
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
 //
 // You should have received a copy of the license along with this
@@ -63,7 +63,8 @@ class UtilMod {
 
 class HashingError extends Error {
   String reason;
-  HashingError(this.reason);
+  String description;
+  HashingError(this.reason, this.description);
 }
 
 Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
@@ -80,15 +81,17 @@ Future<void> installMod(Mod mod, DownloadMod version, String mcv) async {
   } else if (hashData[0] == "sha512") {
     hashFun = sha512.convert;
   } else {
-    throw HashingError("Invalid hashing algorithm ${hashData[0]}");
+    throw HashingError("Invalid hashing algorithm",
+        "Mod required the  ${hashData[0]} hashing algorithm which is not supported by Argon!");
   }
   print(hashFun);
   print(hashData);
   if (hashFun(response.bodyBytes).toString() != hashData[1]) {
-    throw HashingError(
-        "Hash mismatch file hash: ${hashFun(response.bodyBytes).toString()}. Expected hash ${hashData[1]}");
+    print("Throwing error");
+    throw HashingError("Hash mismatch.",
+        "file hash: ${hashFun(response.bodyBytes).toString()}. Expected hash ${hashData[1]}\nPlease check your internet connection!");
   }
-  //TODO: Hashing!
+
   await Directory("${Config.appDir}/modlists/$mcv/").create(recursive: true);
 
   UtilMod(version.filename, mcv).write(response.bodyBytes);
@@ -123,7 +126,7 @@ Future<void> fetchData() async {
       if (trimmed == "") continue;
       final res = await http.get(Uri.parse(trimmed.startsWith("http")
           ? trimmed
-          : "https://tmod.deno.dev/$trimmed.json"));
+          : "https://argon.deno.dev/$trimmed.json"));
       var data = json.decode(res.body);
 
       mods = [

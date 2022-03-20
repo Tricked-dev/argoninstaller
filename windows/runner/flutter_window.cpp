@@ -1,8 +1,8 @@
-// TMOD Installer (c) by tricked
-// 
-// TMOD Installer is licensed under a
+// ArgonInstaller (c) by tricked
+//
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
-// 
+//
 // You should have received a copy of the license along with this
 // work.  If not, see <http://creativecommons.org/licenses/by-nc-nd/3.0/>.
 
@@ -12,13 +12,15 @@
 
 #include "flutter/generated_plugin_registrant.h"
 
-FlutterWindow::FlutterWindow(const flutter::DartProject& project)
+FlutterWindow::FlutterWindow(const flutter::DartProject &project)
     : project_(project) {}
 
 FlutterWindow::~FlutterWindow() {}
 
-bool FlutterWindow::OnCreate() {
-  if (!Win32Window::OnCreate()) {
+bool FlutterWindow::OnCreate()
+{
+  if (!Win32Window::OnCreate())
+  {
     return false;
   }
 
@@ -29,7 +31,8 @@ bool FlutterWindow::OnCreate() {
   flutter_controller_ = std::make_unique<flutter::FlutterViewController>(
       frame.right - frame.left, frame.bottom - frame.top, project_);
   // Ensure that basic setup of the controller was successful.
-  if (!flutter_controller_->engine() || !flutter_controller_->view()) {
+  if (!flutter_controller_->engine() || !flutter_controller_->view())
+  {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
@@ -37,8 +40,10 @@ bool FlutterWindow::OnCreate() {
   return true;
 }
 
-void FlutterWindow::OnDestroy() {
-  if (flutter_controller_) {
+void FlutterWindow::OnDestroy()
+{
+  if (flutter_controller_)
+  {
     flutter_controller_ = nullptr;
   }
 
@@ -48,21 +53,25 @@ void FlutterWindow::OnDestroy() {
 LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
-                              LPARAM const lparam) noexcept {
+                              LPARAM const lparam) noexcept
+{
   // Give Flutter, including plugins, an opportunity to handle window messages.
-  if (flutter_controller_) {
+  if (flutter_controller_)
+  {
     std::optional<LRESULT> result =
         flutter_controller_->HandleTopLevelWindowProc(hwnd, message, wparam,
                                                       lparam);
-    if (result) {
+    if (result)
+    {
       return *result;
     }
   }
 
-  switch (message) {
-    case WM_FONTCHANGE:
-      flutter_controller_->engine()->ReloadSystemFonts();
-      break;
+  switch (message)
+  {
+  case WM_FONTCHANGE:
+    flutter_controller_->engine()->ReloadSystemFonts();
+    break;
   }
 
   return Win32Window::MessageHandler(hwnd, message, wparam, lparam);

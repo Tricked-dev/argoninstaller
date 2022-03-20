@@ -35,9 +35,9 @@ ArgonInstaller is a cross platform mod installer and updater you can use it with
 
 Feather "client" is currently both windows only and paid, and free alternatives such as Skyclient don't support importing custom mod your own custom repos. This makes it tedious to add your own mods and keep them updated. ArgonInstaller aims to fix this issue allowing anyone to maintain a repo with their favorite mods and update it themself
 
-## Argon Installer art
+## ArgonInstaller art
 
-The current Argon installer art can be found here: <https://www.figma.com/file/iH6zwbkTFIYeCuSMYHJxs1/TMOD-INSTALLER?node-id=0%3A1> feel free to dm me if your interested into making/have made new art to use anything is probably better than this same goes for the name of the project if you have a better idea lol.
+The current Argon installer art can be found here: <https://www.figma.com/file/iH6zwbkTFIYeCuSMYHJxs1/Argon-INSTALLER?node-id=0%3A1> feel free to dm me if your interested into making/have made new art to use anything is probably better than this same goes for the name of the project if you have a better idea lol.
 
 ## Flutter guide - Contributing
 

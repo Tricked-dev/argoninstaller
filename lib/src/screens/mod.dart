@@ -1,6 +1,6 @@
-// TMOD Installer (c) by Tricked-dev <tricked@tricked.pro>
+// ArgonInstaller (c) by Tricked-dev <tricked@tricked.pro>
 //
-// TMOD Installer is licensed under a
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
 //
 // You should have received a copy of the license along with this
@@ -183,25 +183,12 @@ class _ModScreenState extends State<ModScreen> {
     return FutureBuilder(
       future: installMod(mod, version, widget.mcv),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return ContentDialog(
-            title: const Text("Mod installed!"),
-            content:
-                const Text("Succesfully installed the mod - press esc to exit"),
-            actions: <Widget>[
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        }
         if (snapshot.hasError) {
           if (snapshot.error is HashingError) {
             return ContentDialog(
               title: Text((snapshot.error as HashingError).reason),
+              content:
+                  SelectableText((snapshot.error as HashingError).description),
               actions: <Widget>[
                 FilledButton(
                   onPressed: () {
@@ -225,6 +212,21 @@ class _ModScreenState extends State<ModScreen> {
             ],
           );
         }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ContentDialog(
+            title: const Text("Mod installed!"),
+            content: const Text("Successfully installed the mod"),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        }
+
         return ContentDialog(
           title: Text('Installing ${mod.display} ${version.version}'),
           content: Row(

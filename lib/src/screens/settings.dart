@@ -1,6 +1,6 @@
-// TMOD Installer (c) by tricked
+// ArgonInstaller (c) by tricked
 //
-// TMOD Installer is licensed under a
+// ArgonInstaller is licensed under a
 // Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
 //
 // You should have received a copy of the license along with this
@@ -284,7 +284,7 @@ class _SettingsState extends State<Settings> {
         ),
         spacer,
         const Text(
-            "TMod Installer created by Tricked-dev licensed under: Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License."),
+            "Argon Installer created by Tricked-dev licensed under: Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License."),
       ],
     );
   }
