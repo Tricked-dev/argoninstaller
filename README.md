@@ -3,7 +3,7 @@
 # argoninstaller
 
 <a href="https://discord.gg/wU9kyjdJup">
-   <img src="assets/argoninstaller.png" height="150px">
+   <img src="assets/Argon.png" height="150px">
 </a>
 </div>
 

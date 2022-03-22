@@ -2,5 +2,7 @@
 	"licenser.license": "CC-BY-NC-ND-3",
 	"licenser.projectName": "ArgonInstaller",
 	"licenser.author": "Tricked-dev <tricked@tricked.pro>",
-	"deno.enable": false
+	"deno.enable": true,
+	"deno.lint": true,
+	"deno.unstable": true
 }

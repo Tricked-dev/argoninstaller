@@ -197,12 +197,14 @@ class _ArgonInstallerPageState extends State<ArgonInstallerPage> {
           openMinWidth: 250,
           openMaxWidth: 320,
         ),
-        header: !Config.getValue("use_top_nav", defaultValue: false)
-            ? Container(
-                height: kOneLineTileHeight,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset("assets/Logo.svg"))
-            : null,
+        // header: !Config.getValue("use_top_nav", defaultValue: false)
+        //     ? Container(
+        //         height: kOneLineTileHeight,
+        //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        //         child: Image.asset(
+        //           "assets/Argon Banner.png",
+        //         ))
+        //     : null,
         displayMode: appTheme.displayMode,
         indicatorBuilder: () {
           switch (appTheme.indicator) {

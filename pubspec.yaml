@@ -47,9 +47,7 @@ flutter_native_splash:
   image: assets/argoninstaller.png
 
 flutter:
-  assets:
-    - assets/Logo.svg
-    - assets/argoninstaller.png
+  # assets:
 
   uses-material-design: true
 
